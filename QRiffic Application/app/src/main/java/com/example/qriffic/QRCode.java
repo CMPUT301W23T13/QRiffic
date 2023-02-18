@@ -69,4 +69,49 @@ public class QRCode {
         this.idHash = new Hash(rawString);
         this.score = 0; // should be calculated here, new class?
      }
+
+    /**
+     * This method returns the score of a QRCode object
+     * @return
+     * The score as an integer
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * This method returns the location of a QRCode object
+     * @return
+     * The location as a Location object
+     */
+    public Location getLocation() {
+        return location;
+    }
+
+    /**
+     * This method returns the raw QR string of a QRCode object
+     * @return
+     * The QR code string as a string
+     */
+    public String getRawString() {
+        return rawString;
+    }
+
+    /**
+     * This method returns the ID hash of a QRCode object
+     * @return
+     * The ID hash as an string
+     */
+    public Hash getIdHash() {
+        return idHash;
+    }
+
+    /**
+     * This method returns the name of a QRCode object
+     * @return
+     * The name as a String
+     */
+    public String getName() {
+        return name;
+    }
 }
