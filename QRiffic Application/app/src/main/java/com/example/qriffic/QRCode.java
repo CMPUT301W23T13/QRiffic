@@ -11,17 +11,41 @@ public class QRCode {
     //private LocationImage locationImage
     private Location location;
     private String rawString;
-    private String idHash;
+    private Hash idHash;
     private String name;
 
+    // With location and locationImage
     public QRCode(String rawString, String name, Location location) throws NoSuchAlgorithmException {
-        // REMEMBER TO ADD LOCATION AND LOCATIONIMAGE TO PARAMETERS
+        // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
         //this.locationImage = locationImage;
-        //this.location = location;
+        this.location = location;
         this.name = "UNNAMED MONSTER";
         this.rawString = rawString;
+        this.idHash = new Hash(rawString);
         this.score = 0;
-        this.idHash = new Hash(rawString).getHash();
     }
+
+    // With locationImage but No location
+    public QRCode(String rawString, String name) throws NoSuchAlgorithmException {
+        // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
+
+        //this.locationImage = locationImage;
+        this.location = new Location("", "");
+        this.name = "UNNAMED MONSTER";
+        this.rawString = rawString;
+        this.idHash = new Hash(rawString);
+        this.score = 0;
+    }
+
+/*    // With no location nor locationImage
+    public QRCode(String rawString, String name) throws NoSuchAlgorithmException {
+
+        //this.locationImage = locationImage;
+        this.location = new Location("", "");
+        this.name = "UNNAMED MONSTER";
+        this.rawString = rawString;
+        this.idHash = new Hash(rawString);
+        this.score = 0;
+    }*/
 }
