@@ -6,8 +6,10 @@ public class Location {
     private String latitude;
 
     public Location(String longitude, String latitude) {
-        this.longitude = longitude;
-        this.latitude = latitude;
+
+        // prime meridian equator???
+        this.longitude = "0";
+        this.latitude = "0";
     }
 
     public String getLongitude() {
