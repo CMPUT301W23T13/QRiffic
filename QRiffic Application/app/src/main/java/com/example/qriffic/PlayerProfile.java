@@ -14,9 +14,11 @@ public class PlayerProfile {
     private ArrayList<QRCode> captured;
 
     /**
-     * Constructor for PlayerProfile
+     * This is the constructor for a PlayerProfile object
      * @param playerId
+     * The player's ID info as a Player object
      * @param contactInfo
+     * The player's contact info as a ContactInfo object
      */
     public PlayerProfile(Player playerId, ContactInfo contactInfo) {
 
@@ -26,6 +28,4 @@ public class PlayerProfile {
         lowScore = 0;
         captured = new ArrayList<QRCode>();
     }
-
-
 }

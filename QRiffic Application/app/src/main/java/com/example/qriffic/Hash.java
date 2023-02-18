@@ -5,13 +5,23 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This class defines the hash of some input
+ */
 public class Hash {
     private String hash;
 
-    // REFERENCE:
-    // https://www.geeksforgeeks.org/sha-256-hash-in-java/
-    // Article Contributed By: bilal-hungund
+    /**
+     * This is the constructor for a Hash object
+     * @param preHash
+     * The input string to be hashed
+     * @throws NoSuchAlgorithmException
+     */
     public Hash(String preHash) throws NoSuchAlgorithmException {
+
+        // REFERENCE:
+        // https://www.geeksforgeeks.org/sha-256-hash-in-java/
+        // Article Contributed By: bilal-hungund
 
         // Create message digest
         MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -32,6 +42,11 @@ public class Hash {
         hash = hexString.toString();
     }
 
+    /**
+     * This method returns the hash of a Hash object
+     * @return
+     * The hash value as a string
+     */
     public String getHash(){
         return hash;
     }
