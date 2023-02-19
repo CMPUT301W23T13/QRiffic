@@ -38,7 +38,7 @@ public class Player {
      * @return
      * The secret code as a string
      */
-    public Hash getSecret() {
-        return secret;
+    public String getSecret() {
+        return secret.getHash();
     }
 }

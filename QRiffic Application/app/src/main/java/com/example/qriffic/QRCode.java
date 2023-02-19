@@ -102,8 +102,8 @@ public class QRCode {
      * @return
      * The ID hash as an string
      */
-    public Hash getIdHash() {
-        return idHash;
+    public String getIdHash() {
+        return idHash.getHash();
     }
 
     /**
