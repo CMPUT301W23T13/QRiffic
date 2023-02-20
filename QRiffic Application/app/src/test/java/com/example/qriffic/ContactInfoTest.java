@@ -3,6 +3,8 @@ package com.example.qriffic;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+// TEST COMMENT
+
 /**
  * Test suite for ContactInfo class
  */
