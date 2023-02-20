@@ -18,10 +18,10 @@ public class ContactInfoTest {
 
     @Test
     void testGetters(){
-        assertEquals("Mockistan",mockCI().getCity());
+        assertEquals("Mockistan",mockCI().getCountry());
         assertEquals("Mockopolis",mockCI().getCity());
-        assertEquals("123.456.7890",mockCI().getCity());
-        assertEquals("mock@mockers.com",mockCI().getCity());
+        assertEquals("123.456.7890",mockCI().getPhone());
+        assertEquals("mock@mockers.com",mockCI().getEmail());
     }
 
     @Test
