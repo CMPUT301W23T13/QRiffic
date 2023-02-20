@@ -16,4 +16,5 @@
     <string name="phone_no">Phone No::</string>
     <string name="enter_phone_no">Enter phone no</string>
     <string name="enter">Enter</string>
+    <string name="warning_msg">Warning: The above entered information cannot be changed once entered</string>
 </resources>
