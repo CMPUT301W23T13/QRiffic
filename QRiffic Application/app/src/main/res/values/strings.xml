@@ -14,4 +14,13 @@
     <string name="search_users">Search Users</string>
     <string name="scan_qr">Scan QR</string>
     <string name="map">Map</string>
+
+    <string name="username">Username:</string>
+    <string name="enter_username">Enter username</string>
+    <string name="e_mail">E-Mail:</string>
+    <string name="enter_email_id">Enter email id</string>
+    <string name="phone_no">Phone No::</string>
+    <string name="enter_phone_no">Enter phone no</string>
+    <string name="enter">Enter</string>
+    <string name="warning_msg">Warning: The above entered information cannot be changed once entered</string>
 </resources>
