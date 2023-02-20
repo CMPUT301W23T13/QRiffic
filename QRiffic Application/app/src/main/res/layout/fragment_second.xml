@@ -1,71 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context=".SecondFragment"
-
-    >
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.QRiffic.AppBarOverlay"
-        tools:ignore="MissingConstraints">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.QRiffic.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".SecondFragment">
 
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="297dp"
-        android:layout_height="501dp"
-        android:layout_marginStart="56dp"
-        android:background="@color/purple_200"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        <include layout="@layout/qr_dex_content" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="239dp"
-        android:layout_height="82dp"
-        android:background="#673AB7"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias="0.899"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="86dp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="223dp"
-        android:layout_height="51dp"
-        android:background="#673AB7"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias="0.675"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="91dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="248dp"
-        android:layout_height="214dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="81dp"
-        tools:src="@tools:sample/avatars" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
