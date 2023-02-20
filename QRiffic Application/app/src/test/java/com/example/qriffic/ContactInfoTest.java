@@ -19,6 +19,13 @@ public class ContactInfoTest {
     @Test
     void testGetters(){
         assertEquals("Mockistan",mockCI().getCity());
+        assertEquals("Mockopolis",mockCI().getCity());
+        assertEquals("123.456.7890",mockCI().getCity());
+        assertEquals("mock@mockers.com",mockCI().getCity());
     }
 
+    @Test
+    void testSetters(){
+
+    }
 }
