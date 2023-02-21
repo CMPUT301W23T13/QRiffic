@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * This class defines a QRCode object
  */
-public class QRCode {
+public class QRCode implements Comparable {
 
     private int score;
     //private LocationImage locationImage
@@ -13,6 +13,19 @@ public class QRCode {
     private String rawString;
     private Hash idHash;
     private String name;
+
+    /**
+     * This defines how we compare QRCodes
+     * @param o
+     * The object to be compared.
+     * @return
+     * 0 if equal, GT 0 if .this is less than o, LT 0 if .this is greater than o
+     */
+    @Override
+    public int compareTo(Object o) {
+        QRCode qrCode = (QRCode) o;
+        return this.rawString.compareTo(qrCode.getRawString());
+    }
 
     /**
      * This is a constructor for a QRCode object containing a location and location image
