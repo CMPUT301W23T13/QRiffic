@@ -15,7 +15,7 @@ public class QRCode implements Comparable {
     private String name;
 
     /**
-     * This defines how we compare QRCodes
+     * This defines how we compare QRCodes (all that matters is the scanned QR code raw string)
      * @param o
      * The object to be compared.
      * @return
