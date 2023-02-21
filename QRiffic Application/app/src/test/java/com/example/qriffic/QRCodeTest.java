@@ -43,4 +43,13 @@ public class QRCodeTest {
         assertEquals("UNNAMED MONSTER", mockQRCode.getName());
         assertNotEquals("NAMED MONSTER", mockQRCode.getName());
     }
+
+    @Test
+    void testCompareTo() throws NoSuchAlgorithmException {
+
+        QRCode mockQRCode = mockQRCode();
+
+        assertEquals(0, mockQRCode.compareTo(new QRCode("uyhpOIUYHPDFnklmd;sajfonui893")));
+        assertNotEquals(0, mockQRCode.compareTo(new QRCode("ayhpOIUYHPDFnklmd;sajfonui893")));
+    }
 }
