@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Test suite for Hash class
  */
-public class TestHash {
+public class HashTest {
 
     private Hash mockHash() throws NoSuchAlgorithmException {
 
