@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,7 +19,6 @@ import com.example.qriffic.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,20 +54,69 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        Fragment fragment = null;
+//        Class fragmentClass = null;
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+////        if (id == R.id.action_profile) {
+////
+////            return true;
+//
+//        switch(id){
+//            case R.id.search_users:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main,new SearchUser())
+//                        .commit();
+////                fragmentClass = SearchUser.class;
+//////                new SearchUser(
+//                return true;
+//        }
+//
+////        try {
+////            fragment = (Fragment) fragmentClass.newInstance();
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        }
+//
+//
+//
+//        return super.onOptionsItemSelected(item);
+
+//    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        Fragment fragment = null;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_profile) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.search_users:
+                fragment = new SearchUser();
+                break;
+
+            // add more cases for other menu items here
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.profile_crt);
+        if (currentFragment == null || !currentFragment.getClass().equals(fragment.getClass())) {
+            // only replace the fragment if it's not already displayed
+        fragmentManager.beginTransaction().replace(R.id.profile_crt, fragment,null).commit();
+        }
+
+        return true;
     }
+
+
+
 
     @Override
     public boolean onSupportNavigateUp() {

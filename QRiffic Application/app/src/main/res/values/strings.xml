@@ -1,9 +1,12 @@
 <resources>
+
+
     <string name="app_name">QRiffic</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Create Profile</string>
     <string name="second_fragment_label">QR-DEX</string>
+
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -14,7 +17,7 @@
     <string name="search_users">Search Users</string>
     <string name="scan_qr">Scan QR</string>
     <string name="map">Map</string>
-    
+
     <string name="username">Username:</string>
     <string name="enter_username">Enter username</string>
     <string name="e_mail">E-Mail:</string>
@@ -23,4 +26,6 @@
     <string name="enter_phone_no">Enter phone no</string>
     <string name="enter">Enter</string>
     <string name="warning_msg">Warning: The above entered information cannot be changed once entered</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
