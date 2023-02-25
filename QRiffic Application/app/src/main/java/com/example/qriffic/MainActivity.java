@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,6 +20,7 @@ import com.example.qriffic.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,15 +31,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        show profile_create
+//        ProfileCreate pf = new ProfileCreate();
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.fragment_cont, pf, null)
+//                .show(pf)
+//                .commit();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,10 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch(id){
             case R.id.search_users:
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main,new SearchUser())
-                        .commit();
+                changeFragment(new SearchUser());
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_cont,new SearchUser())
+//                        .commit();
+            break;
 
-                return true;
+            case R.id.leaderboard:
+                changeFragment(new Leaderboard());
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_cont,new Leaderboard()).commit();
+            break;
         }
 
 
@@ -82,38 +95,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        Fragment fragment = null;
-//
-//        switch (item.getItemId()) {
-//            case R.id.search_users:
-//                fragment = new SearchUser();
-//                break;
-//
-//            // add more cases for other menu items here
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        Fragment currentFragment = fragmentManager.findFragmentById(R.id.profile_crt);
-//        if (currentFragment == null || !currentFragment.getClass().equals(fragment.getClass())) {
-//            // only replace the fragment if it's not already displayed
-//        fragmentManager.beginTransaction().replace(, fragment,null).commit();
-//        }
-//
-//        return true;
-//    }
+
 
 
 
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavController navController = Navigation.findNavController(this, R.id.fragment_cont);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void changeFragment(Fragment fr){
+        FrameLayout fl = (FrameLayout) findViewById(R.id.nav_host_fragment_content_main);
+        fl.removeAllViews();
+        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+        transaction1.add(R.id.nav_host_fragment_content_main, fr);
+        transaction1.commit();
     }
 }

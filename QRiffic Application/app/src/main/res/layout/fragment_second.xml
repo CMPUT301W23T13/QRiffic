@@ -6,8 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".QRDex">
-
-
         <include layout="@layout/qr_dex_content" />
 
 

@@ -39,8 +39,11 @@ public class ProfileCreate extends Fragment {
         binding.enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 NavHostFragment.findNavController(ProfileCreate.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
+
             }
         });
     }
