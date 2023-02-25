@@ -31,12 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        show profile_create
-//        ProfileCreate pf = new ProfileCreate();
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.fragment_cont, pf, null)
-//                .show(pf)
-//                .commit();
+//
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -46,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 //        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        binding.fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     @Override
@@ -71,22 +66,29 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_profile) {
-//
-//            return true;
+
 
         switch(id){
             case R.id.search_users:
                 changeFragment(new SearchUser());
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_cont,new SearchUser())
-//                        .commit();
+
             break;
 
             case R.id.leaderboard:
                 changeFragment(new Leaderboard());
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_cont,new Leaderboard()).commit();
+
             break;
+
+            case R.id.action_profile:
+                changeFragment(new UserProfile());
+
+                break;
+
+            case R.id.qr_dex:
+                changeFragment(new QRDex());
+
+                break;
+
         }
 
 
