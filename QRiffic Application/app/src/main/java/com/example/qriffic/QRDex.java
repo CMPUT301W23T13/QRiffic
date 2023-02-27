@@ -7,11 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qriffic.databinding.FragmentSecondBinding;
 
-public class SecondFragment extends Fragment {
+public class QRDex extends Fragment {
 
     private FragmentSecondBinding binding;
 
@@ -31,6 +30,9 @@ public class SecondFragment extends Fragment {
 
 
     }
+
+
+
 
     @Override
     public void onDestroyView() {

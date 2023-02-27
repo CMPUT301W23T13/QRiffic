@@ -16,17 +16,7 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.3.1' apply false
     id 'com.android.library' version '7.3.1' apply false
-}
 
-allprojects {
-    repositories {
-        /*
-         The below repo's are commented out because they were causing errors since they seem
-         to already be added in settings.gradle, which is the new way to do it according to
-         gradle documentation
-         */
-//        google()  // Google's Maven repository
-//        mavenCentral()  // Maven Central repository
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
 
-    }
 }
