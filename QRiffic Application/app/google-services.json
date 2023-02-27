@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "436280861692",
+    "project_id": "qriffic-819cd",
+    "storage_bucket": "qriffic-819cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436280861692:android:57132c3fd010b7cc0d0879",
+        "android_client_info": {
+          "package_name": "com.example.qriffic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436280861692-onf2jcdtt4nqmtckp2k5rge44qpnecj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsya1LWgQtJ-mHassf8ef_5fvaDmvnMUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436280861692-onf2jcdtt4nqmtckp2k5rge44qpnecj0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
