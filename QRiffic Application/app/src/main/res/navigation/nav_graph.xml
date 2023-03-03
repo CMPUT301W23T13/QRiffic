@@ -22,7 +22,40 @@
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SecondFragment_to_leaderboard2"
+            app:destination="@id/leaderboard2" />
+        <action
+            android:id="@+id/action_SecondFragment_to_searchUser"
+            app:destination="@id/searchUser" />
+        <action
+            android:id="@+id/action_SecondFragment_to_userProfile"
+            app:destination="@id/userProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/leaderboard2"
+        android:name="com.example.qriffic.Leaderboard"
+        android:label="fragment_leaderboard"
+        tools:layout="@layout/fragment_leaderboard" >
+        <action
+            android:id="@+id/action_leaderboard2_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchUser"
+        android:name="com.example.qriffic.SearchUser"
+        android:label="fragment_search_user"
+        tools:layout="@layout/fragment_search_user" >
+        <action
+            android:id="@+id/action_searchUser_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfile"
+        android:name="com.example.qriffic.UserProfile"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfile_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
     </fragment>
 </navigation>

@@ -16,39 +16,36 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.qriffic.databinding.ProfileCreateBinding;
 
 public class ProfileCreate extends Fragment {
-
     private ProfileCreateBinding binding;
-
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = ProfileCreateBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
-
     }
-
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        //fetch secretID from main activity
+        String secretID;
+        if (getArguments() != null){
+            secretID = getArguments().getString("secretID");
+        }
         binding.enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //validate input
 
+                //write to file, and then navigate to the next fragment
 
                 NavHostFragment.findNavController(ProfileCreate.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
-
             }
         });
     }
-
-
 
     @Override
     public void onDestroyView() {
