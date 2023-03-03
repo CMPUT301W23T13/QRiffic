@@ -27,6 +27,8 @@ public class ProfileCreate extends Fragment {
         return binding.getRoot();
     }
 
+
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //fetch secretID from main activity

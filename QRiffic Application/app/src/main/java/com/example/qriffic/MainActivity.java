@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //deleteUniqueID();
+        //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         if (uniqueIDExists()) { //not 1st visit
             setContentView(binding.getRoot());
@@ -49,12 +49,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Deletes a uniqueID file if it exists
      */
-    private void deleteUniqueID(){
-        if (uniqueIDExists() == true) {
+    protected void deleteUniqueID(){
+        if (uniqueIDExists()) {
             getApplicationContext().deleteFile("unique-id");
         }
     }
-
 
     /**
      * Checks if a UniqueID has already been generated
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
      *     true if a UniqueID has already been generated (uniqueID file exists)
      *     false otherwise
      */
-    private Boolean uniqueIDExists() {
+    protected Boolean uniqueIDExists() {
         try {
             // Try to read the uniqueID from file
             FileInputStream secretIDInputStream = getApplicationContext().openFileInput("unique-id");
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      *      uniqueID: a string representation of a UUID
      */
-    private String generateUniqueID() {
+    protected String generateUniqueID() {
         String uniqueID;
         // Generate uniqueID and save to file
         uniqueID = UUID.randomUUID().toString();
