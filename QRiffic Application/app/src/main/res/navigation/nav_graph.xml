@@ -7,55 +7,45 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.qriffic.ProfileCreate"
+        android:name="com.example.qriffic.QRDex"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/profile_create">
+        tools:layout="@layout/fragment_second">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_searchUser"
+            app:destination="@id/searchUser" />
+        <action
+            android:id="@+id/action_FirstFragment_to_userProfile"
+            app:destination="@id/userProfile" />
+        <action
+            android:id="@+id/action_FirstFragment_to_leaderboard2"
+            app:destination="@id/leaderboard2" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.qriffic.QRDex"
+        android:name="com.example.qriffic.ProfileCreate"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        tools:layout="@layout/profile_create">
         <action
-            android:id="@+id/action_SecondFragment_to_leaderboard2"
-            app:destination="@id/leaderboard2" />
-        <action
-            android:id="@+id/action_SecondFragment_to_searchUser"
-            app:destination="@id/searchUser" />
-        <action
-            android:id="@+id/action_SecondFragment_to_userProfile"
-            app:destination="@id/userProfile" />
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
     </fragment>
     <fragment
         android:id="@+id/leaderboard2"
         android:name="com.example.qriffic.Leaderboard"
         android:label="fragment_leaderboard"
-        tools:layout="@layout/fragment_leaderboard" >
-        <action
-            android:id="@+id/action_leaderboard2_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_leaderboard" />
     <fragment
         android:id="@+id/searchUser"
         android:name="com.example.qriffic.SearchUser"
         android:label="fragment_search_user"
-        tools:layout="@layout/fragment_search_user" >
-        <action
-            android:id="@+id/action_searchUser_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_search_user" />
     <fragment
         android:id="@+id/userProfile"
         android:name="com.example.qriffic.UserProfile"
         android:label="fragment_user_profile"
-        tools:layout="@layout/fragment_user_profile" >
-        <action
-            android:id="@+id/action_userProfile_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_user_profile" />
 </navigation>

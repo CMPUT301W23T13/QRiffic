@@ -35,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        if (uniqueIDExists()) { //not 1st visit
-            setContentView(binding.getRoot());
-            Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
-        }else{ //1st visit
+        setContentView(binding.getRoot());
+        if (!uniqueIDExists()) { //1st visit
             this.uniqueID = generateUniqueID();
-            setContentView(binding.getRoot());
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_FirstFragment_to_SecondFragment);
             Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
+        }else{ //1st visit
+            Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
         }
         setSupportActionBar(binding.toolbar);
     }
