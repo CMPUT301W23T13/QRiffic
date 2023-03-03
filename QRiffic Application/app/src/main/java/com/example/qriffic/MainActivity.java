@@ -32,9 +32,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.uniqueID = generateUniqueID();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        if (uniqueIDExists()) { //not 1st visit
+            setContentView(binding.getRoot());
+        }else{ //1st visit
+            this.uniqueID = generateUniqueID();
+            setContentView(binding.getRoot());
+        }
         setSupportActionBar(binding.toolbar);
     }
 
