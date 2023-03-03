@@ -3,35 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/QRDex">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/QRDex"
         android:name="com.example.qriffic.QRDex"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_QRDex_to_ProfileCreate"
+            app:destination="@id/ProfileCreate" />
         <action
-            android:id="@+id/action_FirstFragment_to_searchUser"
-            app:destination="@id/searchUser" />
+            android:id="@+id/action_QRDex_to_leaderboard2"
+            app:destination="@id/leaderboard2" />
         <action
-            android:id="@+id/action_FirstFragment_to_userProfile"
+            android:id="@+id/action_QRDex_to_userProfile"
             app:destination="@id/userProfile" />
         <action
-            android:id="@+id/action_FirstFragment_to_leaderboard2"
-            app:destination="@id/leaderboard2" />
+            android:id="@+id/action_QRDex_to_searchUser"
+            app:destination="@id/searchUser" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/ProfileCreate"
         android:name="com.example.qriffic.ProfileCreate"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/profile_create">
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_ProfileCreate_to_QRDex"
+            app:destination="@id/QRDex" />
     </fragment>
     <fragment
         android:id="@+id/leaderboard2"

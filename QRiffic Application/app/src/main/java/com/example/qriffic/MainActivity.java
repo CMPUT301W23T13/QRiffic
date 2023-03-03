@@ -33,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
+        deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         if (!uniqueIDExists()) { //1st visit
             this.uniqueID = generateUniqueID();
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_FirstFragment_to_SecondFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString("secretID", uniqueID);
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_QRDex_to_ProfileCreate, bundle);
             Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
         }else{ //1st visit
             Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
