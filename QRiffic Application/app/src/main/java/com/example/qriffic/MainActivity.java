@@ -15,6 +15,7 @@ import com.example.qriffic.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,15 +33,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //deleteUniqueID();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         if (uniqueIDExists()) { //not 1st visit
             setContentView(binding.getRoot());
+            Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
         }else{ //1st visit
             this.uniqueID = generateUniqueID();
             setContentView(binding.getRoot());
+            Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
         }
         setSupportActionBar(binding.toolbar);
     }
+
+    /**
+     * Deletes a uniqueID file if it exists
+     */
+    private void deleteUniqueID(){
+        if (uniqueIDExists() == true) {
+            getApplicationContext().deleteFile("unique-id");
+        }
+    }
+
 
     /**
      * Checks if a UniqueID has already been generated
