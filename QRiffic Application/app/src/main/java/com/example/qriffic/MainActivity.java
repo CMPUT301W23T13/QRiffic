@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
@@ -31,21 +32,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.uniqueID = fetchUniqueID();
+        this.uniqueID = generateUniqueID();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
     }
 
     /**
-     * Fetches UniqueID from file
-     * in the case that a UniqueID has not already been generated (on first launch)
-     * this function will create a UniqueID, and save it to a file
+     * Checks if a UniqueID has already been generated
      * @return
-     *      uniqueID: a string representation of a UUID
+     *     true if a UniqueID has already been generated (uniqueID file exists)
+     *     false otherwise
      */
-    private String fetchUniqueID() {
-        String uniqueID;
+    private Boolean uniqueIDExists() {
         try {
             // Try to read the uniqueID from file
             FileInputStream secretIDInputStream = getApplicationContext().openFileInput("unique-id");
@@ -57,16 +56,27 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (Exception FileNotFoundException) {
             // No uniqueID file found, generate uniqueID and save to file
-            uniqueID = UUID.randomUUID().toString();
+            return false;
+        }
+        return true;
+    }
 
-            File secretIDFile = new File(getApplicationContext().getFilesDir(), "unique-id");
-            try {
-                secretIDFile.createNewFile();
-                FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
-                secretIDOutputStream.write(uniqueID.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Generates UniqueID and saves it to a file
+     * @return
+     *      uniqueID: a string representation of a UUID
+     */
+    private String generateUniqueID() {
+        String uniqueID;
+        // Generate uniqueID and save to file
+        uniqueID = UUID.randomUUID().toString();
+        File secretIDFile = new File(getApplicationContext().getFilesDir(), "unique-id");
+        try {
+            secretIDFile.createNewFile();
+            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
+            secretIDOutputStream.write(uniqueID.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return uniqueID;
     }
