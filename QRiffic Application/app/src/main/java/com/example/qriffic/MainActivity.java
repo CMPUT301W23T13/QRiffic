@@ -33,16 +33,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
+        //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        if (!uniqueIDExists()) { //1st visit
+        String uid = fetchUniqueID();
+        Bundle bundle = new Bundle();
+        if (uid == null) {
             this.uniqueID = generateUniqueID();
-            Bundle bundle = new Bundle();
             bundle.putString("secretID", uniqueID);
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_QRDex_to_ProfileCreate, bundle);
             Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
-        }else{ //1st visit
+        }else{
+            this.uniqueID = uid;
+            bundle.putString("secretID", uniqueID);
+            //this is a placeholder until someone can figure out how to pass a bundle to the
+            // default screen--a splash screen solves this, but for now we have a hack
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_QRDex_to_ProfileCreate);
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_ProfileCreate_to_QRDex, bundle);
             Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
         }
         setSupportActionBar(binding.toolbar);
@@ -52,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
      * Deletes a uniqueID file if it exists
      */
     protected void deleteUniqueID(){
-        if (uniqueIDExists()) {
+        if (fetchUniqueID() != null) {
             getApplicationContext().deleteFile("unique-id");
         }
     }
@@ -63,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
      *     true if a UniqueID has already been generated (uniqueID file exists)
      *     false otherwise
      */
-    protected Boolean uniqueIDExists() {
+    protected String fetchUniqueID() {
         try {
             // Try to read the uniqueID from file
             FileInputStream secretIDInputStream = getApplicationContext().openFileInput("unique-id");
@@ -74,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 uniqueID += (char) uniqueIDBytes[i];
             }
         } catch (Exception FileNotFoundException) {
-            // No uniqueID file found, generate uniqueID and save to file
-            return false;
+            // No uniqueID file found
+            return null;
         }
-        return true;
+        return uniqueID;
     }
 
     /**
