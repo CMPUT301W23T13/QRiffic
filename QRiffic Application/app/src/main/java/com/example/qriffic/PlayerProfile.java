@@ -95,4 +95,17 @@ public class PlayerProfile {
         // do we allow players to add identical QRCodes? Do we cap the amount of QR codes you can collect?
         captured.add(qrCode);
     }
+
+    /**
+     * This method deletes a QRCode object from the list of captured QRCodes of a PlayerProfile object
+     * @param qrCode
+     * The QRCode object to be deleted from the ArrayList of QRCode objects
+     */
+    public void deleteQRCode(QRCode qrCode) {
+
+        if (captured.contains(qrCode) == false) {
+            throw new IllegalArgumentException();
+        }
+        captured.remove(qrCode);
+    }
 }

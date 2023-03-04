@@ -70,6 +70,41 @@ public class PlayerProfileTest {
         assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123")));
     }
 
+    @Test
+    void testDeleteQRCode() throws NoSuchAlgorithmException {
+
+        PlayerProfile mockPlayerProfile = mockPlayerProfile();
+        QRCode mockQRCode = mockQRCode();
+        QRCode mockQRCode2 = new QRCode("123");
+
+        mockPlayerProfile.addQRCode(mockQRCode);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            mockPlayerProfile.deleteQRCode(mockQRCode2);
+        });
+
+        assertEquals(1, mockPlayerProfile.getCaptured().size());
+        assertNotEquals(0, mockPlayerProfile.getCaptured().size());
+
+        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
+        assertFalse(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+
+        mockPlayerProfile.addQRCode(mockQRCode2);
+
+        assertEquals(2, mockPlayerProfile.getCaptured().size());
+        assertNotEquals(1, mockPlayerProfile.getCaptured().size());
+
+        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+
+        mockPlayerProfile.deleteQRCode(mockQRCode);
+
+        assertEquals(1, mockPlayerProfile.getCaptured().size());
+        assertNotEquals(2, mockPlayerProfile.getCaptured().size());
+
+        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+        assertFalse(mockPlayerProfile.getCaptured().contains(mockQRCode));
+    }
+
 
 
 }
