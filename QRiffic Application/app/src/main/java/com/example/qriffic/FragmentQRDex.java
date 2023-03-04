@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.qriffic.databinding.FragmentSecondBinding;
 
-public class QRDex extends Fragment {
+public class FragmentQRDex extends Fragment {
 
     private FragmentSecondBinding binding;
 

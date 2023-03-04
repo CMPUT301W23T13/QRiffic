@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
@@ -126,16 +125,16 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch(id){
             case R.id.search_users:
-                changeFragment(new SearchUser());
+                changeFragment(new FragmentSearchUser());
             break;
             case R.id.leaderboard:
-                changeFragment(new Leaderboard());
+                changeFragment(new FragmentLeaderboard());
             break;
             case R.id.action_profile:
-                changeFragment(new UserProfile());
+                changeFragment(new FragmentUserProfile());
                 break;
             case R.id.qr_dex:
-                changeFragment(new QRDex());
+                changeFragment(new FragmentQRDex());
                 break;
         }
         return super.onOptionsItemSelected(item);
