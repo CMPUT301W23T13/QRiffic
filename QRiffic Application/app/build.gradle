@@ -3,6 +3,9 @@ plugins {
 
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
+    // I added this -Garrett
+    id 'com.google.gms.google-services'
+
 }
 
 android {
