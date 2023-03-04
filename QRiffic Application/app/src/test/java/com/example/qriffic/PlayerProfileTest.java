@@ -16,7 +16,7 @@ public class PlayerProfileTest {
 
     private PlayerProfile mockPlayerProfile() throws NoSuchAlgorithmException {
 
-        return new PlayerProfile(new Player("username"),
+        return new PlayerProfile("username", "uuid",
                 new ContactInfo("Canada", "Edmonton", "999.999.9999",
                         "username@outlook.com"));
     }
@@ -26,8 +26,11 @@ public class PlayerProfileTest {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
 
-        assertEquals("username", mockPlayerProfile.getPlayerId().getUserId());
-        assertNotEquals("player name", mockPlayerProfile.getPlayerId().getUserId());
+        assertEquals("username", mockPlayerProfile.getUsername());
+        assertNotEquals("player name", mockPlayerProfile.getUsername());
+
+        assertEquals("uuid", mockPlayerProfile.getUuid());
+        assertNotEquals("uuid2", mockPlayerProfile.getUuid());
 
         assertEquals("Canada", mockPlayerProfile.getContactInfo().getCountry());
         assertEquals("Edmonton", mockPlayerProfile.getContactInfo().getCity());
