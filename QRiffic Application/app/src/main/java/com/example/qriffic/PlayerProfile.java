@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PlayerProfile {
 
     private String username;
-    private String uuid;
+    private String uniqueID;
     private ContactInfo contactInfo;
     private int highScore;
     private int lowScore;
@@ -21,10 +21,10 @@ public class PlayerProfile {
      * @param contactInfo
      * The player's contact info as a ContactInfo object
      */
-    public PlayerProfile(String username, String uuid, ContactInfo contactInfo) {
+    public PlayerProfile(String username, String uniqueID, ContactInfo contactInfo) {
 
         this.username = username;
-        this.uuid = uuid;
+        this.uniqueID = uniqueID;
         this.contactInfo = contactInfo;
         highScore = 0;
         lowScore = 0;
@@ -41,12 +41,12 @@ public class PlayerProfile {
     }
 
     /**
-     * This method returns the uuid of a PlayerProfile object
+     * This method returns the uniqueID of a PlayerProfile object
      * @return
-     * The player's uuid as a string
+     * The player's uniqueID as a string
      */
-    public String getUuid() {
-        return uuid;
+    public String getUniqueID() {
+        return uniqueID;
     }
 
     /**

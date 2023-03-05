@@ -29,8 +29,8 @@ public class PlayerProfileTest {
         assertEquals("username", mockPlayerProfile.getUsername());
         assertNotEquals("player name", mockPlayerProfile.getUsername());
 
-        assertEquals("uuid", mockPlayerProfile.getUuid());
-        assertNotEquals("uuid2", mockPlayerProfile.getUuid());
+        assertEquals("uuid", mockPlayerProfile.getUniqueID());
+        assertNotEquals("uuid2", mockPlayerProfile.getUniqueID());
 
         assertEquals("Canada", mockPlayerProfile.getContactInfo().getCountry());
         assertEquals("Edmonton", mockPlayerProfile.getContactInfo().getCity());
