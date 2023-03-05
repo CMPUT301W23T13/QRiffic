@@ -16,7 +16,7 @@ public class PlayerProfileTest {
 
     private PlayerProfile mockPlayerProfile() throws NoSuchAlgorithmException {
 
-        return new PlayerProfile(new Player("username"),
+        return new PlayerProfile("username", "uuid",
                 new ContactInfo("Canada", "Edmonton", "999.999.9999",
                         "username@outlook.com"));
     }
@@ -26,8 +26,11 @@ public class PlayerProfileTest {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
 
-        assertEquals("username", mockPlayerProfile.getPlayerId().getUserId());
-        assertNotEquals("player name", mockPlayerProfile.getPlayerId().getUserId());
+        assertEquals("username", mockPlayerProfile.getUsername());
+        assertNotEquals("player name", mockPlayerProfile.getUsername());
+
+        assertEquals("uuid", mockPlayerProfile.getUuid());
+        assertNotEquals("uuid2", mockPlayerProfile.getUuid());
 
         assertEquals("Canada", mockPlayerProfile.getContactInfo().getCountry());
         assertEquals("Edmonton", mockPlayerProfile.getContactInfo().getCity());
@@ -65,6 +68,41 @@ public class PlayerProfileTest {
 
         assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
         assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123")));
+    }
+
+    @Test
+    void testDeleteQRCode() throws NoSuchAlgorithmException {
+
+        PlayerProfile mockPlayerProfile = mockPlayerProfile();
+        QRCode mockQRCode = mockQRCode();
+        QRCode mockQRCode2 = new QRCode("123");
+
+        mockPlayerProfile.addQRCode(mockQRCode);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            mockPlayerProfile.deleteQRCode(mockQRCode2);
+        });
+
+        assertEquals(1, mockPlayerProfile.getCaptured().size());
+        assertNotEquals(0, mockPlayerProfile.getCaptured().size());
+
+        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
+        assertFalse(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+
+        mockPlayerProfile.addQRCode(mockQRCode2);
+
+        assertEquals(2, mockPlayerProfile.getCaptured().size());
+        assertNotEquals(1, mockPlayerProfile.getCaptured().size());
+
+        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+
+        mockPlayerProfile.deleteQRCode(mockQRCode);
+
+        assertEquals(1, mockPlayerProfile.getCaptured().size());
+        assertNotEquals(2, mockPlayerProfile.getCaptured().size());
+
+        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+        assertFalse(mockPlayerProfile.getCaptured().contains(mockQRCode));
     }
 
 

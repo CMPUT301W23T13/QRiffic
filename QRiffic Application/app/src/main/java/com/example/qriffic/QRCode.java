@@ -10,12 +10,11 @@ public class QRCode implements Comparable {
     private int score;
     //private LocationImage locationImage
     private Location location;
-    private String rawString;
-    private Hash idHash;
+    private String idHash;
     private String name;
 
     /**
-     * This defines how we compare QRCodes (all that matters is the scanned QR code raw string)
+     * This defines how we compare QRCodes (last 6 digits of the hash)
      * @param o
      * The object to be compared.
      * @return
@@ -24,7 +23,8 @@ public class QRCode implements Comparable {
     @Override
     public int compareTo(Object o) {
         QRCode qrCode = (QRCode) o;
-        return this.rawString.compareTo(qrCode.getRawString());
+        return this.idHash.substring(idHash.length()-6)
+                .compareTo(qrCode.idHash.substring(qrCode.idHash.length()-6));
     }
 
     /**
@@ -41,8 +41,7 @@ public class QRCode implements Comparable {
         //this.locationImage = locationImage;
         this.location = location;
         this.name = "UNNAMED MONSTER";
-        this.rawString = rawString;
-        this.idHash = new Hash(rawString);
+        this.idHash = new Hash(rawString).getHash();
         this.score = 0; // should be calculated here, new class?
     }
 
@@ -59,8 +58,7 @@ public class QRCode implements Comparable {
         //this.locationImage = locationImage;
         this.location = new Location("", "");
         this.name = "UNNAMED MONSTER";
-        this.rawString = rawString;
-        this.idHash = new Hash(rawString);
+        this.idHash = new Hash(rawString).getHash();
         this.score = 0; // should be calculated here, new class?
     }
 
@@ -78,8 +76,7 @@ public class QRCode implements Comparable {
         //this.locationImage = null or something, idk;
         this.location = new Location("", "");
         this.name = "UNNAMED MONSTER";
-        this.rawString = rawString;
-        this.idHash = new Hash(rawString);
+        this.idHash = new Hash(rawString).getHash();
         this.score = 0; // should be calculated here, new class?
      }
 
@@ -102,21 +99,12 @@ public class QRCode implements Comparable {
     }
 
     /**
-     * This method returns the raw QR string of a QRCode object
-     * @return
-     * The QR code string as a string
-     */
-    public String getRawString() {
-        return rawString;
-    }
-
-    /**
      * This method returns the ID hash of a QRCode object
      * @return
      * The ID hash as an string
      */
     public String getIdHash() {
-        return idHash.getHash();
+        return idHash;
     }
 
     /**
