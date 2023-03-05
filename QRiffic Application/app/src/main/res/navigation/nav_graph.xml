@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/QRDex"
-        android:name="com.example.qriffic.QRDex"
+        android:name="com.example.qriffic.FragmentQRDex"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_second">
 
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/ProfileCreate"
-        android:name="com.example.qriffic.ProfileCreate"
+        android:name="com.example.qriffic.FragmentProfileCreate"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/profile_create">
         <action
@@ -35,17 +35,17 @@
     </fragment>
     <fragment
         android:id="@+id/leaderboard2"
-        android:name="com.example.qriffic.Leaderboard"
+        android:name="com.example.qriffic.FragmentLeaderboard"
         android:label="fragment_leaderboard"
         tools:layout="@layout/fragment_leaderboard" />
     <fragment
         android:id="@+id/searchUser"
-        android:name="com.example.qriffic.SearchUser"
+        android:name="com.example.qriffic.FragmentSearchUser"
         android:label="fragment_search_user"
         tools:layout="@layout/fragment_search_user" />
     <fragment
         android:id="@+id/userProfile"
-        android:name="com.example.qriffic.UserProfile"
+        android:name="com.example.qriffic.FragmentUserProfile"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
 </navigation>
