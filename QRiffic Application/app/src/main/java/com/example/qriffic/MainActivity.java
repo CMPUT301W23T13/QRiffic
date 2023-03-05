@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -136,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.qr_dex:
                 changeFragment(new QRDex());
+                break;
+            case R.id.map:
+                changeFragment(new MapsFragment());
                 break;
         }
         return super.onOptionsItemSelected(item);
