@@ -38,10 +38,8 @@ public class QRCode implements Comparable {
      * @param rawString
      * The string from scanning the QR code
      * @param location
-     * @throws NoSuchAlgorithmException
-     * From Hash class
      */
-    public QRCode(String rawString, Location location) throws NoSuchAlgorithmException {
+    public QRCode(String rawString, Location location) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
         //this.locationImage = locationImage;
@@ -55,10 +53,8 @@ public class QRCode implements Comparable {
      * This is a constructor for a QRCode object containing a location image, but no location
      * @param rawString
      * The string from scanning the QR code
-     * @throws NoSuchAlgorithmException
-     * From Hash class
      */
-    public QRCode(String rawString) throws NoSuchAlgorithmException {
+    public QRCode(String rawString) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
         //this.locationImage = locationImage;
@@ -76,7 +72,7 @@ public class QRCode implements Comparable {
      * @throws NoSuchAlgorithmException
      * From Hash class
      */
-     public QRCode(String rawString, int dummy) throws NoSuchAlgorithmException {
+     public QRCode(String rawString, int dummy) {
         // Ignore the dummy parameter, its just so we dont get an error, and the javadoc isn't dangling
 
         //this.locationImage = null or something, idk;

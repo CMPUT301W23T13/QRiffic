@@ -151,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.qr_dex:
                 changeFragment(new FragmentQRDex());
                 break;
+            case R.id.scan_QR:
+                changeFragment(new FragmentTempAddQr()); // TEMP FRAGMENT!
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
