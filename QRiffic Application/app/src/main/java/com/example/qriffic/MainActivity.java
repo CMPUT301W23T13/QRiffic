@@ -11,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qriffic.databinding.ActivityMainBinding;
+import com.google.firebase.FirebaseApp;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,15 +30,28 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private String uniqueID;
+    private DBAccessor dba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this); // initialize firebase
+        dba = new DBAccessor();
         //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         String uid = fetchUniqueID();
         Bundle bundle = new Bundle();
+
+        //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
+        dba.setPlayer(
+                new PlayerProfile("testName", "testUniqueID",
+                        new ContactInfo("testCountry", "testCity", "testPhone", "testEmail")
+                , 0, 0, new ArrayList<>())
+        );
+
+
+
         if (uid == null) {
             this.uniqueID = generateUniqueID();
             bundle.putString("secretID", uniqueID);
