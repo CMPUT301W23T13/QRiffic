@@ -29,6 +29,7 @@ public class FragmentQRDex extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
+
     }
 
 
