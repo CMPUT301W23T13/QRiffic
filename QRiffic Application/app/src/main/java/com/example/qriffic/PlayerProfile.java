@@ -133,9 +133,4 @@ public class PlayerProfile {
         highScore = Math.max(highScore, score);
     }
 
-    // TEMPORARY TEST FUNCTION
-    public void setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
-    }
-
 }
