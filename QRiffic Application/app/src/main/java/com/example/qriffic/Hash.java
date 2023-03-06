@@ -16,15 +16,22 @@ public class Hash {
      * @param preHash
      * The input string to be hashed
      * @throws NoSuchAlgorithmException
+     * From MessageDigest.getInstance()
      */
-    public Hash(String preHash) throws NoSuchAlgorithmException {
+    public Hash(String preHash) {
 
         // REFERENCE:
         // https://www.geeksforgeeks.org/sha-256-hash-in-java/
         // Article Contributed By: bilal-hungund
 
         // Create message digest
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        }
+        catch (NoSuchAlgorithmException e) {
+            System.out.println("No such algorithm");
+        }
 
         // Calculate message digest of preHash
         byte[] byteArray = md.digest(preHash.getBytes(StandardCharsets.UTF_8));
@@ -40,6 +47,7 @@ public class Hash {
             hexString.insert(0, '0');
         }
         hash = hexString.toString();
+
     }
 
     /**

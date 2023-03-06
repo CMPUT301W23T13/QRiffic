@@ -156,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.map:
                 changeFragment(new FragmentMap());
                 break;
+            case R.id.scan_QR:
+                changeFragment(new FragmentTempAddQr()); // TEMP FRAGMENT!
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
