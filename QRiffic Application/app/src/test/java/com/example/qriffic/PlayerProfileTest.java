@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 /**
  * Test suite for PlayerProfile class
@@ -18,7 +19,7 @@ public class PlayerProfileTest {
 
         return new PlayerProfile("username", "uuid",
                 new ContactInfo("Canada", "Edmonton", "999.999.9999",
-                        "username@outlook.com"));
+                        "username@outlook.com"), 0, 0, new ArrayList<QRCode>());
     }
 
     @Test
