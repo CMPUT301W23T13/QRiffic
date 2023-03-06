@@ -20,9 +20,11 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -150,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.qr_dex:
                 changeFragment(new FragmentQRDex());
+                break;
+            case R.id.map:
+                changeFragment(new FragmentMap());
                 break;
         }
         return super.onOptionsItemSelected(item);
