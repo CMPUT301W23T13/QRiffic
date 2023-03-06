@@ -12,6 +12,7 @@ public class QRCode implements Comparable {
     private Location location;
     private String idHash;
     private String name;
+    private String username;
 
     /**
      * This defines how we compare QRCodes (last 6 digits of the hash)
@@ -39,7 +40,7 @@ public class QRCode implements Comparable {
      * The string from scanning the QR code
      * @param location
      */
-    public QRCode(String rawString, Location location) {
+    public QRCode(String rawString, Location location, String username) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
         //this.locationImage = locationImage;
@@ -47,6 +48,7 @@ public class QRCode implements Comparable {
         this.name = "UNNAMED MONSTER";
         this.idHash = new Hash(rawString).getHash();
         this.score = 0; // should be calculated here, new class?
+        this.username = username;
     }
 
     /**
@@ -54,7 +56,7 @@ public class QRCode implements Comparable {
      * @param rawString
      * The string from scanning the QR code
      */
-    public QRCode(String rawString) {
+    public QRCode(String rawString, String username) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
         //this.locationImage = locationImage;
@@ -62,6 +64,7 @@ public class QRCode implements Comparable {
         this.name = "UNNAMED MONSTER";
         this.idHash = new Hash(rawString).getHash();
         this.score = 0; // should be calculated here, new class?
+        this.username = username;
     }
 
 
@@ -69,17 +72,16 @@ public class QRCode implements Comparable {
      * This is a constructor for a QRCode object containing no location image, nor location
      * @param rawString
      * The string from scanning the QR code
-     * @throws NoSuchAlgorithmException
-     * From Hash class
      */
-     public QRCode(String rawString, int dummy) {
+     public QRCode(String rawString, int dummy, String username) {
         // Ignore the dummy parameter, its just so we dont get an error, and the javadoc isn't dangling
 
         //this.locationImage = null or something, idk;
         this.location = new Location("", "");
         this.name = "UNNAMED MONSTER";
         this.idHash = new Hash(rawString).getHash();
-        this.score = 0; // should be calculated here, new class?
+        this.score = 0;
+        this.username = username;
      }
 
     /**
@@ -116,5 +118,14 @@ public class QRCode implements Comparable {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * This method returns the username of a QRCode object
+     * @return
+     * The username as a String
+     */
+    public String getUsername() {
+        return username;
     }
 }
