@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -98,8 +101,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     GoogleMap map;
     MapView mapView;
 
-    //
-//
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -110,19 +111,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         //return view
         return view;
-
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        SupportMapFragment mapFragment =
-//                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-//        if (mapFragment != null) {
-//            mapFragment.getMapAsync(callback);
-//
-//        }
         mapView = view.findViewById(R.id.mapView);
         if (mapView != null) {
             mapView.onCreate(null);
@@ -131,16 +124,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-    //    @SuppressLint("MissingPermission")
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        //ad
-
-
         //add zoom control
         map.getUiSettings().setZoomControlsEnabled(true);
         //add compass
@@ -151,8 +140,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         map.setOnMyLocationClickListener(this);
         //enable my location
         if (ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
@@ -167,10 +154,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
 
         //add marker and move camera
+        // Create a list of LatLng objects for the markers
+        List<LatLng> markerLatLngList = new ArrayList<>();
+        markerLatLngList.add(new LatLng(37.7749, -122.4194)); // San Francisco
+        markerLatLngList.add(new LatLng(40.7128, -74.0060)); // New York City
+        markerLatLngList.add(new LatLng(51.5074, -0.1278)); // London
+        markerLatLngList.add(new LatLng(35.6895, 139.6917)); // Tokyo
 
-
-
-        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        // Add a marker for each LatLng using a loop
+        for (LatLng latLng : markerLatLngList) {
+            map.addMarker(new MarkerOptions().position(latLng));
+        }
         CameraUpdateFactory.newLatLng(new LatLng(0, 0));
         CameraUpdateFactory.zoomTo(15);
     }
@@ -182,8 +176,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onMyLocationClick(@NonNull android.location.Location location) {
-//        Toast.makeText(this, "Current location:\n" + location, LENGTH_LONG)
-//                .show();
+        Toast.makeText(getContext(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
 
     }
 
