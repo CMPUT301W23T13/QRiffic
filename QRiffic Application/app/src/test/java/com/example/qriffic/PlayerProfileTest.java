@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 /**
  * Test suite for PlayerProfile class
@@ -18,7 +19,7 @@ public class PlayerProfileTest {
 
         return new PlayerProfile("username", "uuid",
                 new ContactInfo("Canada", "Edmonton", "999.999.9999",
-                        "username@outlook.com"));
+                        "username@outlook.com"), 0, 0, new ArrayList<QRCode>());
     }
 
     @Test
@@ -29,8 +30,8 @@ public class PlayerProfileTest {
         assertEquals("username", mockPlayerProfile.getUsername());
         assertNotEquals("player name", mockPlayerProfile.getUsername());
 
-        assertEquals("uuid", mockPlayerProfile.getUuid());
-        assertNotEquals("uuid2", mockPlayerProfile.getUuid());
+        assertEquals("uuid", mockPlayerProfile.getUniqueID());
+        assertNotEquals("uuid2", mockPlayerProfile.getUniqueID());
 
         assertEquals("Canada", mockPlayerProfile.getContactInfo().getCountry());
         assertEquals("Edmonton", mockPlayerProfile.getContactInfo().getCity());

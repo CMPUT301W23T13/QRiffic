@@ -8,27 +8,41 @@ import java.util.ArrayList;
 public class PlayerProfile {
 
     private String username;
-    private String uuid;
+    private String uniqueID;
     private ContactInfo contactInfo;
     private int highScore;
     private int lowScore;
     private ArrayList<QRCode> captured;
 
     /**
-     * This is the constructor for a PlayerProfile object
+     * This is an empty constructor for a PlayerProfile object
+     * (Required for Firestore Custom Object Translation)
+     */
+    public PlayerProfile() {
+    }
+
+    /**
+     * This is a constructor for a PlayerProfile object
      * @param username
      * The player's ID info as a Player object
+     * @param uniqueID
      * @param contactInfo
      * The player's contact info as a ContactInfo object
+     * @param highScore
+     * The player's high score as an integer
+     * @param lowScore
+     * The player's low score as an integer
+     * @param captured
+     * The player's captured QRCodes as an ArrayList of QRCode objects
      */
-    public PlayerProfile(String username, String uuid, ContactInfo contactInfo) {
+    public PlayerProfile(String username, String uniqueID, ContactInfo contactInfo, int highScore, int lowScore, ArrayList<QRCode> captured) {
 
         this.username = username;
-        this.uuid = uuid;
+        this.uniqueID = uniqueID;
         this.contactInfo = contactInfo;
-        highScore = 0;
-        lowScore = 0;
-        captured = new ArrayList<QRCode>();
+        this.highScore = highScore;
+        this.lowScore = lowScore;
+        this.captured = captured;
     }
 
     /**
@@ -41,12 +55,12 @@ public class PlayerProfile {
     }
 
     /**
-     * This method returns the uuid of a PlayerProfile object
+     * This method returns the uniqueID of a PlayerProfile object
      * @return
-     * The player's uuid as a string
+     * The player's uniqueID as a string
      */
-    public String getUuid() {
-        return uuid;
+    public String getUniqueID() {
+        return uniqueID;
     }
 
     /**
@@ -94,6 +108,7 @@ public class PlayerProfile {
 
         // do we allow players to add identical QRCodes? Do we cap the amount of QR codes you can collect?
         captured.add(qrCode);
+        updateHighScore(qrCode.getScore());
     }
 
     /**
@@ -108,4 +123,19 @@ public class PlayerProfile {
         }
         captured.remove(qrCode);
     }
+
+    /**
+     * This method updates the high score of a PlayerProfile object
+     * @param score
+     * The score to be compared to the current high score
+     */
+    public void updateHighScore(int score) {
+        highScore = Math.max(highScore, score);
+    }
+
+    // TEMPORARY TEST FUNCTION
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
+    }
+
 }
