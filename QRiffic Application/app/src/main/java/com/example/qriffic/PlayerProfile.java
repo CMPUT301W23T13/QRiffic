@@ -133,4 +133,13 @@ public class PlayerProfile {
         highScore = Math.max(highScore, score);
     }
 
+    /**
+     * This method updates the low score of a PlayerProfile object
+     * @param score
+     * The score to be compared to the current low score
+     */
+    public void updateLowScore(int score) {
+        lowScore = Math.min(lowScore, score);
+    }
+
 }
