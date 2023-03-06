@@ -43,14 +43,14 @@ public class MainActivity extends AppCompatActivity {
         String uid = fetchUniqueID();
         Bundle bundle = new Bundle();
 
+
         //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
         dba.setPlayer(
                 new PlayerProfile("testName", "testUniqueID",
                         new ContactInfo("testCountry", "testCity", "testPhone", "testEmail")
                 , 0, 0, new ArrayList<>())
         );
-
-
+        //END TEMPORARY TEST CODE BLOCK
 
         if (uid == null) {
             this.uniqueID = generateUniqueID();

@@ -28,6 +28,12 @@ public class QRCode implements Comparable {
     }
 
     /**
+     * This is an empty constructor for a QRCode object
+     * (Required for Firestore Custom Object Translation)
+     */
+    public QRCode() {}
+
+    /**
      * This is a constructor for a QRCode object containing a location and location image
      * @param rawString
      * The string from scanning the QR code
