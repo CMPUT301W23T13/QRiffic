@@ -2,8 +2,14 @@ package com.example.qriffic;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest.permission;
+
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +20,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Objects;
 
 
 // DIFFERENT APPROACH TO IMPLEMENT MAPS
@@ -84,23 +89,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 //}
 
 
+public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
-
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 
 
     GoogleMap map;
     MapView mapView;
-//
+
+    //
 //
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_maps, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
 
         //return view
@@ -126,14 +131,43 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    //    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        UiSettings uiSettings;
+
+        //ad
+
+
+        //add zoom control
         map.getUiSettings().setZoomControlsEnabled(true);
-        //add a marker for current location
+        //add compass
+        map.getUiSettings().setCompassEnabled(true);
+        //add my location button
+//        map.getUiSettings().setMyLocationButtonEnabled(true);
+        map.setOnMyLocationButtonClickListener(this);
+        map.setOnMyLocationClickListener(this);
+        //enable my location
+        if (ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(getActivity(), new String[]{permission.ACCESS_FINE_LOCATION}, 1);
+
+            return;
+        }
+        map.setMyLocationEnabled(true);
+
+
+
+        //add marker and move camera
+
 
 
         map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
@@ -143,4 +177,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 
 
+
+
+
+    @Override
+    public void onMyLocationClick(@NonNull android.location.Location location) {
+//        Toast.makeText(this, "Current location:\n" + location, LENGTH_LONG)
+//                .show();
+
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
 }
