@@ -15,6 +15,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -130,6 +131,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         MapsInitializer.initialize(getContext());
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        UiSettings uiSettings;
+        map.getUiSettings().setZoomControlsEnabled(true);
+        //add a marker for current location
+
+
         map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         CameraUpdateFactory.newLatLng(new LatLng(0, 0));
         CameraUpdateFactory.zoomTo(15);

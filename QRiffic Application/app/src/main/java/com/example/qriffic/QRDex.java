@@ -29,6 +29,7 @@ public class QRDex extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
+
     }
 
 
