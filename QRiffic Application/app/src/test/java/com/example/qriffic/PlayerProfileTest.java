@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class PlayerProfileTest {
 
     private QRCode mockQRCode() throws NoSuchAlgorithmException {
-        return new QRCode("abcdef");
+        return new QRCode("abcdef", "Ash");
     }
 
     private PlayerProfile mockPlayerProfile() throws NoSuchAlgorithmException {
@@ -68,7 +68,7 @@ public class PlayerProfileTest {
         assertNotEquals(0, mockPlayerProfile.getCaptured().size());
 
         assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
-        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123")));
+        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", "Ash")));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class PlayerProfileTest {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();
-        QRCode mockQRCode2 = new QRCode("123");
+        QRCode mockQRCode2 = new QRCode("123", "Brock");
 
         mockPlayerProfile.addQRCode(mockQRCode);
 
