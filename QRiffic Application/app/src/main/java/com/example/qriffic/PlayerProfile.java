@@ -155,4 +155,9 @@ public class PlayerProfile {
         lowScore = Math.min(lowScore, score);
     }
 
+    // TEMPORARY TEST FUNCTION (Normally we might not need this since we arent allowing the user to edit their info)
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

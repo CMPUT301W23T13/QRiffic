@@ -50,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
         dba.setPlayer(
                 new PlayerProfile("testName", "testUniqueID", "testEmail", "testPhoneNum", 0, 0, new ArrayList<>())
         );
-        dba.getPlayer("testName");
+        PlayerProfile player = dba.getPlayer("testName");
+        player.setEmail("testEmail2");
+        dba.setPlayer(player);
         //END TEMPORARY TEST CODE BLOCK
 
         if (uid == null) {
