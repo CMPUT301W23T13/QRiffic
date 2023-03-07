@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class PlayerProfileTest {
 
     private QRCode mockQRCode() throws NoSuchAlgorithmException {
-        return new QRCode("abcdef", "Ash");
+        return new QRCode("abcdef", null, null);
     }
 
     private PlayerProfile mockPlayerProfile() throws NoSuchAlgorithmException {
