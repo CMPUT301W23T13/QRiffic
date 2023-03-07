@@ -9,7 +9,8 @@ public class PlayerProfile {
 
     private String username;
     private String uniqueID;
-    private ContactInfo contactInfo;
+    private String email;
+    private String phoneNum;
     private int highScore;
     private int lowScore;
     private ArrayList<QRCode> captured;
@@ -24,10 +25,13 @@ public class PlayerProfile {
     /**
      * This is a constructor for a PlayerProfile object
      * @param username
-     * The player's ID info as a Player object
+     * The player's username as a String
      * @param uniqueID
-     * @param contactInfo
-     * The player's contact info as a ContactInfo object
+     * The player's unique ID as a string
+     * @param email
+     * The player's email address as a string
+     * @param phoneNum
+     * The player's phone number as a string
      * @param highScore
      * The player's high score as an integer
      * @param lowScore
@@ -35,11 +39,11 @@ public class PlayerProfile {
      * @param captured
      * The player's captured QRCodes as an ArrayList of QRCode objects
      */
-    public PlayerProfile(String username, String uniqueID, ContactInfo contactInfo, int highScore, int lowScore, ArrayList<QRCode> captured) {
-
+    public PlayerProfile(String username, String uniqueID, String email, String phoneNum, int highScore, int lowScore, ArrayList<QRCode> captured) {
         this.username = username;
         this.uniqueID = uniqueID;
-        this.contactInfo = contactInfo;
+        this.email = email;
+        this.phoneNum = phoneNum;
         this.highScore = highScore;
         this.lowScore = lowScore;
         this.captured = captured;
@@ -64,12 +68,21 @@ public class PlayerProfile {
     }
 
     /**
-     * This method returns the contact info of a PlayerProfile object
+     * This method returns the email address of a PlayerProfile object
      * @return
-     * The contact info as a ContactInfo object
+     * The email address as a string
      */
-    public ContactInfo getContactInfo() {
-        return contactInfo;
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * This method returns the phone number of a PlayerProfile object
+     * @return
+     * The phone number as a string
+     */
+    public String getPhoneNum() {
+        return phoneNum;
     }
 
     /**

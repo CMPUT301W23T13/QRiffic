@@ -3,7 +3,7 @@ package com.example.qriffic;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.security.NoSuchAlgorithmException;
+
 
 /**
  * Test suite for Hash class

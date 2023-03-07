@@ -14,7 +14,7 @@ public class DBAccessor {
     private CollectionReference playersColRef;
     private CollectionReference qrColRef;
     private CollectionReference mapColRef;
-    private CollectionReference testColRef;
+    private CollectionReference testColRef; // Temporary test collection
 
     /**
      * This is the constructor for the DBAccessor class
@@ -24,7 +24,7 @@ public class DBAccessor {
         this.playersColRef = db.collection("Players");
         this.qrColRef = db.collection("QRs");
         this.mapColRef = db.collection("Map");
-        this.testColRef = db.collection("TestCol");
+        this.testColRef = db.collection("TestCol"); // Temporary test collection
     }
 
     /**
@@ -45,7 +45,7 @@ public class DBAccessor {
      * The PlayerProfile object
      */
     public PlayerProfile getPlayer(String name) {
-        final PlayerProfile[] player = {new PlayerProfile()};
+        PlayerProfile[] player = {new PlayerProfile()};
         playersColRef.document(name).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

@@ -48,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
         dba.setPlayer(
-                new PlayerProfile("testName", "testUniqueID",
-                        new ContactInfo("testCountry", "testCity", "testPhone", "testEmail")
-                , 0, 0, new ArrayList<>())
+                new PlayerProfile("testName", "testUniqueID", "testEmail", "testPhoneNum", 0, 0, new ArrayList<>())
         );
+        dba.getPlayer("testName");
         //END TEMPORARY TEST CODE BLOCK
 
         if (uid == null) {

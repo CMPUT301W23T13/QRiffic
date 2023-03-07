@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.security.NoSuchAlgorithmException;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

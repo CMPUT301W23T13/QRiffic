@@ -3,7 +3,7 @@ package com.example.qriffic;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 
 /**
@@ -17,9 +17,7 @@ public class PlayerProfileTest {
 
     private PlayerProfile mockPlayerProfile() {
 
-        return new PlayerProfile("username", "uuid",
-                new ContactInfo("Canada", "Edmonton", "999.999.9999",
-                        "username@outlook.com"), 0, 0, new ArrayList<QRCode>());
+        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999", 0, 0, new ArrayList<QRCode>());
     }
 
     @Test
@@ -33,14 +31,10 @@ public class PlayerProfileTest {
         assertEquals("uuid", mockPlayerProfile.getUniqueID());
         assertNotEquals("uuid2", mockPlayerProfile.getUniqueID());
 
-        assertEquals("Canada", mockPlayerProfile.getContactInfo().getCountry());
-        assertEquals("Edmonton", mockPlayerProfile.getContactInfo().getCity());
-        assertEquals("999.999.9999", mockPlayerProfile.getContactInfo().getPhone());
-        assertEquals("username@outlook.com", mockPlayerProfile.getContactInfo().getEmail());
-        assertNotEquals("USA", mockPlayerProfile.getContactInfo().getCountry());
-        assertNotEquals("New York", mockPlayerProfile.getContactInfo().getCity());
-        assertNotEquals("123.999.9999", mockPlayerProfile.getContactInfo().getPhone());
-        assertNotEquals("player@outlook.com", mockPlayerProfile.getContactInfo().getEmail());
+        assertEquals("999.999.9999", mockPlayerProfile.getPhoneNum());
+        assertEquals("username@outlook.com", mockPlayerProfile.getEmail());
+        assertNotEquals("123.999.9999", mockPlayerProfile.getPhoneNum());
+        assertNotEquals("player@outlook.com", mockPlayerProfile.getEmail());
 
         // CHANGE THIS WHEN WE HAVE SCORE CALCULATOR
         assertEquals(0, mockPlayerProfile.getHighScore());

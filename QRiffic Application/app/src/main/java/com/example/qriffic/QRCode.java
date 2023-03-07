@@ -1,6 +1,6 @@
 package com.example.qriffic;
 
-import java.security.NoSuchAlgorithmException;
+
 
 /**
  * This class defines a QRCode object
@@ -46,12 +46,12 @@ public class QRCode implements Comparable {
     public QRCode(String rawString, Location location, String username) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
+        this.idHash = new Hash(rawString).getHash();
         //this.locationImage = locationImage;
         this.location = location;
-        this.name = "UNNAMED MONSTER";
-        this.idHash = new Hash(rawString).getHash();
-        this.score = 0; // should be calculated here, new class?
         this.username = username;
+        this.name = "UNNAMED MONSTER"; // This needs to be replaced with an actual name calculating function
+        this.score = 0; // This needs to be replaced with an actual score calculating function
     }
 
     /**

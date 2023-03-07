@@ -3,7 +3,7 @@ package com.example.qriffic;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 
 /**
  * This class defines the hash of some input
@@ -26,9 +26,8 @@ public class Hash {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA-256");
-        }
-        catch (NoSuchAlgorithmException e) {
-            System.out.println("No such algorithm");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Calculate message digest of preHash
