@@ -10,13 +10,13 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashTest {
 
-    private Hash mockHash() throws NoSuchAlgorithmException {
+    private Hash mockHash() {
 
         return new Hash("a");
     }
 
     @Test
-    void testGetters() throws NoSuchAlgorithmException {
+    void testGetters() {
 
         Hash mockHash = mockHash();
 

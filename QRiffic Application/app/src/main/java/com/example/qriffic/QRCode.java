@@ -42,8 +42,6 @@ public class QRCode implements Comparable {
      * The location of the QR code as a Location object
      * @param username
      * The username of the player who scanned the QR code
-     * @throws NoSuchAlgorithmException
-     * From Hash class
      */
     public QRCode(String rawString, Location location, String username) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT

@@ -11,11 +11,11 @@ import java.util.ArrayList;
  */
 public class PlayerProfileTest {
 
-    private QRCode mockQRCode() throws NoSuchAlgorithmException {
+    private QRCode mockQRCode() {
         return new QRCode("abcdef", null, null);
     }
 
-    private PlayerProfile mockPlayerProfile() throws NoSuchAlgorithmException {
+    private PlayerProfile mockPlayerProfile() {
 
         return new PlayerProfile("username", "uuid",
                 new ContactInfo("Canada", "Edmonton", "999.999.9999",
@@ -23,7 +23,7 @@ public class PlayerProfileTest {
     }
 
     @Test
-    void testGetters() throws NoSuchAlgorithmException {
+    void testGetters() {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
 
@@ -54,7 +54,7 @@ public class PlayerProfileTest {
     }
 
     @Test
-    void testAddQRCode() throws NoSuchAlgorithmException {
+    void testAddQRCode() {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();
@@ -72,7 +72,7 @@ public class PlayerProfileTest {
     }
 
     @Test
-    void testDeleteQRCode() throws NoSuchAlgorithmException {
+    void testDeleteQRCode() {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();

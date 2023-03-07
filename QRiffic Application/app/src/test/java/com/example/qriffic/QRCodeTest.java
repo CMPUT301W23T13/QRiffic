@@ -10,14 +10,14 @@ import java.security.NoSuchAlgorithmException;
  */
 public class QRCodeTest {
 
-    private QRCode mockQRCode() throws NoSuchAlgorithmException {
+    private QRCode mockQRCode() {
 
         return new QRCode("uyhpOIUYHPDFnklmd;sajfonui893",
                 new Location("53.1234", "12.5623"), "Ash");
     }
 
     @Test
-    void testGetters() throws NoSuchAlgorithmException {
+    void testGetters() {
 
         QRCode mockQRCode = mockQRCode();
 
@@ -45,7 +45,7 @@ public class QRCodeTest {
     }
 
     @Test
-    void testCompareTo() throws NoSuchAlgorithmException {
+    void testCompareTo() {
 
         QRCode mockQRCode = mockQRCode();
 
