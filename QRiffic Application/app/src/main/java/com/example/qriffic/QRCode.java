@@ -45,7 +45,7 @@ public class QRCode implements Comparable {
      * @throws NoSuchAlgorithmException
      * From Hash class
      */
-    public QRCode(String rawString, Location location, String username) throws NoSuchAlgorithmException {
+    public QRCode(String rawString, Location location, String username) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
         //this.locationImage = locationImage;
@@ -55,41 +55,6 @@ public class QRCode implements Comparable {
         this.score = 0; // should be calculated here, new class?
         this.username = username;
     }
-
-    /**
-     * This is a constructor for a QRCode object containing a location image, but no location
-     * @param rawString
-     * The string from scanning the QR code
-     * @throws NoSuchAlgorithmException
-     * From Hash class
-     */
-    public QRCode(String rawString) throws NoSuchAlgorithmException {
-        // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
-
-        //this.locationImage = locationImage;
-        this.location = new Location("", "");
-        this.name = "UNNAMED MONSTER";
-        this.idHash = new Hash(rawString).getHash();
-        this.score = 0; // should be calculated here, new class?
-    }
-
-
-    /**
-     * This is a constructor for a QRCode object containing no location image, nor location
-     * @param rawString
-     * The string from scanning the QR code
-     * @throws NoSuchAlgorithmException
-     * From Hash class
-     */
-     public QRCode(String rawString, int dummy) throws NoSuchAlgorithmException {
-        // Ignore the dummy parameter, its just so we dont get an error, and the javadoc isn't dangling
-
-        //this.locationImage = null or something, idk;
-        this.location = new Location("", "");
-        this.name = "UNNAMED MONSTER";
-        this.idHash = new Hash(rawString).getHash();
-        this.score = 0; // should be calculated here, new class?
-     }
 
     /**
      * This method returns the score of a QRCode object

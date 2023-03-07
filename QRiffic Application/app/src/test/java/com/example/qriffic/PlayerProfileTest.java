@@ -68,7 +68,7 @@ public class PlayerProfileTest {
         assertNotEquals(0, mockPlayerProfile.getCaptured().size());
 
         assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
-        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", "Ash")));
+        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", null, null)));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class PlayerProfileTest {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();
-        QRCode mockQRCode2 = new QRCode("123", "Brock");
+        QRCode mockQRCode2 = new QRCode("123", null, null);
 
         mockPlayerProfile.addQRCode(mockQRCode);
 

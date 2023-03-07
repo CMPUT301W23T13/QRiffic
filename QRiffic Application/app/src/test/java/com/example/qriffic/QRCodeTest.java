@@ -49,7 +49,7 @@ public class QRCodeTest {
 
         QRCode mockQRCode = mockQRCode();
 
-        assertEquals(0, mockQRCode.compareTo(new QRCode("uyhpOIUYHPDFnklmd;sajfonui893", "Ash")));
-        assertNotEquals(0, mockQRCode.compareTo(new QRCode("ayhpOIUYHPDFnklmd;sajfonui893", "Ash")));
+        assertEquals(0, mockQRCode.compareTo(new QRCode("uyhpOIUYHPDFnklmd;sajfonui893", null, "Ash")));
+        assertNotEquals(0, mockQRCode.compareTo(new QRCode("ayhpOIUYHPDFnklmd;sajfonui893",null,  "Ash")));
     }
 }

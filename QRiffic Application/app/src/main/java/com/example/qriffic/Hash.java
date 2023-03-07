@@ -15,8 +15,6 @@ public class Hash {
      * This is the constructor for a Hash object
      * @param preHash
      * The input string to be hashed
-     * @throws NoSuchAlgorithmException
-     * From MessageDigest.getInstance()
      */
     public Hash(String preHash) {
 

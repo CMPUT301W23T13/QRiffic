@@ -93,7 +93,7 @@ public class FragmentTempAddQr extends Fragment {
                 // otherwise, display the hash value of whatever they entered
                 else {
                     QRCode tempQR;
-                    tempQR = new QRCode(qrCode.getText().toString(), "Matlock");
+                    tempQR = new QRCode(qrCode.getText().toString(), null, "Matlock");
                     String hash = tempQR.getIdHash();
                     // score and name will not be done here in final product, this is just for example
                     temp.setText("hash: " + hash +
