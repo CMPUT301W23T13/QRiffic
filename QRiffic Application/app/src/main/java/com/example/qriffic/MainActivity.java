@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         );
         PlayerProfile player = dba.getPlayer("testName");
         player.setEmail("testEmail2");
-        dba.setPlayer(player);
+//        dba.setPlayer(player);
         //END TEMPORARY TEST CODE BLOCK
 
         if (uid == null) {
