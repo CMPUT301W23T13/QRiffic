@@ -1,6 +1,9 @@
 package com.example.qriffic;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class defines a QRCode object
@@ -50,8 +53,46 @@ public class QRCode implements Comparable {
         //this.locationImage = locationImage;
         this.location = location;
         this.username = username;
-        this.name = "UNNAMED MONSTER"; // This needs to be replaced with an actual name calculating function
-        this.score = 0; // This needs to be replaced with an actual score calculating function
+
+
+        // name and score probably need their own class, this is very long
+
+        // last 6 digits of the hash
+        String last6 = this.idHash.substring(this.idHash.length()-6);
+        List<String> alphas = Arrays.asList("a", "b", "c", "d", "e", "f");
+        // name generator
+        List<String> subNames = Arrays.asList("Alpha", "Beta", "Charlie", "Delta", "Echo",
+                "Foxtrot", "Golf", "Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November",
+                "Oscar", "Papa");
+        int index = 0;
+        this.name = "";
+        for (int i=0; i<6; i++) {
+            // if the character is a letter, set multiplier to its corresponding integer value
+            if (alphas.contains(last6.charAt(i))) {
+                index = (int) last6.charAt(i) - 87;
+            }
+            // if the character is a letter, set multiplier to its corresponding integer value
+            if (alphas.contains(last6.charAt(i))) {
+                index = (int) last6.charAt(i) - 87;
+            }
+            this.name += subNames.get(index);
+        }
+
+        // score generator
+        int multiplier = 0;
+        this.score = 0;
+        for (int i=0; i<6; i++) {
+            // if the character is a letter, set multiplier to its corresponding integer value
+            if (alphas.contains(last6.charAt(i))) {
+                multiplier = (int) last6.charAt(i) - 87;
+            }
+            // if the character is a letter, set multiplier to its corresponding integer value
+            if (alphas.contains(last6.charAt(i))) {
+                multiplier = (int) last6.charAt(i) - 87;
+            }
+
+            this.score += multiplier * 2^(5-i);
+        }
     }
 
     /**
