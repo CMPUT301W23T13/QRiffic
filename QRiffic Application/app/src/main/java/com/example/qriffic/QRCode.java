@@ -59,40 +59,19 @@ public class QRCode implements Comparable {
 
         // last 6 digits of the hash
         String last6 = this.idHash.substring(this.idHash.length()-6);
-        List<String> alphas = Arrays.asList("a", "b", "c", "d", "e", "f");
+
         // name generator
+        List<String> alphas = Arrays.asList("a", "b", "c", "d", "e", "f");
         List<String> subNames = Arrays.asList("Alpha", "Beta", "Charlie", "Delta", "Echo",
                 "Foxtrot", "Golf", "Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November",
                 "Oscar", "Papa");
-        int index = 0;
         this.name = "";
         for (int i=0; i<6; i++) {
-            // if the character is a letter, set multiplier to its corresponding integer value
-            if (alphas.contains(last6.charAt(i))) {
-                index = (int) last6.charAt(i) - 87;
-            }
-            // if the character is a letter, set multiplier to its corresponding integer value
-            if (alphas.contains(last6.charAt(i))) {
-                index = (int) last6.charAt(i) - 87;
-            }
-            this.name += subNames.get(index);
+            this.name += subNames.get(Integer.parseInt(last6.substring(i,i+1), 16));
         }
 
         // score generator
-        int multiplier = 0;
-        this.score = 0;
-        for (int i=0; i<6; i++) {
-            // if the character is a letter, set multiplier to its corresponding integer value
-            if (alphas.contains(last6.charAt(i))) {
-                multiplier = (int) last6.charAt(i) - 87;
-            }
-            // if the character is a letter, set multiplier to its corresponding integer value
-            if (alphas.contains(last6.charAt(i))) {
-                multiplier = (int) last6.charAt(i) - 87;
-            }
-
-            this.score += multiplier * 2^(5-i);
-        }
+        this.score = Integer.parseInt(last6, 16);
     }
 
     /**
