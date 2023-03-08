@@ -75,12 +75,6 @@ public class FragmentTempAddQr extends Fragment {
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
         TextView temp = view.findViewById(R.id.textView_temp);
 
-        // create a HashMap for each "layer" of the name of the QR code
-        // create a java List of 6 random names
-
-
-        List<String> names = Arrays.asList("a", "b", "c", "d", "e", "f",
-                "g", "h", "i", "j", "k", "l", "m", "n", "o", "p");
 
         // when the button is clicked, the contents of the qrCode EditText is displayed in the temp TextView
         addQR.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +84,7 @@ public class FragmentTempAddQr extends Fragment {
                 if (qrCode.getText().toString().isEmpty()) {
                     temp.setText("Please enter a QR code");
                 }
-                // otherwise, display the hash value of whatever they entered
+                // otherwise, QRCode object info on screen
                 else {
                     QRCode tempQR;
                     tempQR = new QRCode(qrCode.getText().toString(), null, "Matlock");
