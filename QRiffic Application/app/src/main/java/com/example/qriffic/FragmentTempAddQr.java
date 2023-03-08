@@ -90,10 +90,11 @@ public class FragmentTempAddQr extends Fragment {
                     tempQR = new QRCode(qrCode.getText().toString(), null, "Matlock");
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
-                    // score and name will not be done here in final product, this is just for example
                     temp.setText("last6hex: " + last6 +
                                 "\nname: " + tempQR.getName() +
                                 "\nscore: " + Integer.toString(tempQR.getScore()));
+                    // update Player's captured ArrayList in database
+                    // update QRCode collection in database
 
                 }
             }
