@@ -44,15 +44,32 @@ public class DBAccessor {
      * @return
      * The PlayerProfile object
      */
-    public PlayerProfile getPlayer(String name) {
-        PlayerProfile[] player = {new PlayerProfile()};
-        playersColRef.document(name).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                player[0] = documentSnapshot.toObject(PlayerProfile.class);
-            }
+    public void getPlayer(PlayerProfile player, String name) {
+        playersColRef.document(name).get().addOnSuccessListener(
+            new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    PlayerProfile fetchedPlayer = documentSnapshot.toObject(PlayerProfile.class);
+                    player.setUsername(fetchedPlayer.getUsername());
+                    player.setUniqueID(fetchedPlayer.getUniqueID());
+                    player.setEmail(fetchedPlayer.getEmail());
+                    player.setPhoneNum(fetchedPlayer.getPhoneNum());
+                    player.setHighScore(fetchedPlayer.getHighScore());
+                    player.setLowScore(fetchedPlayer.getLowScore());
+
+                    for (QRCode qrCode : fetchedPlayer.getCaptured()) {
+                        player.addQRCode(qrCode);
+                    }
+
+                    /*
+                    // For testing purposes
+                    System.out.println("Player: " + player.getUsername() + " "
+                        + player.getUniqueID() + " " + player.getEmail() + " "
+                        + player.getPhoneNum() + " " + player.getHighScore() + " "
+                        + player.getLowScore() + " " + player.getCaptured().size());
+                     */
+                }
         });
-        return player[0];
     }
 
     // setQR is a WIP
