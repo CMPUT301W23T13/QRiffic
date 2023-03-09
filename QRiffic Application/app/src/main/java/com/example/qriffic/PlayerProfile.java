@@ -7,44 +7,82 @@ import java.util.ArrayList;
  */
 public class PlayerProfile {
 
-    private Player playerId;
-    private ContactInfo contactInfo;
+    private String username;
+    private String uniqueID;
+    private String email;
+    private String phoneNum;
     private int highScore;
     private int lowScore;
     private ArrayList<QRCode> captured;
 
     /**
-     * This is the constructor for a PlayerProfile object
-     * @param playerId
-     * The player's ID info as a Player object
-     * @param contactInfo
-     * The player's contact info as a ContactInfo object
+     * This is an empty constructor for a PlayerProfile object
+     * (Required for Firestore Custom Object Translation)
      */
-    public PlayerProfile(Player playerId, ContactInfo contactInfo) {
-
-        this.playerId = playerId;
-        this.contactInfo = contactInfo;
-        highScore = 0;
-        lowScore = 0;
-        captured = new ArrayList<QRCode>();
+    public PlayerProfile() {
     }
 
     /**
-     * This method returns the player ID info of a PlayerProfile object
-     * @return
-     * The player ID info as a Player object
+     * This is a constructor for a PlayerProfile object
+     * @param username
+     * The player's username as a String
+     * @param uniqueID
+     * The player's unique ID as a string
+     * @param email
+     * The player's email address as a string
+     * @param phoneNum
+     * The player's phone number as a string
+     * @param highScore
+     * The player's high score as an integer
+     * @param lowScore
+     * The player's low score as an integer
+     * @param captured
+     * The player's captured QRCodes as an ArrayList of QRCode objects
      */
-    public Player getPlayerId() {
-        return playerId;
+    public PlayerProfile(String username, String uniqueID, String email, String phoneNum, int highScore, int lowScore, ArrayList<QRCode> captured) {
+        this.username = username;
+        this.uniqueID = uniqueID;
+        this.email = email;
+        this.phoneNum = phoneNum;
+        this.highScore = highScore;
+        this.lowScore = lowScore;
+        this.captured = captured;
     }
 
     /**
-     * This method returns the contact info of a PlayerProfile object
+     * This method returns the username of a PlayerProfile object
      * @return
-     * The contact info as a ContactInfo object
+     * The player's username as a string
      */
-    public ContactInfo getContactInfo() {
-        return contactInfo;
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * This method returns the uniqueID of a PlayerProfile object
+     * @return
+     * The player's uniqueID as a string
+     */
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    /**
+     * This method returns the email address of a PlayerProfile object
+     * @return
+     * The email address as a string
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * This method returns the phone number of a PlayerProfile object
+     * @return
+     * The phone number as a string
+     */
+    public String getPhoneNum() {
+        return phoneNum;
     }
 
     /**
@@ -83,5 +121,43 @@ public class PlayerProfile {
 
         // do we allow players to add identical QRCodes? Do we cap the amount of QR codes you can collect?
         captured.add(qrCode);
+        updateHighScore(qrCode.getScore());
     }
+
+    /**
+     * This method deletes a QRCode object from the list of captured QRCodes of a PlayerProfile object
+     * @param qrCode
+     * The QRCode object to be deleted from the ArrayList of QRCode objects
+     */
+    public void deleteQRCode(QRCode qrCode) {
+
+        if (captured.contains(qrCode) == false) {
+            throw new IllegalArgumentException();
+        }
+        captured.remove(qrCode);
+    }
+
+    /**
+     * This method updates the high score of a PlayerProfile object
+     * @param score
+     * The score to be compared to the current high score
+     */
+    public void updateHighScore(int score) {
+        highScore = Math.max(highScore, score);
+    }
+
+    /**
+     * This method updates the low score of a PlayerProfile object
+     * @param score
+     * The score to be compared to the current low score
+     */
+    public void updateLowScore(int score) {
+        lowScore = Math.min(lowScore, score);
+    }
+
+    // TEMPORARY TEST FUNCTION (Normally we might not need this since we arent allowing the user to edit their info)
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

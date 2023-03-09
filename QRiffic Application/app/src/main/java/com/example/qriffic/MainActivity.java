@@ -1,16 +1,9 @@
 package com.example.qriffic;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -18,18 +11,20 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qriffic.databinding.ActivityMainBinding;
+import com.google.firebase.FirebaseApp;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,41 +32,64 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private String uniqueID;
+    private DBAccessor dba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//
-
-        this.uniqueID = fetchUniqueID();
-
+        FirebaseApp.initializeApp(this); // initialize firebase
+        dba = new DBAccessor();
+        //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        String uid = fetchUniqueID();
+        Bundle bundle = new Bundle();
 
+
+        //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
+        dba.setPlayer(
+                new PlayerProfile("testName", "testUniqueID", "testEmail", "testPhoneNum", 0, 0, new ArrayList<>())
+        );
+        PlayerProfile player = dba.getPlayer("testName");
+        player.setEmail("testEmail2");
+//        dba.setPlayer(player);
+        //END TEMPORARY TEST CODE BLOCK
+
+        if (uid == null) {
+            this.uniqueID = generateUniqueID();
+            bundle.putString("secretID", uniqueID);
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_QRDex_to_ProfileCreate, bundle);
+            Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
+        }else{
+            this.uniqueID = uid;
+            bundle.putString("secretID", uniqueID);
+            //this is a placeholder until someone can figure out how to pass a bundle to the
+            // default screen--a splash screen solves this, but for now we have a hack
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_QRDex_to_ProfileCreate);
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_ProfileCreate_to_QRDex, bundle);
+            Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
+        }
         setSupportActionBar(binding.toolbar);
-
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     /**
-     * Fetches UniqueID from file
-     * in the case that a UniqueID has not already been generated (on first launch)
-     * this function will create a UniqueID, and save it to a file
-     * @return
-     *      uniqueID: a string representation of a UUID
+     * Deletes a uniqueID file if it exists
      */
-    private String fetchUniqueID() {
-        String uniqueID;
+    protected void deleteUniqueID(){
+        if (fetchUniqueID() != null) {
+            getApplicationContext().deleteFile("unique-id");
+        }
+    }
 
+    /**
+     * Checks if a UniqueID has already been generated
+     * @return
+     *     true if a UniqueID has already been generated (uniqueID file exists)
+     *     false otherwise
+     */
+    protected String fetchUniqueID() {
         try {
             // Try to read the uniqueID from file
             FileInputStream secretIDInputStream = getApplicationContext().openFileInput("unique-id");
@@ -82,20 +100,29 @@ public class MainActivity extends AppCompatActivity {
                 uniqueID += (char) uniqueIDBytes[i];
             }
         } catch (Exception FileNotFoundException) {
-            // There is no uniqueID file,
-            // so we must generate a uniqueID and save it to a file
-            uniqueID = UUID.randomUUID().toString();
-
-            File secretIDFile = new File(getApplicationContext().getFilesDir(), "unique-id");
-            try {
-                secretIDFile.createNewFile();
-                FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
-                secretIDOutputStream.write(uniqueID.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // No uniqueID file found
+            return null;
         }
+        return uniqueID;
+    }
 
+    /**
+     * Generates UniqueID and saves it to a file
+     * @return
+     *      uniqueID: a string representation of a UUID
+     */
+    protected String generateUniqueID() {
+        String uniqueID;
+        // Generate uniqueID and save to file
+        uniqueID = UUID.randomUUID().toString();
+        File secretIDFile = new File(getApplicationContext().getFilesDir(), "unique-id");
+        try {
+            secretIDFile.createNewFile();
+            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
+            secretIDOutputStream.write(uniqueID.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return uniqueID;
     }
 
@@ -114,42 +141,28 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
-
         switch(id){
             case R.id.search_users:
-                changeFragment(new SearchUser());
-
+                changeFragment(new FragmentSearchUser());
             break;
-
             case R.id.leaderboard:
-                changeFragment(new Leaderboard());
-
+                changeFragment(new FragmentLeaderboard());
             break;
-
             case R.id.action_profile:
-                changeFragment(new UserProfile());
-
+                changeFragment(new FragmentUserProfile());
                 break;
-
             case R.id.qr_dex:
-                changeFragment(new QRDex());
-
+                changeFragment(new FragmentQRDex());
                 break;
-
+            case R.id.map:
+                changeFragment(new FragmentMap());
+                break;
+            case R.id.scan_QR:
+                changeFragment(new FragmentTempAddQr()); // TEMP FRAGMENT!
+                break;
         }
-
-
         return super.onOptionsItemSelected(item);
-
     }
-
-
-
-
-
-
 
     @Override
     public boolean onSupportNavigateUp() {

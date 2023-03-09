@@ -1,6 +1,6 @@
 package com.example.qriffic;
 
-import java.security.NoSuchAlgorithmException;
+
 
 /**
  * This class defines a QRCode object
@@ -8,14 +8,14 @@ import java.security.NoSuchAlgorithmException;
 public class QRCode implements Comparable {
 
     private int score;
-    //private LocationImage locationImage
+//    private LocationImage locationImage
     private Location location;
-    private String rawString;
-    private Hash idHash;
+    private String idHash;
     private String name;
+    private String username;
 
     /**
-     * This defines how we compare QRCodes (all that matters is the scanned QR code raw string)
+     * This defines how we compare QRCodes (last 6 digits of the hash)
      * @param o
      * The object to be compared.
      * @return
@@ -24,64 +24,35 @@ public class QRCode implements Comparable {
     @Override
     public int compareTo(Object o) {
         QRCode qrCode = (QRCode) o;
-        return this.rawString.compareTo(qrCode.getRawString());
+        return this.idHash.substring(idHash.length()-6)
+                .compareTo(qrCode.idHash.substring(qrCode.idHash.length()-6));
     }
 
     /**
-     * This is a constructor for a QRCode object containing a location and location image
+     * This is an empty constructor for a QRCode object
+     * (Required for Firestore Custom Object Translation)
+     */
+    public QRCode() {}
+
+    /**
+     * This is a constructor for a QRCode object
      * @param rawString
      * The string from scanning the QR code
      * @param location
-     * @throws NoSuchAlgorithmException
-     * From Hash class
+     * The location of the QR code as a Location object
+     * @param username
+     * The username of the player who scanned the QR code
      */
-    public QRCode(String rawString, Location location) throws NoSuchAlgorithmException {
+    public QRCode(String rawString, Location location, String username) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
+        this.idHash = new Hash(rawString).getHash();
         //this.locationImage = locationImage;
         this.location = location;
-        this.name = "UNNAMED MONSTER";
-        this.rawString = rawString;
-        this.idHash = new Hash(rawString);
-        this.score = 0; // should be calculated here, new class?
+        this.username = username;
+        this.name = "UNNAMED MONSTER"; // This needs to be replaced with an actual name calculating function
+        this.score = 0; // This needs to be replaced with an actual score calculating function
     }
-
-    /**
-     * This is a constructor for a QRCode object containing a location image, but no location
-     * @param rawString
-     * The string from scanning the QR code
-     * @throws NoSuchAlgorithmException
-     * From Hash class
-     */
-    public QRCode(String rawString) throws NoSuchAlgorithmException {
-        // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
-
-        //this.locationImage = locationImage;
-        this.location = new Location("", "");
-        this.name = "UNNAMED MONSTER";
-        this.rawString = rawString;
-        this.idHash = new Hash(rawString);
-        this.score = 0; // should be calculated here, new class?
-    }
-
-
-    /**
-     * This is a constructor for a QRCode object containing no location image, nor location
-     * @param rawString
-     * The string from scanning the QR code
-     * @throws NoSuchAlgorithmException
-     * From Hash class
-     */
-     public QRCode(String rawString, int dummy) throws NoSuchAlgorithmException {
-        // Ignore the dummy parameter, its just so we dont get an error, and the javadoc isn't dangling
-
-        //this.locationImage = null or something, idk;
-        this.location = new Location("", "");
-        this.name = "UNNAMED MONSTER";
-        this.rawString = rawString;
-        this.idHash = new Hash(rawString);
-        this.score = 0; // should be calculated here, new class?
-     }
 
     /**
      * This method returns the score of a QRCode object
@@ -102,21 +73,12 @@ public class QRCode implements Comparable {
     }
 
     /**
-     * This method returns the raw QR string of a QRCode object
-     * @return
-     * The QR code string as a string
-     */
-    public String getRawString() {
-        return rawString;
-    }
-
-    /**
      * This method returns the ID hash of a QRCode object
      * @return
      * The ID hash as an string
      */
     public String getIdHash() {
-        return idHash.getHash();
+        return idHash;
     }
 
     /**
@@ -126,5 +88,14 @@ public class QRCode implements Comparable {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * This method returns the username of a QRCode object
+     * @return
+     * The username as a String
+     */
+    public String getUsername() {
+        return username;
     }
 }

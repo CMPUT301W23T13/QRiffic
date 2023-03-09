@@ -3,20 +3,20 @@ package com.example.qriffic;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.security.NoSuchAlgorithmException;
+
 
 /**
  * Test suite for Hash class
  */
 public class HashTest {
 
-    private Hash mockHash() throws NoSuchAlgorithmException {
+    private Hash mockHash() {
 
         return new Hash("a");
     }
 
     @Test
-    void testGetters() throws NoSuchAlgorithmException {
+    void testGetters() {
 
         Hash mockHash = mockHash();
 

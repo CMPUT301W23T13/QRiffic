@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchUser#newInstance} factory method to
+ * Use the {@link FragmentUserProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchUser extends Fragment {
+public class FragmentUserProfile extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class SearchUser extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SearchUser() {
+    public FragmentUserProfile() {
         // Required empty public constructor
     }
 
@@ -34,11 +34,11 @@ public class SearchUser extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchUser.
+     * @return A new instance of fragment UserProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchUser newInstance(String param1, String param2) {
-        SearchUser fragment = new SearchUser();
+    public static FragmentUserProfile newInstance(String param1, String param2) {
+        FragmentUserProfile fragment = new FragmentUserProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +59,6 @@ public class SearchUser extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_user, container, false);
+        return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 }
