@@ -39,7 +39,8 @@ public class PlayerProfile {
      * @param captured
      * The player's captured QRCodes as an ArrayList of QRCode objects
      */
-    public PlayerProfile(String username, String uniqueID, String email, String phoneNum, int highScore, int lowScore, ArrayList<QRCode> captured) {
+    public PlayerProfile(String username, String uniqueID, String email, String phoneNum,
+                         int highScore, int lowScore, ArrayList<QRCode> captured) {
         this.username = username;
         this.uniqueID = uniqueID;
         this.email = email;
@@ -59,12 +60,30 @@ public class PlayerProfile {
     }
 
     /**
+     * This method sets the username of a PlayerProfile object
+     * @param username
+     * The player's username as a string
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
      * This method returns the uniqueID of a PlayerProfile object
      * @return
      * The player's uniqueID as a string
      */
     public String getUniqueID() {
         return uniqueID;
+    }
+
+    /**
+     * This method sets the uniqueID of a PlayerProfile object
+     * @param uniqueID
+     * The player's uniqueID as a string
+     */
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 
     /**
@@ -77,12 +96,30 @@ public class PlayerProfile {
     }
 
     /**
+     * This method sets the email address of a PlayerProfile object
+     * @param email
+     * The email address as a string
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
      * This method returns the phone number of a PlayerProfile object
      * @return
      * The phone number as a string
      */
     public String getPhoneNum() {
         return phoneNum;
+    }
+
+    /**
+     * This method sets the phone number of a PlayerProfile object
+     * @param phoneNum
+     * The phone number as a string
+     */
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
     /**
@@ -95,12 +132,30 @@ public class PlayerProfile {
     }
 
     /**
+     * This method sets the high score of a PlayerProfile object
+     * @param highScore
+     * The high score as an integer
+     */
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    /**
      * This method returns the high score of a PlayerProfile object
      * @return
      * The high score as an integer
      */
     public int getLowScore() {
         return lowScore;
+    }
+
+    /**
+     * This method sets the high score of a PlayerProfile object
+     * @param lowScore
+     * The high score as an integer
+     */
+    public void setLowScore(int lowScore) {
+        this.lowScore = lowScore;
     }
 
     /**
@@ -119,13 +174,15 @@ public class PlayerProfile {
      */
     public void addQRCode(QRCode qrCode) {
 
-        // do we allow players to add identical QRCodes? Do we cap the amount of QR codes you can collect?
+        // do we allow players to add identical QRCodes?
+        // Do we cap the amount of QR codes you can collect?
         captured.add(qrCode);
         updateHighScore(qrCode.getScore());
     }
 
     /**
-     * This method deletes a QRCode object from the list of captured QRCodes of a PlayerProfile object
+     * This method deletes a QRCode object from the list of captured QRCodes of a
+     * PlayerProfile object
      * @param qrCode
      * The QRCode object to be deleted from the ArrayList of QRCode objects
      */
@@ -153,11 +210,6 @@ public class PlayerProfile {
      */
     public void updateLowScore(int score) {
         lowScore = Math.min(lowScore, score);
-    }
-
-    // TEMPORARY TEST FUNCTION (Normally we might not need this since we arent allowing the user to edit their info)
-    public void setEmail(String email) {
-        this.email = email;
     }
 
 }
