@@ -55,19 +55,39 @@ public class QRCode implements Comparable {
         this.username = username;
 
 
-        // name and score probably need their own class, this is very long
+        // name might need its own class, this is very long
 
         // last 6 digits of the hash
         String last6 = this.idHash.substring(this.idHash.length()-6);
 
         // name generator
-        List<String> alphas = Arrays.asList("a", "b", "c", "d", "e", "f");
-        List<String> subNames = Arrays.asList("Alpha", "Beta", "Charlie", "Delta", "Echo",
-                "Foxtrot", "Golf", "Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November",
-                "Oscar", "Papa");
+        List<String> names1 = Arrays.asList("Minuscule", "Lesser", "Reticulated", "Spotted",
+                "Round", "Boxy", "Triangular", "Octagonal", "Hexagonal", "Aquatic", "Jungle",
+                "Long", "Tall", "Short", "Great", "Grand");
+        List<String> names2 = Arrays.asList(" Red", " Orange", " Yellow", " Green", " Blue",
+                " Purple", " Grey", " Black", " White", " Pink", " Aqua", " Maroon", " Mint",
+                " Navy", " Emerald", " Golden");
+        List<String> names3 = Arrays.asList(" ", " Abram's", " Idlar's", " Ritwik's", " Kunal's",
+                " Carissa's", " Luke's", " Garrett's", " Alden's", " Asian", " North American",
+                " South American", " European", " African", " Australian", " Canadian");
+        List<String> names4 = Arrays.asList(" Fa", " Fo", " Foo", " As", " Ar", " Cho", " Nu",
+                " Ti", " Lu", " Ka", " Sa", " So", " Do", " Re", " Mi", " La");
+        List<String> names5 = Arrays.asList("", "cault", "mun", "sum", "oz", "teer", "yol", "fal",
+                "ort", "ral", "ohm", "lo", "ber", "jah", "cham", "zod");
+        List<String> names6 = Arrays.asList("el", "li", "tsa", "za", "malien", "ale", "sser", "ta",
+                "shoo", "puff", "er", "tir", "gur", "nit", "sha", "mon");
+
+        List<List<String>> subNames = new ArrayList<>();
+        subNames.add(names1);
+        subNames.add(names2);
+        subNames.add(names3);
+        subNames.add(names4);
+        subNames.add(names5);
+        subNames.add(names6);
+
         this.name = "";
         for (int i=0; i<6; i++) {
-            this.name += subNames.get(Integer.parseInt(last6.substring(i,i+1), 16));
+            this.name += subNames.get(i).get(Integer.parseInt(last6.substring(i, i+1), 16));
         }
 
         // score generator
