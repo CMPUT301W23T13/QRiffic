@@ -75,12 +75,6 @@ public class FragmentTempAddQr extends Fragment {
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
         TextView temp = view.findViewById(R.id.textView_temp);
 
-        // create a HashMap for each "layer" of the name of the QR code
-        // create a java List of 6 random names
-
-
-        List<String> names = Arrays.asList("a", "b", "c", "d", "e", "f",
-                "g", "h", "i", "j", "k", "l", "m", "n", "o", "p");
 
         // when the button is clicked, the contents of the qrCode EditText is displayed in the temp TextView
         addQR.setOnClickListener(new View.OnClickListener() {
@@ -90,15 +84,17 @@ public class FragmentTempAddQr extends Fragment {
                 if (qrCode.getText().toString().isEmpty()) {
                     temp.setText("Please enter a QR code");
                 }
-                // otherwise, display the hash value of whatever they entered
+                // otherwise, QRCode object info on screen
                 else {
                     QRCode tempQR;
                     tempQR = new QRCode(qrCode.getText().toString(), null, "Matlock");
                     String hash = tempQR.getIdHash();
-                    // score and name will not be done here in final product, this is just for example
-                    temp.setText("hash: " + hash +
-                                "\nname: " + names.get(0) + names.get(1) + names.get(2) + names.get(3) + names.get(4) + names.get(5) +
-                                "\nscore: " + tempQR.getScore());
+                    String last6 = hash.substring(hash.length() - 6);
+                    temp.setText("last6hex: " + last6 +
+                                "\nname: " + tempQR.getName() +
+                                "\nscore: " + Integer.toString(tempQR.getScore()));
+                    // update Player's captured ArrayList in database
+                    // update QRCode collection in database
 
                 }
             }

@@ -44,7 +44,7 @@
         android:padding="10dp"
         android:text="TEMPORARY"
         android:textColor="@color/design_default_color_error"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
 
 
