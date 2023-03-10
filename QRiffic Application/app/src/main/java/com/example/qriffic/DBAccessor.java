@@ -1,5 +1,7 @@
 package com.example.qriffic;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,6 +47,10 @@ public class DBAccessor {
      * The PlayerProfile object
      */
     public void getPlayer(PlayerProfile player, String name) {
+        Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
+                + player.getUniqueID() + " " + player.getEmail() + " "
+                + player.getPhoneNum() + " " + player.getHighScore() + " "
+                + player.getLowScore() + " " + player.getCaptured().size());
         playersColRef.document(name).get().addOnSuccessListener(
             new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -65,11 +71,11 @@ public class DBAccessor {
 
                     /*
                     // For testing purposes
-                    System.out.println("Player: " + player.getUsername() + " "
-                        + player.getUniqueID() + " " + player.getEmail() + " "
-                        + player.getPhoneNum() + " " + player.getHighScore() + " "
-                        + player.getLowScore() + " " + player.getCaptured().size());
-                     */
+                    Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
+                            + player.getUniqueID() + " " + player.getEmail() + " "
+                            + player.getPhoneNum() + " " + player.getHighScore() + " "
+                            + player.getLowScore() + " " + player.getCaptured().size());
+//                     */
                 }
         });
     }
