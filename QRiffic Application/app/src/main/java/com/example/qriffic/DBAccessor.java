@@ -51,7 +51,6 @@ public class DBAccessor {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     PlayerProfile fetchedPlayer = documentSnapshot.toObject(PlayerProfile.class);
                     player.setUsername(fetchedPlayer.getUsername());
-                    player.setUniqueID(fetchedPlayer.getUniqueID());
                     player.setEmail(fetchedPlayer.getEmail());
                     player.setPhoneNum(fetchedPlayer.getPhoneNum());
                     player.setHighScore(fetchedPlayer.getHighScore());

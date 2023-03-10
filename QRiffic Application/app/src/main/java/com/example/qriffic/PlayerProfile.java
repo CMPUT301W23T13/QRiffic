@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class PlayerProfile {
 
     private String username;
-    private String uniqueID;
     private String email;
     private String phoneNum;
     private int highScore;
@@ -25,8 +24,6 @@ public class PlayerProfile {
     /**
      * This is a constructor for a PlayerProfile object
      * @param username
-     * The player's username as a String
-     * @param uniqueID
      * The player's unique ID as a string
      * @param email
      * The player's email address as a string
@@ -39,10 +36,9 @@ public class PlayerProfile {
      * @param captured
      * The player's captured QRCodes as an ArrayList of QRCode objects
      */
-    public PlayerProfile(String username, String uniqueID, String email, String phoneNum,
+    public PlayerProfile(String username, String email, String phoneNum,
                          int highScore, int lowScore, ArrayList<QRCode> captured) {
         this.username = username;
-        this.uniqueID = uniqueID;
         this.email = email;
         this.phoneNum = phoneNum;
         this.highScore = highScore;
@@ -66,24 +62,6 @@ public class PlayerProfile {
      */
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    /**
-     * This method returns the uniqueID of a PlayerProfile object
-     * @return
-     * The player's uniqueID as a string
-     */
-    public String getUniqueID() {
-        return uniqueID;
-    }
-
-    /**
-     * This method sets the uniqueID of a PlayerProfile object
-     * @param uniqueID
-     * The player's uniqueID as a string
-     */
-    public void setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
     }
 
     /**
