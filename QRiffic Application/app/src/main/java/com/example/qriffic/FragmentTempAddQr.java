@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -37,8 +38,6 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private TextView locationText;
     private LocationManager locationManager;
     private double currLongitude;
     private double currLatitude;
@@ -85,6 +84,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         Button addQR = view.findViewById(R.id.button_add_qr);
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
         TextView temp = view.findViewById(R.id.textView_temp);
+        Switch storeQrGeoLocation = view.findViewById(R.id.switch_store_qr_geolocation);
 
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
 
@@ -119,8 +119,14 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                 // otherwise, QRCode object info on screen
                 else {
                     QRCode tempQR;
-                    GeoLocation geoLocation = new GeoLocation(currLongitude, currLatitude);
-                    tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
+                    // if the switch is on, store the QRCode's geolocation
+                    if (storeQrGeoLocation.isChecked()) {
+                        GeoLocation geoLocation = new GeoLocation(currLongitude, currLatitude);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
+                    }else{
+                        GeoLocation geoLocation = new GeoLocation(9999, 9999);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
+                    }
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
                     temp.setText("last6hex: " + last6 +
