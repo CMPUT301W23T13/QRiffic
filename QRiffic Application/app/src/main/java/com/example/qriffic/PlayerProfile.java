@@ -14,6 +14,7 @@ public class PlayerProfile {
     private int highScore;
     private int lowScore;
     private ArrayList<QRCode> captured;
+    private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
 
     /**
      * This is an empty constructor for a PlayerProfile object
@@ -48,6 +49,15 @@ public class PlayerProfile {
         this.highScore = highScore;
         this.lowScore = lowScore;
         this.captured = captured;
+    }
+
+    public void addListener(fetchListener toAdd) {
+        listeners.add(toAdd);
+    }
+
+    public void fetched() {
+        for (fetchListener fl : listeners)
+            fl.onFetchComplete();
     }
 
     /**

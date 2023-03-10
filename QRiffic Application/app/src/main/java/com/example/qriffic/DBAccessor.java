@@ -61,6 +61,8 @@ public class DBAccessor {
                         player.addQRCode(qrCode);
                     }
 
+                    player.fetched();
+
                     /*
                     // For testing purposes
                     System.out.println("Player: " + player.getUsername() + " "
