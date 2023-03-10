@@ -20,18 +20,16 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    private String uniqueID;
+    private String playerUsername;
     private DBAccessor dba;
 
     @Override
@@ -39,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this); // initialize firebase
         dba = new DBAccessor();
-        //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
+//        deletePlayerUsername(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String uid = fetchUniqueID();
+        String fetchedUsername = fetchPlayerUsername();
         Bundle bundle = new Bundle();
 
         //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
@@ -52,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         testList.add(new QRCode("three", null, null));
 
         dba.setPlayer(
-                new PlayerProfile("testName", "testUniqueID", "testEmail",
+                new PlayerProfile("testName", "testEmail",
                     "testPhoneNum", 420, 69, testList)
         );
-        PlayerProfile fetchedPlayer = new PlayerProfile(null, null, null,
+        PlayerProfile fetchedPlayer = new PlayerProfile(null, null,
             null, 0, 0, new ArrayList<>());
         //PlayerProfile player = dba.getPlayer("testName");
         dba.getPlayer(fetchedPlayer, "testName");
@@ -63,14 +61,16 @@ public class MainActivity extends AppCompatActivity {
 //        dba.setPlayer(fetchedPlayer);
         //END TEMPORARY TEST CODE BLOCK
 
-        if (uid == null) {
-            this.uniqueID = generateUniqueID();
-            bundle.putString("secretID", uniqueID);
+
+        if (fetchedUsername == null) {
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_QRDex_to_ProfileCreate, bundle);
             Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
+            String enteredUsername = "PLACEHOLDER USERNAME"; // TODO: get username from gui input and replace this placeholder with that.
+            writeUsernameToFile(enteredUsername);
+            bundle.putString("secretID", playerUsername);
         }else{
-            this.uniqueID = uid;
-            bundle.putString("secretID", uniqueID);
+            this.playerUsername = fetchedUsername;
+            bundle.putString("secretID", playerUsername);
             //this is a placeholder until someone can figure out how to pass a bundle to the
             // default screen--a splash screen solves this, but for now we have a hack
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
@@ -83,55 +83,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Deletes a uniqueID file if it exists
+     * Deletes a playerUsername file if it exists
      */
-    protected void deleteUniqueID(){
-        if (fetchUniqueID() != null) {
-            getApplicationContext().deleteFile("unique-id");
+    protected void deletePlayerUsername(){
+        if (fetchPlayerUsername() != null) {
+            getApplicationContext().deleteFile("player-username");
         }
     }
 
     /**
-     * Checks if a UniqueID has already been generated
+     * Checks if a playerUsername has already been written to a file
      * @return
-     *     true if a UniqueID has already been generated (uniqueID file exists)
-     *     false otherwise
+     *     playerUsername if a playerUsername has already been written to a file
+     *     null otherwise
      */
-    protected String fetchUniqueID() {
+    protected String fetchPlayerUsername() {
         try {
             // Try to read the uniqueID from file
-            FileInputStream secretIDInputStream = getApplicationContext().openFileInput("unique-id");
-            byte[] uniqueIDBytes = new byte[36];
-            secretIDInputStream.read(uniqueIDBytes);
-            uniqueID = "";
-            for (int i = 0; i < 36; i++) {
-                uniqueID += (char) uniqueIDBytes[i];
+            FileInputStream UsernameInputStream = getApplicationContext().openFileInput("player-username");
+            byte[] playerUsernameBytes = new byte[36];
+            UsernameInputStream.read(playerUsernameBytes);
+            playerUsername = "";
+            int i = 0;
+            while (playerUsernameBytes[i] != 0) {
+                playerUsername += (char) playerUsernameBytes[i];
+                i++;
             }
         } catch (Exception FileNotFoundException) {
             // No uniqueID file found
             return null;
         }
-        return uniqueID;
+        return playerUsername;
     }
 
     /**
-     * Generates UniqueID and saves it to a file
-     * @return
-     *      uniqueID: a string representation of a UUID
+     * Writes the given username to a file
+     * @param username
+     *     username to be written to file
      */
-    protected String generateUniqueID() {
-        String uniqueID;
-        // Generate uniqueID and save to file
-        uniqueID = UUID.randomUUID().toString();
-        File secretIDFile = new File(getApplicationContext().getFilesDir(), "unique-id");
+    protected void writeUsernameToFile(String username) {
+        File playerUsernameFile = new File(getApplicationContext().getFilesDir(), "player-username");
         try {
-            secretIDFile.createNewFile();
-            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
-            secretIDOutputStream.write(uniqueID.getBytes());
+            playerUsernameFile.createNewFile();
+            FileOutputStream playerUsernameOutputStream = new FileOutputStream(playerUsernameFile);
+            playerUsernameOutputStream.write(username.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return uniqueID;
     }
 
     @Override
