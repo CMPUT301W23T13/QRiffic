@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.qriffic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
 
         //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
+        Log.d("TESTPRINT", "TEST BLOCK STARTED");
         ArrayList<QRCode> testList = new ArrayList<QRCode>();
         testList.add(new QRCode("one", null, null));
         testList.add(new QRCode("two", null, null));
@@ -59,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
             null, 0, 0, new ArrayList<>());
         //PlayerProfile player = dba.getPlayer("testName");
         dba.getPlayer(fetchedPlayer, "testName");
-        //fetchedPlayer.setEmail("testEmail2");
+//        fetchedPlayer.setEmail("testEmail2");
 //        dba.setPlayer(fetchedPlayer);
+        Log.d("TESTPRINT", "TEST BLOCK ENDED");
         //END TEMPORARY TEST CODE BLOCK
 
         if (uid == null) {
