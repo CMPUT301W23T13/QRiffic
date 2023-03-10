@@ -45,14 +45,22 @@ public class MainActivity extends AppCompatActivity {
         String uid = fetchUniqueID();
         Bundle bundle = new Bundle();
 
-
         //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
+        ArrayList<QRCode> testList = new ArrayList<QRCode>();
+        testList.add(new QRCode("one", null, null));
+        testList.add(new QRCode("two", null, null));
+        testList.add(new QRCode("three", null, null));
+
         dba.setPlayer(
-                new PlayerProfile("testName", "testUniqueID", "testEmail", "testPhoneNum", 0, 0, new ArrayList<>())
+                new PlayerProfile("testName", "testUniqueID", "testEmail",
+                    "testPhoneNum", 420, 69, testList)
         );
-        PlayerProfile player = dba.getPlayer("testName");
-        player.setEmail("testEmail2");
-//        dba.setPlayer(player);
+        PlayerProfile fetchedPlayer = new PlayerProfile(null, null, null,
+            null, 0, 0, new ArrayList<>());
+        //PlayerProfile player = dba.getPlayer("testName");
+        dba.getPlayer(fetchedPlayer, "testName");
+        //fetchedPlayer.setEmail("testEmail2");
+//        dba.setPlayer(fetchedPlayer);
         //END TEMPORARY TEST CODE BLOCK
 
         if (uid == null) {

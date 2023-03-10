@@ -48,6 +48,26 @@ public class PlayerProfileTest {
     }
 
     @Test
+    void testSetters() {
+        PlayerProfile mockPlayerProfile = mockPlayerProfile();
+
+        mockPlayerProfile.setUsername("testUsername");
+        assertEquals(mockPlayerProfile.getUsername(), "testUsername");
+
+        mockPlayerProfile.setEmail("testEmail");
+        assertEquals(mockPlayerProfile.getEmail(), "testEmail");
+
+        mockPlayerProfile.setPhoneNum("testPhoneNum");
+        assertEquals(mockPlayerProfile.getPhoneNum(), "testPhoneNum");
+
+        mockPlayerProfile.setHighScore(100);
+        assertEquals(mockPlayerProfile.getHighScore(), 100);
+
+        mockPlayerProfile.setLowScore(100);
+        assertEquals(mockPlayerProfile.getLowScore(), 100);
+    }
+
+    @Test
     void testAddQRCode() {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
