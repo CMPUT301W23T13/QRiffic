@@ -6,18 +6,6 @@
     app:startDestination="@id/fragmentSplash">
 
     <fragment
-        android:id="@+id/fragmentSplash"
-        android:name="com.example.qriffic.FragmentSplash"
-        android:label="FragmentSplash">
-        <action
-            android:id="@+id/action_fragmentSplash_to_QRDex"
-            app:destination="@id/QRDex" />
-        <action
-            android:id="@+id/action_fragmentSplash_to_ProfileCreate"
-            app:destination="@id/ProfileCreate" />
-    </fragment>
-
-    <fragment
         android:id="@+id/QRDex"
         android:name="com.example.qriffic.FragmentQRDex"
         android:label="@string/first_fragment_label"
@@ -57,5 +45,17 @@
         android:name="com.example.qriffic.FragmentUserProfile"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/fragmentSplash"
+        android:name="com.example.qriffic.FragmentSplash"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_fragmentSplash_to_ProfileCreate"
+            app:destination="@id/ProfileCreate" />
+        <action
+            android:id="@+id/action_fragmentSplash_to_QRDex"
+            app:destination="@id/QRDex" />
+    </fragment>
 
 </navigation>
