@@ -126,14 +126,14 @@ public class FragmentSplash extends Fragment {
         super.onResume();
         this.navController = Navigation.findNavController(getView());
 
-        //wait 5 seconds before navigating to next fragment
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        //wait 5 seconds before navigating to next fragment
+//
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
