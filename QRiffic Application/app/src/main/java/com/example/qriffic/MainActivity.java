@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.qriffic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this); // initialize firebase
         dba = new DBAccessor();
-        //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
+        deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         String uid = fetchUniqueID();
@@ -63,20 +64,26 @@ public class MainActivity extends AppCompatActivity {
 //        dba.setPlayer(fetchedPlayer);
         //END TEMPORARY TEST CODE BLOCK
 
+        //wait 5 seconds placeholder
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "5 seconds passed", Toast.LENGTH_SHORT).show();
+            }
+        }, 5000);
+        //end wait 5 seconds placeholder
+
+        //handle profile creation if necessary
         if (uid == null) {
             this.uniqueID = generateUniqueID();
             bundle.putString("secretID", uniqueID);
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_QRDex_to_ProfileCreate, bundle);
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_fragmentSplash_to_ProfileCreate, bundle);
             Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
         }else{
             this.uniqueID = uid;
             bundle.putString("secretID", uniqueID);
-            //this is a placeholder until someone can figure out how to pass a bundle to the
-            // default screen--a splash screen solves this, but for now we have a hack
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_QRDex_to_ProfileCreate);
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_ProfileCreate_to_QRDex, bundle);
+                    .navigate(R.id.action_fragmentSplash_to_QRDex, bundle);
             Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
         }
         setSupportActionBar(binding.toolbar);
