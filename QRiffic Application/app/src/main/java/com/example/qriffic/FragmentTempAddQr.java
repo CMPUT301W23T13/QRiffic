@@ -74,7 +74,6 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        checkLocationPermission();
     }
 
     @Override
@@ -91,12 +90,13 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         Switch storeQrGeoLocation = view.findViewById(R.id.switch_store_qr_geolocation);
 
         // get reference to the LocationManager
-        locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            checkLocationPermission();
-            return view;
+        locationManager = (LocationManager) requireActivity().getSystemService(getActivity().LOCATION_SERVICE);
+
+        // check if the app has permission to access the device's location
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // if not, request permission
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
 
         // when the button is clicked, the contents of the qrCode EditText is displayed in the temp TextView
@@ -112,6 +112,15 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     QRCode tempQR;
                     // if the switch is on, store the QRCode's geolocation
                     if (storeQrGeoLocation.isChecked()) {
+
+                        // get the current location
+                        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentTempAddQr.this);
+                            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            currLongitude = location.getLongitude();
+                            currLatitude = location.getLatitude();
+                        }
+
                         GeoLocation geoLocation = new GeoLocation(currLongitude, currLatitude);
                         tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     } else {
@@ -164,18 +173,5 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
     @Override
     public void onProviderDisabled(@NonNull String provider) {
         LocationListener.super.onProviderDisabled(provider);
-    }
-
-
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-    }
-
-    private void updateLocation() {
-
     }
 }
