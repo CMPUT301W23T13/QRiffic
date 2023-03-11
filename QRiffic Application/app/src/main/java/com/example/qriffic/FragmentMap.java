@@ -3,13 +3,15 @@ package com.example.qriffic;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest.permission;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,73 +25,17 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
-// DIFFERENT APPROACH TO IMPLEMENT MAPS
-//public class MapsFragment extends Fragment implements OnMapReadyCallback {
-//
-//    private GoogleMap mMap;
-//    private MapView mMapView;
-//    private View mView;
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        mView = inflater.inflate(R.layout.fragment_maps, container, false);
-//
-//        return mView;
-//    }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        mMapView = mView.findViewById(R.id.mapView);
-//        mMapView.onCreate(savedInstanceState);
-//        mMapView.onResume();
-//        mMapView.getMapAsync(this);
-//    }
-//
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//
-//        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mMapView.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        mMapView.onPause();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        mMapView.onDestroy();
-//    }
-//
-//    @Override
-//    public void onLowMemory() {
-//        super.onLowMemory();
-//        mMapView.onLowMemory();
-//    }
-//}
 
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
@@ -100,6 +46,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
     GoogleMap map;
     MapView mapView;
+    FirebaseFirestore db;
 
     @Nullable
     @Override
@@ -107,6 +54,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        //initialize db
+        db = FirebaseFirestore.getInstance();
+
+
 
 
         //return view
@@ -151,6 +103,25 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         }
         map.setMyLocationEnabled(true);
 
+        DocumentReference documentReference = db.collection("map").document("location_qr_1");
+
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value.exists() && value != null){
+                    GeoPoint geoPoint = value.getGeoPoint("location");
+
+                    String lat = String.valueOf(geoPoint.getLatitude());
+                    String lng = String.valueOf(geoPoint.getLongitude());
+                    map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lng))));
+                }
+            }
+        });
+
+
+
+
+
 
 
         //add marker and move camera
@@ -165,8 +136,22 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         for (LatLng latLng : markerLatLngList) {
             map.addMarker(new MarkerOptions().position(latLng));
         }
-        CameraUpdateFactory.newLatLng(new LatLng(0, 0));
-        CameraUpdateFactory.zoomTo(15);
+        //get current lat and long
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        //move camera to current location
+        if (location != null) {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(location.getLatitude(), location.getLongitude()), 13));
+
+            CameraUpdateFactory.newLatLng(new LatLng(0, 0));
+            CameraUpdateFactory.zoomTo(15);
+        }
+
+
+
+
     }
 
 
