@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentSplash#newInstance} factory method to

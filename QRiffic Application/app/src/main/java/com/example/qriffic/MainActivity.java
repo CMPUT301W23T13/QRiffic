@@ -69,13 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         //handle profile creation if necessary
         if (uid == null) {
-            //wait 5 seconds placeholder
-            try {
-                TimeUnit.SECONDS.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //end wait 5 seconds placeholder
             this.uniqueID = generateUniqueID();
             bundle.putString("secretID", uniqueID);
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_fragmentSplash_to_ProfileCreate, bundle);

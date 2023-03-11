@@ -26,6 +26,4 @@
     <string name="enter_phone_no">Enter phone no</string>
     <string name="enter">Enter</string>
     <string name="warning_msg">Warning: The above entered information cannot be changed once entered</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
