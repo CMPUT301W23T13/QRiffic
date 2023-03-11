@@ -1,7 +1,15 @@
 package com.example.qriffic;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,19 +17,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentTempAddQr#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentTempAddQr extends Fragment {
+public class FragmentTempAddQr extends Fragment implements LocationListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +41,9 @@ public class FragmentTempAddQr extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private LocationManager locationManager;
+    private double currLongitude;
+    private double currLatitude;
 
     public FragmentTempAddQr() {
         // Required empty public constructor
@@ -74,6 +87,16 @@ public class FragmentTempAddQr extends Fragment {
         Button addQR = view.findViewById(R.id.button_add_qr);
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
         TextView temp = view.findViewById(R.id.textView_temp);
+        Switch storeQrGeoLocation = view.findViewById(R.id.switch_store_qr_geolocation);
+
+        // get reference to the LocationManager
+        locationManager = (LocationManager) requireActivity().getSystemService(getActivity().LOCATION_SERVICE);
+
+        // check if the app has permission to access the device's location
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // if not, request permission
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
 
         // when the button is clicked, the contents of the qrCode EditText is displayed in the temp TextView
@@ -87,12 +110,31 @@ public class FragmentTempAddQr extends Fragment {
                 // otherwise, QRCode object info on screen
                 else {
                     QRCode tempQR;
-                    tempQR = new QRCode(qrCode.getText().toString(), null, "Matlock");
+                    // if the switch is on, store the QRCode's geolocation
+                    if (storeQrGeoLocation.isChecked()) {
+
+                        // get the current location
+                        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentTempAddQr.this);
+                            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            currLongitude = location.getLongitude();
+                            currLatitude = location.getLatitude();
+                        }
+
+                        GeoLocation geoLocation = new GeoLocation(currLongitude, currLatitude);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
+                    } else {
+                        GeoLocation geoLocation = new GeoLocation(9999, 9999);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
+                    }
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
-                    temp.setText("last6hex: " + last6 +
-                                "\nname: " + tempQR.getName() +
-                                "\nscore: " + Integer.toString(tempQR.getScore()));
+                    String newText = "last6hex: " + last6 +
+                            "\nname: " + tempQR.getName() +
+                            "\nscore: " + Integer.toString(tempQR.getScore()) +
+                            "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
+                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude();
+                    temp.setText(newText);
                     // update Player's captured ArrayList in database
                     // update QRCode collection in database
 
@@ -101,5 +143,36 @@ public class FragmentTempAddQr extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+        LocationListener.super.onFlushComplete(requestCode);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        LocationListener.super.onStatusChanged(provider, status, extras);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
     }
 }
