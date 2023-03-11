@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.qriffic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 
+import android.util.Log;
 import android.os.Handler;
 import android.text.Layout;
 import android.view.Menu;
