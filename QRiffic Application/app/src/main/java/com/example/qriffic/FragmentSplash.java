@@ -44,7 +44,6 @@ public class FragmentSplash extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-
      * @return A new instance of fragment FragmentSplash.
      */
     public static FragmentSplash newInstance() {
@@ -71,10 +70,70 @@ public class FragmentSplash extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Deletes a uniqueID file if it exists
+     */
+    protected void deleteUniqueID() {
+        if (fetchUniqueID() != null) {
+            getActivity().getApplicationContext().deleteFile("unique-id");
+        }
+    }
+
+    /**
+     * Checks if a UniqueID has already been generated
+     *
+     * @return true if a UniqueID has already been generated (uniqueID file exists)
+     * false otherwise
+     */
+    protected String fetchUniqueID() {
+        try {
+            // Try to read the uniqueID from file
+            FileInputStream secretIDInputStream = getActivity().getApplicationContext().openFileInput("unique-id");
+            byte[] uniqueIDBytes = new byte[36];
+            secretIDInputStream.read(uniqueIDBytes);
+            uniqueID = "";
+            for (int i = 0; i < 36; i++) {
+                uniqueID += (char) uniqueIDBytes[i];
+            }
+        } catch (Exception FileNotFoundException) {
+            // No uniqueID file found
+            return null;
+        }
+        return uniqueID;
+    }
+
+    /**
+     * Generates UniqueID and saves it to a file
+     * @return uniqueID: a string representation of a UUID
+     */
+    protected String generateUniqueID() {
+        String uniqueID;
+        // Generate uniqueID and save to file
+        uniqueID = UUID.randomUUID().toString();
+        File secretIDFile = new File(getActivity().getApplicationContext().getFilesDir(), "unique-id");
+        try {
+            secretIDFile.createNewFile();
+            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
+            secretIDOutputStream.write(uniqueID.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uniqueID;
+    }
+
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        this.navController = Navigation.findNavController(view);
+    public void onResume() {
+        super.onResume();
+        this.navController = Navigation.findNavController(getView());
+
+        //wait 5 seconds before navigating to next fragment
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
@@ -105,68 +164,13 @@ public class FragmentSplash extends Fragment {
             this.uniqueID = generateUniqueID();
             bundle.putString("secretID", uniqueID);
             this.navController.navigate(R.id.action_fragmentSplash_to_ProfileCreate, bundle);
-            //            Navigation.findNavController(getActivity(), R.id.fragmentContainerView)
-//                    .navigate(R.id.action_fragmentSplash_to_ProfileCreate, bundle);
             Toast.makeText(getActivity(), "1st visit", Toast.LENGTH_SHORT).show();
         } else {
             this.uniqueID = uid;
             bundle.putString("secretID", uniqueID);
             this.navController.navigate(R.id.action_fragmentSplash_to_QRDex, bundle);
-//            Navigation.findNavController(getActivity(), R.id.fragmentContainerView)
-//                    .navigate(R.id.action_fragmentSplash_to_QRDex, bundle);
             Toast.makeText(getActivity(), "not 1st visit", Toast.LENGTH_SHORT).show();
         }
     }
 
-    /**
-     * Deletes a uniqueID file if it exists
-     */
-    protected void deleteUniqueID(){
-        if (fetchUniqueID() != null) {
-            getActivity().getApplicationContext().deleteFile("unique-id");
-        }
-    }
-
-    /**
-     * Checks if a UniqueID has already been generated
-     * @return
-     *     true if a UniqueID has already been generated (uniqueID file exists)
-     *     false otherwise
-     */
-    protected String fetchUniqueID() {
-        try {
-            // Try to read the uniqueID from file
-            FileInputStream secretIDInputStream = getActivity().getApplicationContext().openFileInput("unique-id");
-            byte[] uniqueIDBytes = new byte[36];
-            secretIDInputStream.read(uniqueIDBytes);
-            uniqueID = "";
-            for (int i = 0; i < 36; i++) {
-                uniqueID += (char) uniqueIDBytes[i];
-            }
-        } catch (Exception FileNotFoundException) {
-            // No uniqueID file found
-            return null;
-        }
-        return uniqueID;
-    }
-
-    /**
-     * Generates UniqueID and saves it to a file
-     * @return
-     *      uniqueID: a string representation of a UUID
-     */
-    protected String generateUniqueID() {
-        String uniqueID;
-        // Generate uniqueID and save to file
-        uniqueID = UUID.randomUUID().toString();
-        File secretIDFile = new File(getActivity().getApplicationContext().getFilesDir(), "unique-id");
-        try {
-            secretIDFile.createNewFile();
-            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
-            secretIDOutputStream.write(uniqueID.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return uniqueID;
-    }
 }
