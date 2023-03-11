@@ -14,6 +14,8 @@ import com.example.qriffic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 
 import android.util.Log;
+import android.os.Handler;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -27,115 +29,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    private String uniqueID;
-    private DBAccessor dba;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(this); // initialize firebase
-        dba = new DBAccessor();
-        //deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String uid = fetchUniqueID();
-        Bundle bundle = new Bundle();
-
-        //TEMPORARY TEST CODE BLOCK (DELETE WHEN DONE)
-        Log.d("TESTPRINT", "TEST BLOCK STARTED");
-        ArrayList<QRCode> testList = new ArrayList<QRCode>();
-        testList.add(new QRCode("one", null, null));
-        testList.add(new QRCode("two", null, null));
-        testList.add(new QRCode("three", null, null));
-
-        dba.setPlayer(
-                new PlayerProfile("testName", "testUniqueID", "testEmail",
-                    "testPhoneNum", 420, 69, testList)
-        );
-        PlayerProfile fetchedPlayer = new PlayerProfile(null, null, null,
-            null, 0, 0, new ArrayList<>());
-        //PlayerProfile player = dba.getPlayer("testName");
-        dba.getPlayer(fetchedPlayer, "testName");
-//        fetchedPlayer.setEmail("testEmail2");
-//        dba.setPlayer(fetchedPlayer);
-        Log.d("TESTPRINT", "TEST BLOCK ENDED");
-        //END TEMPORARY TEST CODE BLOCK
-
-        if (uid == null) {
-            this.uniqueID = generateUniqueID();
-            bundle.putString("secretID", uniqueID);
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_QRDex_to_ProfileCreate, bundle);
-            Toast.makeText(this, "1st visit", Toast.LENGTH_SHORT).show();
-        }else{
-            this.uniqueID = uid;
-            bundle.putString("secretID", uniqueID);
-            //this is a placeholder until someone can figure out how to pass a bundle to the
-            // default screen--a splash screen solves this, but for now we have a hack
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_QRDex_to_ProfileCreate);
-            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_ProfileCreate_to_QRDex, bundle);
-            Toast.makeText(this, "not 1st visit", Toast.LENGTH_SHORT).show();
-        }
         setSupportActionBar(binding.toolbar);
+
     }
 
-    /**
-     * Deletes a uniqueID file if it exists
-     */
-    protected void deleteUniqueID(){
-        if (fetchUniqueID() != null) {
-            getApplicationContext().deleteFile("unique-id");
-        }
-    }
-
-    /**
-     * Checks if a UniqueID has already been generated
-     * @return
-     *     true if a UniqueID has already been generated (uniqueID file exists)
-     *     false otherwise
-     */
-    protected String fetchUniqueID() {
-        try {
-            // Try to read the uniqueID from file
-            FileInputStream secretIDInputStream = getApplicationContext().openFileInput("unique-id");
-            byte[] uniqueIDBytes = new byte[36];
-            secretIDInputStream.read(uniqueIDBytes);
-            uniqueID = "";
-            for (int i = 0; i < 36; i++) {
-                uniqueID += (char) uniqueIDBytes[i];
-            }
-        } catch (Exception FileNotFoundException) {
-            // No uniqueID file found
-            return null;
-        }
-        return uniqueID;
-    }
-
-    /**
-     * Generates UniqueID and saves it to a file
-     * @return
-     *      uniqueID: a string representation of a UUID
-     */
-    protected String generateUniqueID() {
-        String uniqueID;
-        // Generate uniqueID and save to file
-        uniqueID = UUID.randomUUID().toString();
-        File secretIDFile = new File(getApplicationContext().getFilesDir(), "unique-id");
-        try {
-            secretIDFile.createNewFile();
-            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
-            secretIDOutputStream.write(uniqueID.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return uniqueID;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,10 +93,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeFragment(Fragment fr){
-        FrameLayout fl = (FrameLayout) findViewById(R.id.nav_host_fragment_content_main);
+        FrameLayout fl = (FrameLayout) findViewById(R.id.fragmentContainerView);
         fl.removeAllViews();
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
-        transaction1.add(R.id.nav_host_fragment_content_main, fr);
+        transaction1.add(R.id.fragmentContainerView, fr);
         transaction1.commit();
     }
+
 }
