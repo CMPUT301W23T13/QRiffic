@@ -10,7 +10,7 @@ public class GeoLocationTest {
 
     private GeoLocation mockLocation() {
 
-        return new GeoLocation(53.5461, 113.4937);
+        return new GeoLocation(53.5461, 113.4937, "Edmonton");
     }
 
     @Test
@@ -23,5 +23,8 @@ public class GeoLocationTest {
 
         assertEquals(113.4937, mockGeoLocation.getLatitude());
         assertNotEquals(12.3456, mockGeoLocation.getLatitude());
+
+        assertEquals("Edmonton", mockGeoLocation.getCity());
+        assertNotEquals("Calgary", mockGeoLocation.getCity());
     }
 }

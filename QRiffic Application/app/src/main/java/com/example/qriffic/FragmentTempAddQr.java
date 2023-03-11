@@ -2,6 +2,8 @@ package com.example.qriffic;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,7 +24,9 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -44,6 +48,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
     private LocationManager locationManager;
     private double currLongitude;
     private double currLatitude;
+    private String currCity;
 
     public FragmentTempAddQr() {
         // Required empty public constructor
@@ -121,10 +126,23 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             currLatitude = location.getLatitude();
                         }
 
-                        GeoLocation geoLocation = new GeoLocation(currLongitude, currLatitude);
+                        Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
+                        List<Address> addresses;
+                        try {
+                            addresses = geocoder.getFromLocation(currLatitude, currLongitude, 1);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        if (addresses != null && addresses.size() > 0) {
+                            Address address = addresses.get(0);
+                            // get the city name
+                            currCity = address.getLocality();
+                        }
+
+                        GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
                         tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     } else {
-                        GeoLocation geoLocation = new GeoLocation(9999, 9999);
+                        GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
                         tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     }
                     String hash = tempQR.getIdHash();
@@ -133,7 +151,8 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             "\nname: " + tempQR.getName() +
                             "\nscore: " + Integer.toString(tempQR.getScore()) +
                             "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
-                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude();
+                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude() +
+                            "\ncity: " + tempQR.getGeoLocation().getCity();
                     temp.setText(newText);
                     // update Player's captured ArrayList in database
                     // update QRCode collection in database
