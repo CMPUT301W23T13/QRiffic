@@ -1,5 +1,6 @@
 package com.example.qriffic;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -71,6 +74,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        checkLocationPermission();
     }
 
     @Override
@@ -86,26 +90,13 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         TextView temp = view.findViewById(R.id.textView_temp);
         Switch storeQrGeoLocation = view.findViewById(R.id.switch_store_qr_geolocation);
 
+        // get reference to the LocationManager
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED && ActivityCompat
-                .checkSelfPermission(getActivity(),
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            checkLocationPermission();
             return view;
         }
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-        onLocationChanged(location);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
 
         // when the button is clicked, the contents of the qrCode EditText is displayed in the temp TextView
@@ -123,17 +114,17 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     if (storeQrGeoLocation.isChecked()) {
                         GeoLocation geoLocation = new GeoLocation(currLongitude, currLatitude);
                         tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
-                    }else{
+                    } else {
                         GeoLocation geoLocation = new GeoLocation(9999, 9999);
                         tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     }
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
                     temp.setText("last6hex: " + last6 +
-                                "\nname: " + tempQR.getName() +
-                                "\nscore: " + Integer.toString(tempQR.getScore()) +
-                                "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
-                                "\nlatitude: " + tempQR.getGeoLocation().getLatitude());
+                            "\nname: " + tempQR.getName() +
+                            "\nscore: " + Integer.toString(tempQR.getScore()) +
+                            "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
+                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude());
                     // update Player's captured ArrayList in database
                     // update QRCode collection in database
 
@@ -148,8 +139,6 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
     public void onLocationChanged(@NonNull Location location) {
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
-        currLongitude = longitude;
-        currLatitude = latitude;
     }
 
     @Override
@@ -175,5 +164,18 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
     @Override
     public void onProviderDisabled(@NonNull String provider) {
         LocationListener.super.onProviderDisabled(provider);
+    }
+
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+    }
+
+    private void updateLocation() {
+
     }
 }
