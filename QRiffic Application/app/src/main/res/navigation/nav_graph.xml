@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/QRDex">
+    app:startDestination="@id/fragmentSplash">
 
     <fragment
         android:id="@+id/QRDex"
@@ -11,9 +11,6 @@
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_second">
 
-        <action
-            android:id="@+id/action_QRDex_to_ProfileCreate"
-            app:destination="@id/ProfileCreate" />
         <action
             android:id="@+id/action_QRDex_to_leaderboard2"
             app:destination="@id/leaderboard2" />
@@ -48,4 +45,17 @@
         android:name="com.example.qriffic.FragmentUserProfile"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/fragmentSplash"
+        android:name="com.example.qriffic.FragmentSplash"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_fragmentSplash_to_ProfileCreate"
+            app:destination="@id/ProfileCreate" />
+        <action
+            android:id="@+id/action_fragmentSplash_to_QRDex"
+            app:destination="@id/QRDex" />
+    </fragment>
+
 </navigation>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -31,9 +32,6 @@ public class FragmentQRDex extends Fragment {
 
 
     }
-
-
-
 
     @Override
     public void onDestroyView() {
