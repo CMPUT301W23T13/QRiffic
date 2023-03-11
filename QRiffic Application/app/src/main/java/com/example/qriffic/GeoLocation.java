@@ -7,6 +7,7 @@ public class GeoLocation {
 
     private double longitude;
     private double latitude;
+    private String city;
 
     /**
      * This is the constructor for a Location object
@@ -15,10 +16,11 @@ public class GeoLocation {
      * @param latitude
      * The latitude as a string
      */
-    public GeoLocation(double longitude, double latitude) {
+    public GeoLocation(double longitude, double latitude, String city) {
 
         this.longitude = longitude;
         this.latitude = latitude;
+        this.city = city;
     }
 
     /**
@@ -36,5 +38,14 @@ public class GeoLocation {
      */
     public double getLatitude() {
         return latitude;
+    }
+
+    /**
+     * This method returns the city of a Location object
+     * @return
+     * The city as a string
+     */
+    public String getCity() {
+        return city;
     }
 }
