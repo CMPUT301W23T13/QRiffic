@@ -129,11 +129,12 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     }
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
-                    temp.setText("last6hex: " + last6 +
+                    String newText = "last6hex: " + last6 +
                             "\nname: " + tempQR.getName() +
                             "\nscore: " + Integer.toString(tempQR.getScore()) +
                             "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
-                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude());
+                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude();
+                    temp.setText(newText);
                     // update Player's captured ArrayList in database
                     // update QRCode collection in database
 
