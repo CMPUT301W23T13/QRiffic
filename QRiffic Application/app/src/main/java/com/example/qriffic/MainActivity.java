@@ -14,6 +14,7 @@ import com.example.qriffic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 
 import android.os.Handler;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-//        setContentView(R.layout.activity_main);
+
     }
 
 
