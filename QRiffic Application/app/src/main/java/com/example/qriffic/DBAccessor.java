@@ -8,7 +8,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 
@@ -93,6 +95,17 @@ public class DBAccessor {
 //                     */
                 }
         });
+    }
+
+    /**
+     * This method adds a QRCode to a PlayerProfile object's captured list
+     * @param player
+     * The username of the PlayerProfile object to be added to
+     * @param qr
+     * The QRCode object to be added
+     */
+    public void addToCaptured(String player, QRCode qr) {
+        playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
     }
 
     // setQR is a WIP
