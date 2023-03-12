@@ -82,6 +82,11 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
         fl.removeAllViews();
         System.out.println("username"+passed_username);
 
+        Bundle bundle = new Bundle();
+        bundle.putString("username", passed_username);
+        fr.setArguments(bundle);
+
+
 
 
 
