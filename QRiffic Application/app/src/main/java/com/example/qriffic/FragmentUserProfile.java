@@ -1,13 +1,26 @@
 package com.example.qriffic;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +28,10 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class FragmentUserProfile extends Fragment {
+
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
 
 
@@ -81,6 +98,32 @@ public class FragmentUserProfile extends Fragment {
         Bundle bundle = getArguments();
         username = bundle.getString("username");
         System.out.println("username"+username);
+        PlayerProfile playerProfile = new PlayerProfile();
+        //get from database the user data based on username
+        DocumentReference docRef = db.collection("Players").document(username);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        playerProfile.setEmail(document.getString("email"));
+                        playerProfile.setHighScore(document.getLong("highScore").intValue());
+                        playerProfile.setLowScore(document.getLong("lowScore").intValue());
+                        playerProfile.setPhoneNum(document.getString("phoneNum"));
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
 
 
         return view;

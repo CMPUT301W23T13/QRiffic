@@ -80,7 +80,7 @@ public class FragmentSearchUser extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-//        Button btnSearch = (Button) getView().findViewById(R.id.search_button);
+
 
 
     }
@@ -137,28 +137,6 @@ public class FragmentSearchUser extends Fragment {
                                         bundle.putString("username", etSearch.getText().toString());
                                         fragmentUserProfile.setArguments(bundle);
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,fragmentUserProfile).commit();
-
-
-
-                                        //send bundle to the playerprofile fragment
-
-
-
-
-
-
-//                                        this.navController.navigate(R.id.action_searchUser_to_userProfile, bundle);
-//                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new FragmentUserProfile()).commit();
-
-
-
-
-//                                        System.out.println("playerprofile username: " + playerprofile.getUsername());
-//                                        System.out.println("playerprofile email: " + playerprofile.getEmail());
-//                                        System.out.println("playerprofile phoneno: " + playerprofile.getPhoneNum());
-//                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, playerprofile).commit();
-
-
 
                                     }
                                 }
