@@ -2,11 +2,27 @@ package com.example.qriffic;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+
+import com.example.qriffic.databinding.FragmentSearchUserBinding;
+import com.example.qriffic.databinding.ProfileCreateBinding;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +30,15 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class FragmentSearchUser extends Fragment {
+
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private DBAccessor dba;
+    private NavController navController;
+
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,16 +74,107 @@ public class FragmentSearchUser extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+//        Button btnSearch = (Button) getView().findViewById(R.id.search_button);
+
+
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_user, container, false);
+
+        Button btnSearch = view.findViewById(R.id.search_button);
+        EditText etSearch = view.findViewById(R.id.search_user_edit_text);
+//
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            private NavController navController;
+
+
+
+            @Override
+            public void onClick(View v) {
+                // if the EditText is empty, prompt user to enter something
+                if (etSearch.getText().toString().isEmpty()) {
+                    etSearch.setError("Please enter a username");
+                }
+//
+                else {
+
+                    //query the database and check if the user exists
+                    //if the user exists, then display the user's profile
+                    //if the user does not exist, then display a message saying that the user does not exist
+                    FirebaseApp.initializeApp(getActivity()); // initialize firebase
+                    db.collection("Players")
+                            .whereEqualTo("username", etSearch.getText().toString())
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    if (task.getResult().isEmpty()) {
+                                        etSearch.setError("User does not exist");
+                                    }
+                                    else {
+                                        // display the user's profile
+                                        PlayerProfile playerprofile = new PlayerProfile();
+                                        FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();
+                                        Bundle bundle = new Bundle();
+                                        playerprofile.setUsername(etSearch.getText().toString());
+
+                                        //set the player fields using db accessor
+                                        dba = new DBAccessor();
+                                        dba.setPlayer(playerprofile);
+//                                      send the username to the playerprofile fragment
+                                        bundle.putString("username", etSearch.getText().toString());
+                                        fragmentUserProfile.setArguments(bundle);
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,fragmentUserProfile).commit();
+
+
+
+                                        //send bundle to the playerprofile fragment
+
+
+
+
+
+
+//                                        this.navController.navigate(R.id.action_searchUser_to_userProfile, bundle);
+//                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new FragmentUserProfile()).commit();
+
+
+
+
+//                                        System.out.println("playerprofile username: " + playerprofile.getUsername());
+//                                        System.out.println("playerprofile email: " + playerprofile.getEmail());
+//                                        System.out.println("playerprofile phoneno: " + playerprofile.getPhoneNum());
+//                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, playerprofile).commit();
+
+
+
+                                    }
+                                }
+                            });
+
+
+
+
+
+                }
+            }
+        });
+
+                return view;
     }
+
+
+
 }

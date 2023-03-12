@@ -137,7 +137,7 @@ public class FragmentSplash extends Fragment {
 
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
-        deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
+//        deleteUniqueID(); // uncomment to delete uniqueID file and test 1st visit or not
         String uid = fetchUniqueID();
         Bundle bundle = new Bundle();
 
