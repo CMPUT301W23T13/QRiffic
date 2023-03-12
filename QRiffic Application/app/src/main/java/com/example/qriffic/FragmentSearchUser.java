@@ -142,10 +142,6 @@ public class FragmentSearchUser extends Fragment {
                                 }
                             });
 
-
-
-
-
                 }
             }
         });

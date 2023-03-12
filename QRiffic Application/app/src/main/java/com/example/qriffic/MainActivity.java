@@ -11,27 +11,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.qriffic.databinding.ActivityMainBinding;
-import com.google.firebase.FirebaseApp;
 
-import android.util.Log;
-import android.os.Handler;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentUserProfile.OnDataPass {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -95,9 +80,23 @@ public class MainActivity extends AppCompatActivity {
     private void changeFragment(Fragment fr){
         FrameLayout fl = (FrameLayout) findViewById(R.id.fragmentContainerView);
         fl.removeAllViews();
+        System.out.println("username"+passed_username);
+
+
+
+
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
         transaction1.add(R.id.fragmentContainerView, fr);
+
         transaction1.commit();
     }
 
+    private String passed_username;
+
+
+    @Override
+    public String onDataPass(String data) {
+        passed_username = data;
+        return data;
+    }
 }
