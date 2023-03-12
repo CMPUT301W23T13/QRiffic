@@ -107,6 +107,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
 
 
         // when the button is clicked, the contents of the qrCode EditText is displayed in the temp TextView
+        // and a QRCode object is created and stored in the database
         addQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +121,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     // if the switch is on, store the QRCode's geolocation
                     if (storeQrGeoLocation.isChecked()) {
 
-                        // get the current location
+                        // get the current location (check for location permissions first)
                         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentTempAddQr.this);
                             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -128,6 +129,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             currLatitude = location.getLatitude();
                         }
 
+                        // get the city name from longitude and latitude
                         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
                         List<Address> addresses;
                         try {
@@ -137,16 +139,20 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                         }
                         if (addresses != null && addresses.size() > 0) {
                             Address address = addresses.get(0);
-                            // get the city name
                             currCity = address.getLocality();
                         }
 
+                        // when switch is set to on, store the QRCode's geolocation
+                        // TODO: get current user's username instead of "Matlock"
                         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
                         tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     } else {
+                        // when switch is set to off, store as N/A
                         GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
                         tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     }
+
+                    // display QRCode info on screen
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
                     String newText = "last6hex: " + last6 +
