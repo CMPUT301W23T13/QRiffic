@@ -11,10 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import java.util.ArrayList;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,20 +23,27 @@ import com.google.firebase.firestore.auth.User;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentUserProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class FragmentUserProfile extends Fragment {
-    ListView profileList;
-    ArrayAdapter<QRCode> pListAdapter;
-    ArrayList<QRCode> qrList;
 
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
+
+    ListView profileList;
+    ArrayAdapter<QRCode> pListAdapter;
+    ArrayList<QRCode> qrList;
 
 
 
@@ -78,12 +82,14 @@ public class FragmentUserProfile extends Fragment {
     public static FragmentUserProfile newInstance() {
         FragmentUserProfile fragment = new FragmentUserProfile();
         Bundle args = new Bundle();
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override

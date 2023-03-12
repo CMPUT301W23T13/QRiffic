@@ -48,6 +48,11 @@ public class FragmentProfileCreate extends Fragment {
             public void onClick(View view) {
                 //write to file, and then navigate back to QRDex
 
+                if (editTextUsername.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please enter a username", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 DBAccessor dba = new DBAccessor();
 
                 PlayerProfile profile = new PlayerProfile();
