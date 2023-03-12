@@ -66,7 +66,7 @@ public class PlayerProfile {
     }
 
     /**
-     * This method calls all fetchListeners
+     * This method calls all onFetchComplete() listeners
      *
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
@@ -74,9 +74,22 @@ public class PlayerProfile {
      * Date: 10/03/2023
      *
      */
-    public void fetched() {
+    public void fetchComplete() {
         for (fetchListener fl : listeners)
             fl.onFetchComplete();
+    }
+
+    /**
+     * This method calls all onFetchFailure() listeners
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 10/03/2023
+     */
+    public void fetchFailed() {
+        for (fetchListener fl : listeners)
+            fl.onFetchFailure();
     }
 
     /**
