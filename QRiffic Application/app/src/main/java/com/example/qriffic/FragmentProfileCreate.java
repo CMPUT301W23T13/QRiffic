@@ -14,7 +14,11 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qriffic.databinding.ProfileCreateBinding;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class FragmentProfileCreate extends Fragment {
     private ProfileCreateBinding binding;
@@ -39,12 +43,6 @@ public class FragmentProfileCreate extends Fragment {
         editTextPhone = view.findViewById(R.id.edit_phone);
         textViewUsernameWarning = view.findViewById(R.id.username_warning);
 
-        //fetch secretID from main activity
-        String secretID;
-        if (getArguments() != null){
-            secretID = getArguments().getString("secretID");
-            Toast.makeText(getContext(), secretID, Toast.LENGTH_SHORT).show();
-        }
         binding.enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,6 +74,8 @@ public class FragmentProfileCreate extends Fragment {
                             new ArrayList<>());
                         dba.setPlayer(profile);
 
+                        saveUsername(profile.getUsername());
+
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
                             .navigate(R.id.action_ProfileCreate_to_QRDex);
                     }
@@ -90,6 +90,21 @@ public class FragmentProfileCreate extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    /**
+     * Saves username to file for persistence
+     * @param username
+     */
+    protected void saveUsername(String username) {
+        File secretIDFile = new File(getActivity().getApplicationContext().getFilesDir(), "username");
+        try {
+            secretIDFile.createNewFile();
+            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
+            secretIDOutputStream.write(username.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
