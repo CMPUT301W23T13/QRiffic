@@ -82,10 +82,10 @@ public class FragmentProfileCreate extends Fragment {
                         saveUsername(profile.getUsername());
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("secretID", profile.getUsername());
+                        bundle.putString("username", profile.getUsername());
 
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
-                            .navigate(R.id.action_ProfileCreate_to_userProfile);
+                            .navigate(R.id.action_ProfileCreate_to_userProfile, bundle);
                     }
                 });
 
