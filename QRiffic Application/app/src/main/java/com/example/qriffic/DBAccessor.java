@@ -1,5 +1,10 @@
 package com.example.qriffic;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,11 +50,27 @@ public class DBAccessor {
      * The PlayerProfile object
      */
     public void getPlayer(PlayerProfile player, String name) {
-        playersColRef.document(name).get().addOnSuccessListener(
-            new OnSuccessListener<DocumentSnapshot>() {
+        /*
+        Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
+                + player.getUniqueID() + " " + player.getEmail() + " "
+                + player.getPhoneNum() + " " + player.getHighScore() + " "
+                + player.getLowScore() + " " + player.getCaptured().size());
+         */
+        playersColRef.document(name).get()
+            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     PlayerProfile fetchedPlayer = documentSnapshot.toObject(PlayerProfile.class);
+
+                    if (fetchedPlayer == null) {
+                        // the username is not in the database
+                        player.fetchFailed();
+                        return;
+                    }
+
+                    fetchedPlayer = new PlayerProfile(null, null, null,
+                            null, 0, 0, new ArrayList<>());
+
                     player.setUsername(fetchedPlayer.getUsername());
                     player.setUniqueID(fetchedPlayer.getUniqueID());
                     player.setEmail(fetchedPlayer.getEmail());
@@ -61,13 +82,15 @@ public class DBAccessor {
                         player.addQRCode(qrCode);
                     }
 
+                    player.fetchComplete();
+
                     /*
                     // For testing purposes
-                    System.out.println("Player: " + player.getUsername() + " "
-                        + player.getUniqueID() + " " + player.getEmail() + " "
-                        + player.getPhoneNum() + " " + player.getHighScore() + " "
-                        + player.getLowScore() + " " + player.getCaptured().size());
-                     */
+                    Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
+                            + player.getUniqueID() + " " + player.getEmail() + " "
+                            + player.getPhoneNum() + " " + player.getHighScore() + " "
+                            + player.getLowScore() + " " + player.getCaptured().size());
+//                     */
                 }
         });
     }

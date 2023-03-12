@@ -14,6 +14,7 @@ public class PlayerProfile {
     private int highScore;
     private int lowScore;
     private ArrayList<QRCode> captured;
+    private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
 
     /**
      * This is an empty constructor for a PlayerProfile object
@@ -48,6 +49,47 @@ public class PlayerProfile {
         this.highScore = highScore;
         this.lowScore = lowScore;
         this.captured = captured;
+    }
+
+    /**
+     * This method adds a fetchListener to the PlayerProfile object
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 10/03/2023
+     *
+     * @param toAdd
+     */
+    public void addListener(fetchListener toAdd) {
+        listeners.add(toAdd);
+    }
+
+    /**
+     * This method calls all onFetchComplete() listeners
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 10/03/2023
+     *
+     */
+    public void fetchComplete() {
+        for (fetchListener fl : listeners)
+            fl.onFetchComplete();
+    }
+
+    /**
+     * This method calls all onFetchFailure() listeners
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 10/03/2023
+     */
+    public void fetchFailed() {
+        for (fetchListener fl : listeners)
+            fl.onFetchFailure();
     }
 
     /**

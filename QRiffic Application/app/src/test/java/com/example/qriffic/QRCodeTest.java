@@ -13,7 +13,7 @@ public class QRCodeTest {
     private QRCode mockQRCode() {
 
         return new QRCode("uyhpOIUYHPDFnklmd;sajfonui893",
-                new Location("53.1234", "12.5623"), "Ash");
+                new GeoLocation(53.1234, 12.5623, "Edmonton"), "Ash");
     }
 
     @Test
@@ -21,13 +21,17 @@ public class QRCodeTest {
 
         QRCode mockQRCode = mockQRCode();
 
+        assertEquals(53.1234, mockQRCode.getGeoLocation().getLongitude());
+        assertNotEquals(12.3456, mockQRCode.getGeoLocation().getLongitude());
+
+        assertEquals(12.5623, mockQRCode.getGeoLocation().getLatitude());
+        assertNotEquals(12.3456, mockQRCode.getGeoLocation().getLatitude());
+
+        assertEquals("Edmonton", mockQRCode.getGeoLocation().getCity());
+        assertNotEquals("Calgary", mockQRCode.getGeoLocation().getCity());
+
         assertEquals(16088668, mockQRCode.getScore());
         assertNotEquals(16000000, mockQRCode.getScore());
-
-        assertEquals(new Location("53.1234", "12.5623").getLongLat(),
-                mockQRCode.getLocation().getLongLat());
-        assertNotEquals(new Location("53.1234", "12.5643").getLongLat(),
-                mockQRCode.getLocation().getLongLat());
 
         assertEquals("Ash", mockQRCode.getUsername());
         assertNotEquals("Ash Ketchum", mockQRCode.getUsername());

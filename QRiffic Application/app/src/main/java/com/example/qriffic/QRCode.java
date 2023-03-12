@@ -12,7 +12,7 @@ public class QRCode implements Comparable {
 
     private int score;
 //    private LocationImage locationImage
-    private Location location;
+    private GeoLocation geoLocation;
     private String idHash;
     private String name;
     private String username;
@@ -41,17 +41,17 @@ public class QRCode implements Comparable {
      * This is a constructor for a QRCode object
      * @param rawString
      * The string from scanning the QR code
-     * @param location
+     * @param geoLocation
      * The location of the QR code as a Location object
      * @param username
      * The username of the player who scanned the QR code
      */
-    public QRCode(String rawString, Location location, String username) {
+    public QRCode(String rawString, GeoLocation geoLocation, String username) {
         // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
 
         this.idHash = new Hash(rawString).getHash();
         //this.locationImage = locationImage;
-        this.location = location;
+        this.geoLocation = geoLocation;
         this.username = username;
 
 
@@ -104,12 +104,12 @@ public class QRCode implements Comparable {
     }
 
     /**
-     * This method returns the location of a QRCode object
+     * This method returns the GeoLocation of a QRCode object
      * @return
-     * The location as a Location object
+     * The geolocation as a GeoLocation object
      */
-    public Location getLocation() {
-        return location;
+    public GeoLocation getGeoLocation() {
+        return geoLocation;
     }
 
     /**

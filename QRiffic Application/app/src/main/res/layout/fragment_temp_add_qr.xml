@@ -46,6 +46,13 @@
         android:textColor="@color/design_default_color_error"
         android:textSize="15sp" />
 
+    <Switch
+        android:id="@+id/switch_store_qr_geolocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom|right"
+        android:layout_marginBottom="65dp"
+        android:text="Track Location?" />
 
 
 </FrameLayout>
