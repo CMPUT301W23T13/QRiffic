@@ -142,10 +142,10 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                         }
 
                         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "testName");
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     } else {
                         GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "testName");
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     }
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
@@ -159,7 +159,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     // update QRCode collection in database
                     dba.setQR(tempQR.getIdHash(), tempQR);
                     // update current player's captured QRCode collection in database
-                    dba.addToCaptured(tempQR.getUsername(), tempQR);
+                    dba.addToCaptured("Matlock", tempQR);
 
                 }
             }
