@@ -114,7 +114,7 @@ public class FragmentSplash extends Fragment {
             this.navController.navigate(R.id.action_fragmentSplash_to_ProfileCreate, bundle);
             Toast.makeText(getActivity(), "1st visit", Toast.LENGTH_SHORT).show();
         } else {
-            bundle.putString("secretID", username);
+            bundle.putString("username", username);
             this.navController.navigate(R.id.action_fragmentSplash_to_userProfile, bundle);
             Toast.makeText(getActivity(), "not 1st visit", Toast.LENGTH_SHORT).show();
         }
