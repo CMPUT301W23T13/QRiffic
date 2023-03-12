@@ -30,31 +30,6 @@ public class FragmentQRDex extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // START TEST BLOCK, TO BE REMOVED
-        PlayerProfile fetchedPlayer = new PlayerProfile(null, null, null,
-            null, 0, 0, new ArrayList<>());
-
-        fetchedPlayer.addListener(new fetchListener() {
-            @Override
-            public void onFetchComplete() {
-                // For testing purposes
-                System.out.println("Player: " + fetchedPlayer.getUsername() + " "
-                    + fetchedPlayer.getUniqueID() + " " + fetchedPlayer.getEmail() + " "
-                    + fetchedPlayer.getPhoneNum() + " " + fetchedPlayer.getHighScore() + " "
-                    + fetchedPlayer.getLowScore() + " " + fetchedPlayer.getCaptured().size());
-            }
-
-            public void onFetchFailure() {
-                // For testing purposes
-                System.out.println("Fetch failed");
-            }
-        });
-
-        DBAccessor dba = new DBAccessor();
-        dba.getPlayer(fetchedPlayer, "testName");
-        // END TEST BLOCK
-
     }
 
     @Override
