@@ -80,7 +80,7 @@ public class FragmentProfileCreate extends Fragment {
                         bundle.putString("secretID", profile.getUsername());
 
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
-                            .navigate(R.id.action_ProfileCreate_to_QRDex);
+                            .navigate(R.id.action_ProfileCreate_to_userProfile);
                     }
                 });
 

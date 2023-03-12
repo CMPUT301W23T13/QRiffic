@@ -3,7 +3,6 @@ package com.example.qriffic;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -12,17 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.qriffic.databinding.ActivityMainBinding;
-import com.example.qriffic.databinding.FragmentSecondBinding;
 import com.example.qriffic.databinding.FragmentSplashBinding;
 import com.google.firebase.FirebaseApp;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.UUID;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,14 +46,6 @@ public class FragmentSplash extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,7 +104,7 @@ public class FragmentSplash extends Fragment {
 
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
-        //deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
+        deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
         String username = fetchUsername();
         Bundle bundle = new Bundle();
 
@@ -128,7 +113,7 @@ public class FragmentSplash extends Fragment {
             Toast.makeText(getActivity(), "1st visit", Toast.LENGTH_SHORT).show();
         } else {
             bundle.putString("secretID", username);
-            this.navController.navigate(R.id.action_fragmentSplash_to_QRDex, bundle);
+            this.navController.navigate(R.id.action_fragmentSplash_to_userProfile, bundle);
             Toast.makeText(getActivity(), "not 1st visit", Toast.LENGTH_SHORT).show();
         }
     }

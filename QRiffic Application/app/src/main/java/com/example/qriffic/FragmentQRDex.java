@@ -9,13 +9,13 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.qriffic.databinding.FragmentSecondBinding;
+import com.example.qriffic.databinding.FragmentQrdexBinding;
 
 import java.util.ArrayList;
 
 public class FragmentQRDex extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private FragmentQrdexBinding binding;
 
     @Override
     public View onCreateView(
@@ -23,7 +23,7 @@ public class FragmentQRDex extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentQrdexBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
