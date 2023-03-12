@@ -16,6 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+
 public class MainActivity extends AppCompatActivity implements FragmentUserProfile.OnDataPass {
 
     private AppBarConfiguration appBarConfiguration;
@@ -101,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
 
     @Override
     public String onDataPass(String data) {
-        passed_username = data;
-        return data;
+        passed_username = data.replaceAll("[^a-zA-Z0-9!]", "");
+//        passed_username = new String(data.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+        return passed_username;
     }
 }
