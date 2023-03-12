@@ -54,7 +54,7 @@ public class FragmentUserProfile extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         profileList = view.findViewById(R.id.profileList);
         pListAdapter = new ArrayAdapter<>(getContext(),R.layout.qr_dex_content, qrList);
-        profileList.setAdapter(pListAdapter);
+//        profileList.setAdapter(pListAdapter);
 
 
         //code to add QR codes to the list goes here
