@@ -88,6 +88,8 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_temp_add_qr, container, false);
 
+        DBAccessor dba = new DBAccessor();
+
         // get reference to the button, EditText, and TextView
         Button addQR = view.findViewById(R.id.button_add_qr);
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
@@ -140,10 +142,10 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                         }
 
                         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "testName");
                     } else {
                         GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "testName");
                     }
                     String hash = tempQR.getIdHash();
                     String last6 = hash.substring(hash.length() - 6);
@@ -154,8 +156,10 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             "\nlatitude: " + tempQR.getGeoLocation().getLatitude() +
                             "\ncity: " + tempQR.getGeoLocation().getCity();
                     temp.setText(newText);
-                    // update Player's captured ArrayList in database
                     // update QRCode collection in database
+                    dba.setQR(tempQR.getIdHash(), tempQR);
+                    // update current player's captured QRCode collection in database
+                    dba.addToCaptured(tempQR.getUsername(), tempQR);
 
                 }
             }
