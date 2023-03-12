@@ -3,6 +3,7 @@ package com.example.qriffic;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,7 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -36,6 +36,24 @@ import java.util.ArrayList;
 public class FragmentUserProfile extends Fragment {
 
 
+    public interface OnDataPass {
+        String onDataPass(String data);
+    }
+
+
+    private OnDataPass dataPasser;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        dataPasser = (OnDataPass) context;
+    }
+
+
+
+
+
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -44,6 +62,9 @@ public class FragmentUserProfile extends Fragment {
     ListView profileList;
     ArrayAdapter<QRCode> pListAdapter;
     ArrayList<QRCode> qrList;
+
+
+
 
 
 
@@ -100,6 +121,7 @@ public class FragmentUserProfile extends Fragment {
 
         Bundle bundle = getArguments();
         username = bundle.getString("username");
+        dataPasser.onDataPass(username);
         System.out.println("username"+username);
         PlayerProfile playerProfile = new PlayerProfile();
         //get from database the user data based on username
