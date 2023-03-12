@@ -44,6 +44,11 @@ public class FragmentQRDex extends Fragment {
                     + fetchedPlayer.getPhoneNum() + " " + fetchedPlayer.getHighScore() + " "
                     + fetchedPlayer.getLowScore() + " " + fetchedPlayer.getCaptured().size());
             }
+
+            public void onFetchFailure() {
+                // For testing purposes
+                System.out.println("Fetch failed");
+            }
         });
 
         DBAccessor dba = new DBAccessor();

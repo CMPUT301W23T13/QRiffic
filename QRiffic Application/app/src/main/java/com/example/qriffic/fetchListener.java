@@ -9,5 +9,6 @@ package com.example.qriffic;
  * Date: 10/03/2023
  */
 public interface fetchListener {
-    void onFetchComplete();
+    void onFetchComplete();  // called if the username is in the database
+    void onFetchFailure();  // called if the username is not in the database
 }
