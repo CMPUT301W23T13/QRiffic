@@ -9,13 +9,13 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.qriffic.databinding.FragmentSecondBinding;
+import com.example.qriffic.databinding.FragmentQrdexBinding;
 
 import java.util.ArrayList;
 
 public class FragmentQRDex extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private FragmentQrdexBinding binding;
 
     @Override
     public View onCreateView(
@@ -23,33 +23,13 @@ public class FragmentQRDex extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentQrdexBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // START TEST BLOCK, TO BE REMOVED
-        PlayerProfile fetchedPlayer = new PlayerProfile(null, null, null,
-            null, 0, 0, new ArrayList<>());
-
-        fetchedPlayer.addListener(new fetchListener() {
-            @Override
-            public void onFetchComplete() {
-                // For testing purposes
-                System.out.println("Player: " + fetchedPlayer.getUsername() + " "
-                    + fetchedPlayer.getUniqueID() + " " + fetchedPlayer.getEmail() + " "
-                    + fetchedPlayer.getPhoneNum() + " " + fetchedPlayer.getHighScore() + " "
-                    + fetchedPlayer.getLowScore() + " " + fetchedPlayer.getCaptured().size());
-            }
-        });
-
-        DBAccessor dba = new DBAccessor();
-        dba.getPlayer(fetchedPlayer, "testName");
-        // END TEST BLOCK
-
     }
 
     @Override
