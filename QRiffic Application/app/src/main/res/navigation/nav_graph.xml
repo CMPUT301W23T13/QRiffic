@@ -28,7 +28,11 @@
         android:id="@+id/searchUser"
         android:name="com.example.qriffic.FragmentSearchUser"
         android:label="fragment_search_user"
-        tools:layout="@layout/fragment_search_user" />
+        tools:layout="@layout/fragment_search_user" >
+        <action
+            android:id="@+id/action_searchUser_to_userProfile"
+            app:destination="@id/userProfile" />
+    </fragment>
     <fragment
         android:id="@+id/userProfile"
         android:name="com.example.qriffic.FragmentUserProfile"

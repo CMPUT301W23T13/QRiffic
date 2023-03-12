@@ -6,22 +6,17 @@
     tools:context=".FragmentSearchUser"
     android:id="@+id/search_user">
 
-    <androidx.appcompat.widget.SearchView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </androidx.appcompat.widget.SearchView>
-
     <EditText
-        android:layout_width="353dp"
+        android:id="@+id/search_user_edit_text"
+        android:layout_width="412dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:inputType="text"
-        android:hint="Enter username to search">
+        android:hint="Enter username to search"
+        android:inputType="text">
 
     </EditText>
 
     <Button
+        android:id="@+id/search_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
