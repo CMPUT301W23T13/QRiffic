@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.color.utilities.Score;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +28,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +38,9 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class FragmentUserProfile extends Fragment {
+
+
+    DBAccessor dba = new DBAccessor();
 
 
     public interface OnDataPass {
@@ -113,6 +120,10 @@ public class FragmentUserProfile extends Fragment {
         TextView tvPhoneNum = view.findViewById(R.id.profile_phone);
         TextView noScanned = view.findViewById(R.id.user_scanned);
         TextView totalScore = view.findViewById(R.id.user_score);
+        TextView highScore = view.findViewById(R.id.topQRName2);
+        TextView lowScore = view.findViewById(R.id.topQRName3);
+        TextView topQRName = view.findViewById(R.id.topQRName);
+        TextView botQRName = view.findViewById(R.id.botQRName);
 
         //initialize and array list of QR codes
         qrList = new ArrayList<>();
@@ -125,10 +136,12 @@ public class FragmentUserProfile extends Fragment {
         username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
         dataPasser.onDataPass(username);
         PlayerProfile playerProfile = new PlayerProfile();
+
+
         //get from database the user data based on username
         DocumentReference docRef = db.collection("Players").document(username);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @SuppressLint("RestrictedApi")
+            @SuppressLint({"RestrictedApi", "SetTextI18n"})
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -143,11 +156,105 @@ public class FragmentUserProfile extends Fragment {
                         qrList = (ArrayList<QRCode>) document.get("captured");
                         System.out.println("qrList"+qrList);
 
+                        pListAdapter.addAll(qrList);
+                        pListAdapter.notifyDataSetChanged();
+
+
+
+                        //find total score
+                        long totalScoreInt = 0;
+
+                        //create array for lowest score
+                        long[] lowScoreArray = new long[qrList.size()];
+
+                        //make a dictionary for the scores and names
+                        HashMap<String, Long> NameMap = new HashMap<>();
+
+                        for (int i = 0; i < qrList.size(); i++) {
+                        Object obj = qrList.get(i);
+                        if (obj instanceof HashMap) {
+                            HashMap<String, Object> qrMap = (HashMap<String, Object>) obj;
+                            long score = (long) qrMap.get("score");
+                            String name = (String) qrMap.get("name");
+                            NameMap.put(name, score);
+
+                            //add to array
+                            lowScoreArray[i] = score;
+
+
+                            //get total score
+//                            System.out.println("score"+score);
+                            totalScoreInt += score;
+//                            /System.out.println("totalScoreInt"+totalScoreInt);
+                            totalScore.setText(String.valueOf(totalScoreInt)+"pts");
+
+                            //update highest score in database
+                            if (score > playerProfile.getHighScore()) {
+                                playerProfile.setHighScore((int) score);
+                                document.getReference().update("highScore", score);
+                            }
+
+                            //update lowest score in database
+                            if (score < playerProfile.getLowScore()) {
+                                playerProfile.setLowScore((int) score);
+                                document.getReference().update("lowScore", score);
+                            }
+
+
+
+
+
+                        }
+
+
+                    }
+
+                        //sort array
+                        Arrays.sort(lowScoreArray);
+                        //set lowest score for player
+                        playerProfile.setLowScore((int) lowScoreArray[0]);
+                        //set lowest score for database
+                        document.getReference().update("lowScore", lowScoreArray[0]);
+                        //set the text view for lowest score
+                        lowScore.setText(String.valueOf(playerProfile.getLowScore()));
+                        highScore.setText(String.valueOf(playerProfile.getHighScore()));
+
+                        //set name for lowest score and  highest score
+                        for (Map.Entry<String, Long> entry : NameMap.entrySet()) {
+//                            System.out.println(entry.getValue()+"="+playerProfile.getHighScore());
+                            if (entry.getValue() == (playerProfile.getHighScore())) {
+                                topQRName.setText(entry.getKey());
+                                System.out.println("topQRName"+entry.getKey());
+
+                            }
+                            if (entry.getValue()==(playerProfile.getLowScore())) {
+                                botQRName.setText(entry.getKey());
+                            }
+                        }
+
+
+
+//                        System.out.println("lowScoreArray"+lowScoreArray[lowScoreArray.length-1]);
+                        System.out.println("lowScoreArray"+lowScoreArray[0]);
+
+
+
+
+
+
+
+
+
 
                         //set the text views to the user data
                         tvUsername.setText(username);
                         tvEmail.setText(playerProfile.getEmail());
                         tvPhoneNum.setText(playerProfile.getPhoneNum());
+
+
+
+//                        highScore.setText(document.getLong("highScore").toString());
+//                        lowScore.setText(document.getLong("lowScore").toString());
 
 
 
@@ -182,14 +289,6 @@ public class FragmentUserProfile extends Fragment {
         profileList = view.findViewById(R.id.profileList);
         pListAdapter = new ArrayAdapter<>(getContext(),R.layout.qr_dex_content, qrList);
         PlayerProfile playerProfile = new PlayerProfile();
-//        System.out.println("qrList in viewcreated:"+qrList);
-//        profileList.setAdapter(pListAdapter);
-
-
-//        TextView tvHighScore = view.findViewById(R.id.profile_high_score);
-
-
-        //code to add QR codes to the list goes here
 
 
 

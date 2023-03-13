@@ -9,6 +9,8 @@ public class GeoLocation {
     private double latitude;
     private String city;
 
+    public GeoLocation() {}
+
     /**
      * This is the constructor for a Location object
      * @param longitude
