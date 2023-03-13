@@ -29,7 +29,7 @@
                 android:background="@drawable/rounded_left_component"
                 android:backgroundTint="#9D5AFD"
                 android:padding="10dp"
-                android:text="ash_ketchum"
+                android:text="@string/profile_na"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp" />
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="ashketchum@gmail.com"
+                    android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="555-867-5309"
+                    android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -97,7 +97,7 @@
                     android:id="@+id/user_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1234567"
+                    android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
                     android:textSize="24sp" />
@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="34"
+                    android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
                     android:textSize="24sp" />
@@ -171,7 +171,7 @@
                     android:id="@+id/topQRName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hexagonal Purple Australian Foozodza"
+                    android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -181,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="512pts"
+                    android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
                     android:textSize="24sp" />
@@ -226,7 +226,7 @@
                     android:id="@+id/botQRName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Grand Blue Ritwik's Fochamnit"
+                    android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -236,7 +236,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="10pts"
+                    android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
                     android:textSize="24sp" />

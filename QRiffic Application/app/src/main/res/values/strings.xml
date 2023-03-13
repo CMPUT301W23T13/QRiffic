@@ -48,6 +48,7 @@
     <string name="label_best">Highest Score</string>
     <string name="label_bot">Lowest Score</string>
     <string name="all_qrmon_label">All QRMons</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="profile_na">N/A</string>
+
 </resources>
