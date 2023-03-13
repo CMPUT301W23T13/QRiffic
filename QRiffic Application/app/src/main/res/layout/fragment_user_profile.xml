@@ -14,26 +14,64 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_corner"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            android:backgroundTint="@color/purple_500"
-            android:padding="10dp"
-            android:text="ash_ketchum"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="30sp" />
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_left_component"
+
+                android:backgroundTint="#9D5AFD"
+                android:padding="10dp"
+                android:text="ash_ketchum"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_right_component"
+                android:backgroundTint="@color/purple_200"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/profile_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="ashketchum@gmail.com"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/profile_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="555-867-5309"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_top_component"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/boxGrey"
             android:gravity="center"
             android:orientation="horizontal"
@@ -93,37 +131,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/rounded_bottom_component"
-            android:backgroundTint="@color/boxDarkGrey"
-            android:layout_marginHorizontal="10dp"
-            android:padding="8dp"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/profile_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="ashketchum@gmail.com"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/profile_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="555-867-5309"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-        </LinearLayout>
-
         <TextView
             android:id="@+id/label_best"
             android:layout_width="wrap_content"
@@ -132,7 +139,7 @@
 
             android:text="@string/label_best"
             android:textAlignment="center"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -140,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="#BCDAF8"
+            android:backgroundTint="#A5ECE4"
             android:gravity="center"
 
             android:orientation="horizontal"
@@ -188,7 +195,7 @@
 
             android:text="@string/label_bot"
             android:textAlignment="center"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -243,7 +250,7 @@
 
             android:text="@string/all_qrmon_label"
             android:textAlignment="center"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <ListView
