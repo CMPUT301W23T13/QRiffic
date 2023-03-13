@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-
     }
 
 
