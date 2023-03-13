@@ -98,7 +98,7 @@ public class FragmentSplash extends Fragment {
         this.navController = Navigation.findNavController(getView());
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
-        deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
+        //deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
         String username = fetchUsername();
         Bundle bundle = new Bundle();
         if (username == null) {  // handle profile creation if necessary
