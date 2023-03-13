@@ -210,7 +210,7 @@ public class FragmentDisplaySearchedUser extends Fragment {
                             qrAdapter.notifyDataSetChanged();
                         }
                         profileListView = view.findViewById(R.id.profileList);
-                        qrAdapter = new QRcodeAdapter(getContext(), dataList);
+
                         profileListView.setAdapter(qrAdapter);
 
 

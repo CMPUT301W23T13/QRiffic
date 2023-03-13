@@ -45,6 +45,13 @@ public class FragmentUserProfile extends Fragment {
 
     DBAccessor dba = new DBAccessor();
 
+    private ListView profileListView;
+    private ArrayList<QRCode> dataList;
+    private QRcodeAdapter qrAdapter;
+
+
+
+
 
     public interface OnDataPass {
         String onDataPass(String data);
@@ -65,8 +72,7 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-    ListView profileList;
-    ArrayAdapter<QRCode> pListAdapter;
+
     ArrayList<QRCode> qrList;
 
 
@@ -78,21 +84,6 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-//    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//
-//    private String username;
-//    private String email;
-//    private Integer score;
-//
-//
     public FragmentUserProfile() {
         // Required empty public constructor
     }
@@ -137,7 +128,7 @@ public class FragmentUserProfile extends Fragment {
 
         //initialize and array list of QR codes
         qrList = new ArrayList<>();
-        profileList = view.findViewById(R.id.profileList);
+
 
 
 
@@ -173,7 +164,6 @@ public class FragmentUserProfile extends Fragment {
                         ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
 
-//                        pListAdapter.clear();
 
 
 
@@ -196,12 +186,6 @@ public class FragmentUserProfile extends Fragment {
                                 String name = (String) qrMap.get("name");
 
                                 NameMap.put(name, score);
-
-    //                            //use NameMap hashmap to add to adapter
-    //                            pListAdapter.add(new QRCode());
-    //
-    //                            //notifying the adapter that data has been added or changed
-    //                            pListAdapter.notifyDataSetChanged();
 
 
 
@@ -234,14 +218,22 @@ public class FragmentUserProfile extends Fragment {
 
                         }
 
-                        for (int i = 0; i < qrList.size(); i++) {
-                            QRAdapterList.add(new QRCode(NameArray[i], lowScoreArray[i]));
-                            //notify the adapter that data has been added or changed
-                            pListAdapter.notifyDataSetChanged();
-                            }
 
-//                        pListAdapter = new QRcodeAdapter(requireContext(), QRAdapterList);
-//                        profileList.setAdapter(pListAdapter);
+                        dataList = new ArrayList<QRCode>();
+                        qrAdapter = new QRcodeAdapter(getContext(), dataList);
+
+                        for (int i = 0; i < qrList.size(); i++) {
+                            dataList.add(new QRCode(NameArray[i], lowScoreArray[i]));
+                        }
+
+                        qrAdapter.notifyDataSetChanged();
+                        System.out.println("dataList"+dataList);
+                        System.out.println("qrAdapter"+qrAdapter);
+
+                        profileListView = view.findViewById(R.id.profileList);
+                        profileListView.setAdapter(qrAdapter);
+
+
 
 
 
@@ -274,18 +266,6 @@ public class FragmentUserProfile extends Fragment {
                                 botQRName.setText(entry.getKey());
                             }
                         }
-
-
-
-
-//                        pListAdapter = new QRcodeAdapter(requireContext(), qrList);
-//                        profileList.setAdapter(pListAdapter);
-
-
-
-//
-
-
 
 
 
@@ -322,16 +302,7 @@ public class FragmentUserProfile extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        profileList = view.findViewById(R.id.profileList);
-        pListAdapter = new ArrayAdapter<>(getContext(),R.layout.qr_dex_content, qrList);
-        PlayerProfile playerProfile = new PlayerProfile();
 
-
-
-    }
 
 
 }
