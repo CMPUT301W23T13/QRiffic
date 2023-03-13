@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -126,10 +127,9 @@ public class FragmentUserProfile extends Fragment {
         TextView botQRName = view.findViewById(R.id.botQRName);
 
         //initialize and array list of QR codes
-        qrList = new ArrayList<>();
+        qrList = new ArrayList<QRCode>();
         profileList = view.findViewById(R.id.profileList);
-        pListAdapter = new ArrayAdapter<>(getContext(),R.layout.qr_dex_content, qrList);
-        profileList.setAdapter(pListAdapter);
+
 
 
 
@@ -154,10 +154,11 @@ public class FragmentUserProfile extends Fragment {
                         playerProfile.setLowScore(document.getLong("lowScore").intValue());
                         playerProfile.setPhoneNum(document.getString("phoneNum"));
                         qrList = (ArrayList<QRCode>) document.get("captured");
-                        System.out.println("qrList"+qrList);
+                        ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
-                        pListAdapter.addAll(qrList);
-                        pListAdapter.notifyDataSetChanged();
+
+//                        pListAdapter.clear();
+
 
 
 
@@ -166,6 +167,7 @@ public class FragmentUserProfile extends Fragment {
 
                         //create array for lowest score
                         long[] lowScoreArray = new long[qrList.size()];
+                        String[] NameArray = new String[qrList.size()];
 
                         //make a dictionary for the scores and names
                         HashMap<String, Long> NameMap = new HashMap<>();
@@ -176,16 +178,26 @@ public class FragmentUserProfile extends Fragment {
                             HashMap<String, Object> qrMap = (HashMap<String, Object>) obj;
                             long score = (long) qrMap.get("score");
                             String name = (String) qrMap.get("name");
+
                             NameMap.put(name, score);
+
+//                            //use NameMap hashmap to add to adapter
+//                            pListAdapter.add(new QRCode());
+//
+//                            //notifying the adapter that data has been added or changed
+//                            pListAdapter.notifyDataSetChanged();
+
+
+
 
                             //add to array
                             lowScoreArray[i] = score;
-
+                            NameArray[i] = name;
 
                             //get total score
-//                            System.out.println("score"+score);
+
                             totalScoreInt += score;
-//                            /System.out.println("totalScoreInt"+totalScoreInt);
+
                             totalScore.setText(String.valueOf(totalScoreInt)+"pts");
 
                             //update highest score in database
@@ -201,13 +213,21 @@ public class FragmentUserProfile extends Fragment {
                             }
 
 
-
-
-
                         }
 
 
                     }
+
+                        for (int i = 0; i < qrList.size(); i++) {
+                            QRAdapterList.add(new QRCode(NameArray[i], lowScoreArray[i]));
+                            //notify the adapter that data has been added or changed
+                            pListAdapter.notifyDataSetChanged();
+                            }
+
+//                        pListAdapter = new QRcodeAdapter(requireContext(), QRAdapterList);
+//                        profileList.setAdapter(pListAdapter);
+
+
 
                         //sort array
                         Arrays.sort(lowScoreArray);
@@ -221,26 +241,21 @@ public class FragmentUserProfile extends Fragment {
 
                         //set name for lowest score and  highest score
                         for (Map.Entry<String, Long> entry : NameMap.entrySet()) {
-//                            System.out.println(entry.getValue()+"="+playerProfile.getHighScore());
+
                             if (entry.getValue() == (playerProfile.getHighScore())) {
                                 topQRName.setText(entry.getKey());
-                                System.out.println("topQRName"+entry.getKey());
-
                             }
                             if (entry.getValue()==(playerProfile.getLowScore())) {
                                 botQRName.setText(entry.getKey());
                             }
                         }
 
-
-
-//                        System.out.println("lowScoreArray"+lowScoreArray[lowScoreArray.length-1]);
-                        System.out.println("lowScoreArray"+lowScoreArray[0]);
-
+//                        pListAdapter = new QRcodeAdapter(requireContext(), qrList);
+//                        profileList.setAdapter(pListAdapter);
 
 
 
-
+//
 
 
 
@@ -253,16 +268,12 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-//                        highScore.setText(document.getLong("highScore").toString());
-//                        lowScore.setText(document.getLong("lowScore").toString());
-
 
 
                         //find number of QR codes in the list
                         Integer numQRCodes = qrList.size();
                         noScanned.setText(numQRCodes.toString());
 
-                        //find total score
 
 
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());

@@ -20,7 +20,7 @@
         android:layout_weight="0.5"
         android:gravity="center"
         android:paddingTop="5sp"
-        android:text="Circular Yellow Carissa's Hellumfaloz"
+        android:text="@{qrCode.name}"
         android:textAlignment="center"
         android:textColor="#3F51B5"
         android:textSize="25sp" />
@@ -32,7 +32,7 @@
         android:layout_weight="0.3"
         android:gravity="center"
         android:paddingTop="5sp"
-        android:text="450099"
+        android:text="@{String.valueOf(qrCode.score)}"
         android:textAlignment="center"
         android:textColor="#3F51B5"
         android:textSize="25sp" />

@@ -9,6 +9,11 @@ import java.util.List;
  * This class defines a QRCode object
  */
 public class QRCode implements Comparable {
+    public QRCode(String name, long score) {
+        this.name = name;
+        this.score = (int) score;
+    }
+
     public void setScore(int score) {
         this.score = score;
     }
