@@ -1,6 +1,5 @@
 package com.example.qriffic;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,9 +19,9 @@ import java.io.FileInputStream;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentSplash#newInstance} factory method to
- * create an instance of this fragment.
+ * Represents a splash screen. Performs preliminary checks
+ * for the existence of a username file, and navigates to profileCreate
+ * if one does not exist. Otherwise navigates to UserProfile.
  */
 public class FragmentSplash extends Fragment {
 
@@ -30,27 +29,23 @@ public class FragmentSplash extends Fragment {
     private String username;
     private DBAccessor dba;
     private NavController navController;
-
-
     public FragmentSplash() {
         // Required empty public constructor
     }
 
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment FragmentSplash.
-     */
-    public static FragmentSplash newInstance() {
-        FragmentSplash fragment = new FragmentSplash();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    /**
+//     * Use this factory method to create a new instance of
+//     * this fragment using the provided parameters.
+//     *
+//     * @return A new instance of fragment FragmentSplash.
+//     */
+//    public static FragmentSplash newInstance() {
+//        FragmentSplash fragment = new FragmentSplash();
+//        Bundle args = new Bundle();
+//
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,37 +88,19 @@ public class FragmentSplash extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
+    /**
+     * Checks if a username has been saved and navigates to profileCreate if not
+     * or to UserProfile if it has.
+     */
     @Override
     public void onResume() {
         super.onResume();
         this.navController = Navigation.findNavController(getView());
-
-//        //wait 5 seconds before navigating to next fragment
-//
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
-
-        //deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
+        deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
         String username = fetchUsername();
-
         Bundle bundle = new Bundle();
-
         if (username == null) {  // handle profile creation if necessary
             this.navController.navigate(R.id.action_fragmentSplash_to_ProfileCreate, bundle);
             Toast.makeText(getActivity(), "1st visit", Toast.LENGTH_SHORT).show();
@@ -131,11 +108,8 @@ public class FragmentSplash extends Fragment {
             bundle.putString("username", username);
             //send bundle to main activity
 
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.putExtra("username", username);
-
-//            startActivity(intent);
-
+            //Intent intent = new Intent(getActivity(), MainActivity.class);
+            //intent.putExtra("username", username);
 
             this.navController.navigate(R.id.action_fragmentSplash_to_userProfile, bundle);
             Toast.makeText(getActivity(), "not 1st visit", Toast.LENGTH_SHORT).show();

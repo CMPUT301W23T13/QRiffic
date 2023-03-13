@@ -18,20 +18,6 @@ public class QRCode implements Comparable {
     private String username;
 
     /**
-     * This defines how we compare QRCodes (last 6 digits of the hash)
-     * @param o
-     * The object to be compared.
-     * @return
-     * 0 if equal, GT 0 if .this is less than o, LT 0 if .this is greater than o
-     */
-    @Override
-    public int compareTo(Object o) {
-        QRCode qrCode = (QRCode) o;
-        return this.idHash.substring(idHash.length()-6)
-                .compareTo(qrCode.idHash.substring(qrCode.idHash.length()-6));
-    }
-
-    /**
      * This is an empty constructor for a QRCode object
      * (Required for Firestore Custom Object Translation)
      */
@@ -92,6 +78,20 @@ public class QRCode implements Comparable {
 
         // score generator
         this.score = Integer.parseInt(last6, 16);
+    }
+
+    /**
+     * This defines how we compare QRCodes (last 6 digits of the hash)
+     * @param o
+     * The object to be compared.
+     * @return
+     * 0 if equal, GT 0 if .this is less than o, LT 0 if .this is greater than o
+     */
+    @Override
+    public int compareTo(Object o) {
+        QRCode qrCode = (QRCode) o;
+        return this.idHash.substring(idHash.length()-6)
+                .compareTo(qrCode.idHash.substring(qrCode.idHash.length()-6));
     }
 
     /**

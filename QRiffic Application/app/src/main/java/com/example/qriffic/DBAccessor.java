@@ -1,20 +1,17 @@
 package com.example.qriffic;
 
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class is used as controller to access the database
+ */
 public class DBAccessor {
 
     private FirebaseFirestore db;

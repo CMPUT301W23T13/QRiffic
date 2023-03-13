@@ -230,7 +230,7 @@ public class PlayerProfile {
      */
     public void deleteQRCode(QRCode qrCode) {
 
-        if (captured.contains(qrCode) == false) {
+        if (!captured.contains(qrCode)) {
             throw new IllegalArgumentException();
         }
         captured.remove(qrCode);
