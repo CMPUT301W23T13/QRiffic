@@ -54,20 +54,43 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         Activity currentActivity = solo.getCurrentActivity();
         FragmentManager fragmentManager = currentActivity.getFragmentManager();
+        Fragment fragment;
 
-        // check if user profile fragment is visible
-        Fragment fragment = fragmentManager.findFragmentById(R.id.user_profile);
+        // check if qr dex fragment is visible
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("QR-DEX");
+        fragment = fragmentManager.findFragmentById(R.id.fragment_qrdex);
         assertTrue(fragment != null && fragment.isVisible());
 
-        //solo.clickOnView(R.id.whatever the three dots view is called)
-        //click on one of the menu options
-        // check if fragment is visible
+        // check if user profile fragment is visible
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("User Profile");
+        fragment = fragmentManager.findFragmentById(R.id.fragment_user_profile);
+        assertTrue(fragment != null && fragment.isVisible());
 
-        //... do this for every frag
+        // check if leaderboard fragment is visible
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Leaderboard");
+        fragment = fragmentManager.findFragmentById(R.id.fragment_leaderboard);
+        assertTrue(fragment != null && fragment.isVisible());
 
+        // check if search users fragment is visible
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Search Users");
+        fragment = fragmentManager.findFragmentById(R.id.fragment_search_user);
+        assertTrue(fragment != null && fragment.isVisible());
 
+        // check if scan qr fragment is visible
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Scan QR");
+        fragment = fragmentManager.findFragmentById(R.id.fragment_temp_add_qr);
+        assertTrue(fragment != null && fragment.isVisible());
 
-
+        // check if map fragment is visible
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnMenuItem("Map");
+        fragment = fragmentManager.findFragmentById(R.id.fragment_map);
+        assertTrue(fragment != null && fragment.isVisible());
     }
 
 
