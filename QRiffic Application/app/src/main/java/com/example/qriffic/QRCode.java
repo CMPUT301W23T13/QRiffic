@@ -9,6 +9,30 @@ import java.util.List;
  * This class defines a QRCode object
  */
 public class QRCode implements Comparable {
+    public QRCode(String name, long score) {
+        this.name = name;
+        this.score = (int) score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setGeoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
+    }
+
+    public void setIdHash(String idHash) {
+        this.idHash = idHash;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     private int score;
 //    private LocationImage locationImage
@@ -139,3 +163,4 @@ public class QRCode implements Comparable {
         return username;
     }
 }
+

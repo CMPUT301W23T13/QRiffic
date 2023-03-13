@@ -35,7 +35,6 @@
             android:id="@+id/pListScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="9999pts"
             android:textAlignment="center"
             android:textColor="@color/purple_500"

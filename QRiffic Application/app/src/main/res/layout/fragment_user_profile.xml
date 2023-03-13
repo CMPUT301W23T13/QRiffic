@@ -27,7 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded_left_component"
-
                 android:backgroundTint="#9D5AFD"
                 android:padding="10dp"
                 android:text="ash_ketchum"
@@ -78,6 +77,7 @@
             android:padding="8dp">
 
             <LinearLayout
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -152,6 +152,7 @@
 
             android:orientation="horizontal"
             android:padding="8dp">
+
 
             <ImageView
                 android:id="@+id/imageTop"
