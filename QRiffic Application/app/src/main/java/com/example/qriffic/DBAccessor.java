@@ -1,13 +1,17 @@
 package com.example.qriffic;
 
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class is used as controller to access the database
+ */
 public class DBAccessor {
 
     private FirebaseFirestore db;
@@ -44,15 +48,58 @@ public class DBAccessor {
      * @return
      * The PlayerProfile object
      */
-    public PlayerProfile getPlayer(String name) {
-        PlayerProfile[] player = {new PlayerProfile()};
-        playersColRef.document(name).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                player[0] = documentSnapshot.toObject(PlayerProfile.class);
-            }
+    public void getPlayer(PlayerProfile player, String name) {
+        /*
+        Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
+                + player.getUniqueID() + " " + player.getEmail() + " "
+                + player.getPhoneNum() + " " + player.getHighScore() + " "
+                + player.getLowScore() + " " + player.getCaptured().size());
+         */
+        playersColRef.document(name).get()
+            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    PlayerProfile fetchedPlayer = documentSnapshot.toObject(PlayerProfile.class);
+
+                    if (fetchedPlayer == null) {
+                        // the username is not in the database
+                        player.fetchFailed();
+                        return;
+                    }
+
+                    player.setUsername(fetchedPlayer.getUsername());
+                    player.setUniqueID(fetchedPlayer.getUniqueID());
+                    player.setEmail(fetchedPlayer.getEmail());
+                    player.setPhoneNum(fetchedPlayer.getPhoneNum());
+                    player.setHighScore(fetchedPlayer.getHighScore());
+                    player.setLowScore(fetchedPlayer.getLowScore());
+
+                    for (QRCode qrCode : fetchedPlayer.getCaptured()) {
+                        player.addQRCode(qrCode);
+                    }
+
+                    player.fetchComplete();
+
+                    /*
+                    // For testing purposes
+                    Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
+                            + player.getUniqueID() + " " + player.getEmail() + " "
+                            + player.getPhoneNum() + " " + player.getHighScore() + " "
+                            + player.getLowScore() + " " + player.getCaptured().size());
+//                     */
+                }
         });
-        return player[0];
+    }
+
+    /**
+     * This method adds a QRCode to a PlayerProfile object's captured list
+     * @param player
+     * The username of the PlayerProfile object to be added to
+     * @param qr
+     * The QRCode object to be added
+     */
+    public void addToCaptured(String player, QRCode qr) {
+        playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
     }
 
     // setQR is a WIP

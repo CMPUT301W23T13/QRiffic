@@ -39,7 +39,7 @@ import java.util.Objects;
  * Use the {@link FragmentUserProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentUserProfile extends Fragment {
+public class FragmentDisplaySearchedUser extends Fragment {
 
 
 
@@ -48,24 +48,6 @@ public class FragmentUserProfile extends Fragment {
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
     private QRcodeAdapter qrAdapter;
-
-
-
-
-
-    public interface OnDataPass {
-        String onDataPass(String data);
-    }
-
-
-    private OnDataPass dataPasser;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        dataPasser = (OnDataPass) context;
-    }
-
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -84,7 +66,7 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-    public FragmentUserProfile() {
+    public FragmentDisplaySearchedUser() {
         // Required empty public constructor
     }
 //
@@ -134,7 +116,7 @@ public class FragmentUserProfile extends Fragment {
 
 
         username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
-        dataPasser.onDataPass(username);
+
 
 //        username = bundle.getString("username");
         System.out.println("username"+username);
@@ -190,6 +172,7 @@ public class FragmentUserProfile extends Fragment {
 
 
 
+
                                 //add to array
                                 lowScoreArray[i] = score;
                                 NameArray[i] = name;
@@ -198,7 +181,7 @@ public class FragmentUserProfile extends Fragment {
 
                                 totalScoreInt += score;
 
-                                totalScore.setText(String.valueOf(totalScoreInt));
+                                totalScore.setText(String.valueOf(totalScoreInt)+"pts");
 
                                 //update highest score in database
                                 if (score > playerProfile.getHighScore()) {
@@ -218,22 +201,22 @@ public class FragmentUserProfile extends Fragment {
 
                         }
 
-
                         dataList = new ArrayList<QRCode>();
                         qrAdapter = new QRcodeAdapter(getContext(), dataList);
 
                         for (int i = 0; i < qrList.size(); i++) {
                             dataList.add(new QRCode(NameArray[i], lowScoreArray[i]));
+                            //notify the adapter that data has been added or changed
+                            qrAdapter.notifyDataSetChanged();
                         }
-
-                        qrAdapter.notifyDataSetChanged();
-                        System.out.println("dataList"+dataList);
-                        System.out.println("qrAdapter"+qrAdapter);
-
                         profileListView = view.findViewById(R.id.profileList);
+
                         profileListView.setAdapter(qrAdapter);
 
 
+
+//                        pListAdapter = new QRcodeAdapter(requireContext(), QRAdapterList);
+//                        profileList.setAdapter(pListAdapter);
 
 
 
@@ -243,18 +226,18 @@ public class FragmentUserProfile extends Fragment {
                         if (lowScoreArray.length > 0) {
                             playerProfile.setLowScore((int) lowScoreArray[0]);
                             document.getReference().update("lowScore", lowScoreArray[0]);
-                            document.getReference().update("highScore", lowScoreArray[lowScoreArray.length - 1]);
-                            lowScore.setText(String.valueOf(playerProfile.getLowScore()));
-                            highScore.setText(String.valueOf(playerProfile.getHighScore()));
-                            totalScore.setText(String.valueOf(totalScoreInt));
                         } else {
                             playerProfile.setLowScore(-1);
-                            playerProfile.setHighScore(-1);
-                            lowScore.setText("N/A");
-                            highScore.setText("N/A");
                             document.getReference().update("lowScore", -1);
-                            document.getReference().update("highScore", -1);
                         }
+
+                        //set the text view for lowest score
+                        if (playerProfile.getLowScore() == -1) {
+                            lowScore.setText("N/A");
+                        } else {
+                            lowScore.setText(String.valueOf(playerProfile.getLowScore()));
+                        }
+                        highScore.setText(String.valueOf(playerProfile.getHighScore()));
 
                         //set name for lowest score and  highest score
                         for (Map.Entry<String, Long> entry : NameMap.entrySet()) {
@@ -266,6 +249,18 @@ public class FragmentUserProfile extends Fragment {
                                 botQRName.setText(entry.getKey());
                             }
                         }
+
+
+
+
+//                        pListAdapter = new QRcodeAdapter(requireContext(), qrList);
+//                        profileList.setAdapter(pListAdapter);
+
+
+
+//
+
+
 
 
 

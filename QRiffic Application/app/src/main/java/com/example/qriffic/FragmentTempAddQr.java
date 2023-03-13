@@ -1,7 +1,17 @@
 package com.example.qriffic;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,19 +19,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentTempAddQr#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentTempAddQr extends Fragment {
+public class FragmentTempAddQr extends Fragment implements LocationListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +45,10 @@ public class FragmentTempAddQr extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private LocationManager locationManager;
+    private double currLongitude;
+    private double currLatitude;
+    private String currCity;
 
     public FragmentTempAddQr() {
         // Required empty public constructor
@@ -70,19 +88,31 @@ public class FragmentTempAddQr extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_temp_add_qr, container, false);
 
+        // get username from the bundle
+        Bundle bundle = getArguments();
+        assert bundle != null;
+        String activeUsername = bundle.getString("username");
+
+        DBAccessor dba = new DBAccessor();
+
         // get reference to the button, EditText, and TextView
         Button addQR = view.findViewById(R.id.button_add_qr);
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
         TextView temp = view.findViewById(R.id.textView_temp);
+        Switch storeQrGeoLocation = view.findViewById(R.id.switch_store_qr_geolocation);
 
-        // create a HashMap for each "layer" of the name of the QR code
-        // create a java List of 6 random names
+        // get reference to the LocationManager
+        locationManager = (LocationManager) requireActivity().getSystemService(getActivity().LOCATION_SERVICE);
 
+        // check if the app has permission to access the device's location
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // if not, request permission
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
-        List<String> names = Arrays.asList("a", "b", "c", "d", "e", "f",
-                "g", "h", "i", "j", "k", "l", "m", "n", "o", "p");
 
         // when the button is clicked, the contents of the qrCode EditText is displayed in the temp TextView
+        // and a QRCode object is created and stored in the database
         addQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,20 +120,93 @@ public class FragmentTempAddQr extends Fragment {
                 if (qrCode.getText().toString().isEmpty()) {
                     temp.setText("Please enter a QR code");
                 }
-                // otherwise, display the hash value of whatever they entered
+                // otherwise, QRCode object info on screen
                 else {
                     QRCode tempQR;
-                    tempQR = new QRCode(qrCode.getText().toString(), null, "Matlock");
+                    // if the switch is on, store the QRCode's geolocation
+                    if (storeQrGeoLocation.isChecked()) {
+
+                        // get the current location (check for location permissions first)
+                        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentTempAddQr.this);
+                            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            currLongitude = location.getLongitude();
+                            currLatitude = location.getLatitude();
+                        }
+
+                        // get the city name from longitude and latitude
+                        Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
+                        List<Address> addresses;
+                        try {
+                            addresses = geocoder.getFromLocation(currLatitude, currLongitude, 1);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        if (addresses != null && addresses.size() > 0) {
+                            Address address = addresses.get(0);
+                            currCity = address.getLocality();
+                        }
+
+                        // when switch is set to on, store the QRCode's geolocation
+                        // TODO: get current user's username instead of "Matlock"
+                        GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                    } else {
+                        // when switch is set to off, store as N/A
+                        GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                    }
+
+                    // display QRCode info on screen
                     String hash = tempQR.getIdHash();
-                    // score and name will not be done here in final product, this is just for example
-                    temp.setText("hash: " + hash +
-                                "\nname: " + names.get(0) + names.get(1) + names.get(2) + names.get(3) + names.get(4) + names.get(5) +
-                                "\nscore: " + tempQR.getScore());
+                    String last6 = hash.substring(hash.length() - 6);
+                    String newText = "last6hex: " + last6 +
+                            "\nname: " + tempQR.getName() +
+                            "\nscore: " + Integer.toString(tempQR.getScore()) +
+                            "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
+                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude() +
+                            "\ncity: " + tempQR.getGeoLocation().getCity();
+                    temp.setText(newText);
+                    // update QRCode collection in database
+                    dba.setQR(tempQR.getIdHash(), tempQR);
+                    // update current player's captured QRCode collection in database
+                    dba.addToCaptured(activeUsername, tempQR);
 
                 }
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+        LocationListener.super.onFlushComplete(requestCode);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        LocationListener.super.onStatusChanged(provider, status, extras);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
     }
 }

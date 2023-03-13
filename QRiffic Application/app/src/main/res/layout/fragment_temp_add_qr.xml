@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_temp_add_qr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FragmentTempAddQr">
@@ -44,8 +45,15 @@
         android:padding="10dp"
         android:text="TEMPORARY"
         android:textColor="@color/design_default_color_error"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
+    <Switch
+        android:id="@+id/switch_store_qr_geolocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom|right"
+        android:layout_marginBottom="65dp"
+        android:text="Track Location?" />
 
 
 </FrameLayout>
