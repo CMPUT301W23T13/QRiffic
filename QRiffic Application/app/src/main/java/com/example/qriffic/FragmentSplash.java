@@ -1,7 +1,5 @@
 package com.example.qriffic;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -31,12 +29,9 @@ public class FragmentSplash extends Fragment {
     private DBAccessor dba;
     private NavController navController;
 
-
     public FragmentSplash() {
         // Required empty public constructor
     }
-
-
 
     /**
      * Use this factory method to create a new instance of
@@ -93,15 +88,6 @@ public class FragmentSplash extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -129,14 +115,6 @@ public class FragmentSplash extends Fragment {
             Toast.makeText(getActivity(), "1st visit", Toast.LENGTH_SHORT).show();
         } else {
             bundle.putString("username", username);
-            //send bundle to main activity
-
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.putExtra("username", username);
-
-//            startActivity(intent);
-
-
             this.navController.navigate(R.id.action_fragmentSplash_to_userProfile, bundle);
             Toast.makeText(getActivity(), "not 1st visit", Toast.LENGTH_SHORT).show();
         }

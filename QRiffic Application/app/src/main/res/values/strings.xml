@@ -1,6 +1,4 @@
 <resources>
-
-
     <string name="app_name">QRiffic</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
@@ -18,12 +16,33 @@
     <string name="scan_qr">Scan QR</string>
     <string name="map">Map</string>
 
-    <string name="username">Username:</string>
-    <string name="enter_username">Enter username</string>
-    <string name="e_mail">E-Mail:</string>
-    <string name="enter_email_id">Enter email id</string>
-    <string name="phone_no">Phone No::</string>
-    <string name="enter_phone_no">Enter phone no</string>
-    <string name="enter">Enter</string>
-    <string name="warning_msg">Warning: The above entered information cannot be changed once entered</string>
+    <!-- Create Profile Screen -->
+    <string name="create_username_title">Username</string>
+    <string name="create_username_hint">Enter username</string>
+    <string name="create_email_title">Email</string>
+    <string name="create_email_hint">Enter email</string>
+    <string name="create_phone_title">Phone</string>
+    <string name="create_phone_hint">Enter phone number</string>
+    <string name="create_button">Create</string>
+    <string name="create_username_warning">That username is already in use</string>
+    <string name="create_warning">Warning: You cannot change your profile information once it has been created</string>
+
+    <!-- Search Screen -->
+    <string name="search_title">Search by Username</string>
+    <string name="search_hint">Enter username</string>
+
+    <!-- Leaderboard Screen -->
+    <string name="leaderboard_main_title">Top Players</string>
+    <string name="leaderboard_qrmon_title">Top QRMons</string>
+    <string name="leaderboard_switch">Switch Leaderboard</string>
+    <string name="leaderboard_player_title">My Score</string>
+    <string name="leaderboard_type">Top in Canada</string>
+
+    <!-- Leaderboard Item -->
+    <string name="leaderboard_rank_text">Rank</string>
+    <string name="leaderboard_username_text">Username</string>
+
+    <!-- Profile Screen -->
+    <string name="user_score_text">Total Score</string>
+    <string name="user_scanned_text">Total Scanned</string>
 </resources>

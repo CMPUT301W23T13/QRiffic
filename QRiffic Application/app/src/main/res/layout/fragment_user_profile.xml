@@ -11,83 +11,125 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_corner"
+
+            android:backgroundTint="@color/purple_500"
+            android:padding="10dp"
+            android:text="ash_ketchum"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="0.5">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_top_component"
+            android:backgroundTint="@color/boxGrey"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:padding="15dp"
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/user_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center">
 
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
+                <TextView
+                    android:id="@+id/user_score_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_score_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
+                <TextView
+                    android:id="@+id/user_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1234567"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_500"
+                    android:textSize="24sp" />
+            </LinearLayout>
 
-                android:layout_marginTop="20dp"
-                android:background="@color/light_baby_blue"
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="ash_ketchum"
-                android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/user_scanned_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_scanned_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/user_scanned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="34"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_500"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_bottom_component"
+            android:backgroundTint="@color/boxDarkGrey"
+            android:layout_marginHorizontal="10dp"
+            android:padding="10dp"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/profile_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
 
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:layout_marginTop="5dp"
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
                 android:text="ashketchum@gmail.com"
                 android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/profile_phone"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_name" />
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/profile_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
 
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:layout_marginTop="5dp"
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
                 android:text="555-867-5309"
                 android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/profile_email"
-                app:layout_constraintTop_toBottomOf="@+id/user_name" />
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="0.5"
+            android:visibility="gone">
+
 
             <TextView
                 android:id="@+id/label_best"
@@ -213,51 +255,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/topQRName3"
                 app:layout_constraintTop_toTopOf="@+id/topQRName3" />
 
-            <TextView
-                android:id="@+id/user_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
 
-
-                android:layout_marginTop="20dp"
-                android:background="@color/light_baby_blue"
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="1234567pts"
-                android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="25sp"
-                app:layout_constraintEnd_toStartOf="@+id/user_scanned"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_email" />
-
-            <TextView
-                android:id="@+id/user_scanned"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-
-                android:layout_marginTop="20dp"
-                android:background="@color/light_baby_blue"
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="34 scanned"
-                android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="25sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/user_score"
-                app:layout_constraintTop_toBottomOf="@+id/profile_phone" />
 
             <ImageView
                 android:id="@+id/imageTop"
@@ -283,7 +281,8 @@
             android:id="@+id/profileList"
             android:layout_width="match_parent"
             android:layout_height="0px"
-            android:layout_weight="0.5" />
+            android:layout_weight="0.5"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </FrameLayout>

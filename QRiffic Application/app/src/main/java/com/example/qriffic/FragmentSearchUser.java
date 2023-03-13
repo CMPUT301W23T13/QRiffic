@@ -10,13 +10,15 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.example.qriffic.databinding.FragmentSearchUserBinding;
 import com.example.qriffic.databinding.ProfileCreateBinding;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -92,7 +94,7 @@ public class FragmentSearchUser extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_user, container, false);
 
-        Button btnSearch = view.findViewById(R.id.search_button);
+        ImageButton btnSearch = view.findViewById(R.id.search_button);
         EditText etSearch = view.findViewById(R.id.search_user_edit_text);
 //
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +141,10 @@ public class FragmentSearchUser extends Fragment {
                                     }
                                 }
                             });
+
+
+
+
 
                 }
             }
