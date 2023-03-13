@@ -57,43 +57,41 @@ public class MainActivityTest {
         Fragment fragment;
 
         // check if qr dex fragment is visible
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnActionBarItem(R.id.toolbar);
         solo.clickOnMenuItem("QR-DEX");
         fragment = fragmentManager.findFragmentById(R.id.fragment_qrdex);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if user profile fragment is visible
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnActionBarItem(R.id.toolbar);
         solo.clickOnMenuItem("User Profile");
         fragment = fragmentManager.findFragmentById(R.id.fragment_user_profile);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if leaderboard fragment is visible
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnActionBarItem(R.id.toolbar);
         solo.clickOnMenuItem("Leaderboard");
         fragment = fragmentManager.findFragmentById(R.id.fragment_leaderboard);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if search users fragment is visible
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnActionBarItem(R.id.toolbar);
         solo.clickOnMenuItem("Search Users");
         fragment = fragmentManager.findFragmentById(R.id.fragment_search_user);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if scan qr fragment is visible
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnActionBarItem(R.id.toolbar);
         solo.clickOnMenuItem("Scan QR");
         fragment = fragmentManager.findFragmentById(R.id.fragment_temp_add_qr);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if map fragment is visible
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnActionBarItem(R.id.toolbar);
         solo.clickOnMenuItem("Map");
         fragment = fragmentManager.findFragmentById(R.id.fragment_map);
         assertTrue(fragment != null && fragment.isVisible());
     }
-
-
 
 
     @After
