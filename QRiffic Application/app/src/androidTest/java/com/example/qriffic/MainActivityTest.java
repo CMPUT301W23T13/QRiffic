@@ -58,37 +58,37 @@ public class MainActivityTest {
 
         // check if qr dex fragment is visible
         solo.clickOnActionBarItem(R.id.toolbar);
-        solo.clickOnMenuItem("QR-DEX");
+        solo.clickInList(1);
         fragment = fragmentManager.findFragmentById(R.id.fragment_qrdex);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if user profile fragment is visible
         solo.clickOnActionBarItem(R.id.toolbar);
-        solo.clickOnMenuItem("User Profile");
+        solo.clickInList(2);
         fragment = fragmentManager.findFragmentById(R.id.fragment_user_profile);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if leaderboard fragment is visible
         solo.clickOnActionBarItem(R.id.toolbar);
-        solo.clickOnMenuItem("Leaderboard");
+        solo.clickInList(3);
         fragment = fragmentManager.findFragmentById(R.id.fragment_leaderboard);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if search users fragment is visible
         solo.clickOnActionBarItem(R.id.toolbar);
-        solo.clickOnMenuItem("Search Users");
+        solo.clickInList(4);
         fragment = fragmentManager.findFragmentById(R.id.fragment_search_user);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if scan qr fragment is visible
         solo.clickOnActionBarItem(R.id.toolbar);
-        solo.clickOnMenuItem("Scan QR");
+        solo.clickInList(5);
         fragment = fragmentManager.findFragmentById(R.id.fragment_temp_add_qr);
         assertTrue(fragment != null && fragment.isVisible());
 
         // check if map fragment is visible
         solo.clickOnActionBarItem(R.id.toolbar);
-        solo.clickOnMenuItem("Map");
+        solo.clickInList(6);
         fragment = fragmentManager.findFragmentById(R.id.fragment_map);
         assertTrue(fragment != null && fragment.isVisible());
     }
