@@ -3,7 +3,6 @@ package com.example.qriffic;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -36,24 +36,6 @@ import java.util.ArrayList;
 public class FragmentUserProfile extends Fragment {
 
 
-    public interface OnDataPass {
-        String onDataPass(String data);
-    }
-
-
-    private OnDataPass dataPasser;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        dataPasser = (OnDataPass) context;
-    }
-
-
-
-
-
-
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -65,9 +47,6 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-
-
-
     //initialize variables
     private String username;
 
@@ -76,12 +55,25 @@ public class FragmentUserProfile extends Fragment {
     public TextView tvUsername;
 
 
-
-
+//    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+//    private static final String ARG_PARAM2 = "param2";
+//
+//    // TODO: Rename and change types of parameters
+//    private String mParam1;
+//    private String mParam2;
+//
+//
+//    private String username;
+//    private String email;
+//    private Integer score;
+//
+//
     public FragmentUserProfile() {
         // Required empty public constructor
     }
-
+//
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -107,8 +99,7 @@ public class FragmentUserProfile extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
         Bundle bundle = getArguments();
-        username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
-        dataPasser.onDataPass(username);
+        username = bundle.getString("username");
         System.out.println("username"+username);
         PlayerProfile playerProfile = new PlayerProfile();
         //get from database the user data based on username

@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1">
+    android:layout_marginHorizontal="10dp"
+    android:background="@drawable/rounded_corner"
+    android:backgroundTint="@color/boxGrey"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/pListImage"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="0.2"
-        app:srcCompat="@drawable/eg_identicon" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/eg_identicon" />
 
-    <TextView
-        android:id="@+id/pListName"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="1"
         android:gravity="center"
-        android:paddingTop="5sp"
-        android:text="Circular Yellow Carissa's Hellumfaloz"
-        android:textAlignment="center"
-        android:textColor="#3F51B5"
-        android:textSize="25sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/pListScore"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:gravity="center"
-        android:paddingTop="5sp"
-        android:text="450099"
-        android:textAlignment="center"
-        android:textColor="#3F51B5"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/pListName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QRMon Name"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/pListScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="9999pts"
+            android:textAlignment="center"
+            android:textColor="@color/purple_500"
+            android:textSize="20sp" />
+    </LinearLayout>
 </LinearLayout>
