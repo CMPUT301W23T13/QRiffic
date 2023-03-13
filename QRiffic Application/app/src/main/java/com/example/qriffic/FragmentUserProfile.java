@@ -251,18 +251,17 @@ public class FragmentUserProfile extends Fragment {
                         if (lowScoreArray.length > 0) {
                             playerProfile.setLowScore((int) lowScoreArray[0]);
                             document.getReference().update("lowScore", lowScoreArray[0]);
+                            document.getReference().update("highScore", lowScoreArray[lowScoreArray.length - 1]);
+                            lowScore.setText(String.valueOf(playerProfile.getLowScore()));
+                            highScore.setText(String.valueOf(playerProfile.getHighScore()));
                         } else {
                             playerProfile.setLowScore(-1);
-                            document.getReference().update("lowScore", -1);
-                        }
-
-                        //set the text view for lowest score
-                        if (playerProfile.getLowScore() == -1) {
+                            playerProfile.setHighScore(-1);
                             lowScore.setText("N/A");
-                        } else {
-                            lowScore.setText(String.valueOf(playerProfile.getLowScore()));
+                            highScore.setText("N/A");
+                            document.getReference().update("lowScore", -1);
+                            document.getReference().update("highScore", -1);
                         }
-                        highScore.setText(String.valueOf(playerProfile.getHighScore()));
 
                         //set name for lowest score and  highest score
                         for (Map.Entry<String, Long> entry : NameMap.entrySet()) {
