@@ -17,8 +17,6 @@ import android.widget.FrameLayout;
 import com.example.qriffic.databinding.FragmentSearchUserBinding;
 import com.example.qriffic.databinding.ProfileCreateBinding;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
