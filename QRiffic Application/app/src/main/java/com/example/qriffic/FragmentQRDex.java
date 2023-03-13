@@ -5,14 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.qriffic.databinding.FragmentQrdexBinding;
 
-import java.util.ArrayList;
-
+/**
+ * Represents an encyclopedia of QR codes, similar to a pokedex.
+ */
 public class FragmentQRDex extends Fragment {
 
     private FragmentQrdexBinding binding;
