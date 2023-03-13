@@ -173,50 +173,50 @@ public class FragmentUserProfile extends Fragment {
                         HashMap<String, Long> NameMap = new HashMap<>();
 
                         for (int i = 0; i < qrList.size(); i++) {
-                        Object obj = qrList.get(i);
-                        if (obj instanceof HashMap) {
-                            HashMap<String, Object> qrMap = (HashMap<String, Object>) obj;
-                            long score = (long) qrMap.get("score");
-                            String name = (String) qrMap.get("name");
+                            Object obj = qrList.get(i);
+                            if (obj instanceof HashMap) {
+                                HashMap<String, Object> qrMap = (HashMap<String, Object>) obj;
+                                long score = (long) qrMap.get("score");
+                                String name = (String) qrMap.get("name");
 
-                            NameMap.put(name, score);
+                                NameMap.put(name, score);
 
-//                            //use NameMap hashmap to add to adapter
-//                            pListAdapter.add(new QRCode());
-//
-//                            //notifying the adapter that data has been added or changed
-//                            pListAdapter.notifyDataSetChanged();
-
-
+    //                            //use NameMap hashmap to add to adapter
+    //                            pListAdapter.add(new QRCode());
+    //
+    //                            //notifying the adapter that data has been added or changed
+    //                            pListAdapter.notifyDataSetChanged();
 
 
-                            //add to array
-                            lowScoreArray[i] = score;
-                            NameArray[i] = name;
 
-                            //get total score
 
-                            totalScoreInt += score;
+                                //add to array
+                                lowScoreArray[i] = score;
+                                NameArray[i] = name;
 
-                            totalScore.setText(String.valueOf(totalScoreInt)+"pts");
+                                //get total score
 
-                            //update highest score in database
-                            if (score > playerProfile.getHighScore()) {
-                                playerProfile.setHighScore((int) score);
-                                document.getReference().update("highScore", score);
-                            }
+                                totalScoreInt += score;
 
-                            //update lowest score in database
-                            if (score < playerProfile.getLowScore()) {
-                                playerProfile.setLowScore((int) score);
-                                document.getReference().update("lowScore", score);
+                                totalScore.setText(String.valueOf(totalScoreInt)+"pts");
+
+                                //update highest score in database
+                                if (score > playerProfile.getHighScore()) {
+                                    playerProfile.setHighScore((int) score);
+                                    document.getReference().update("highScore", score);
+                                }
+
+                                //update lowest score in database
+                                if (score < playerProfile.getLowScore()) {
+                                    playerProfile.setLowScore((int) score);
+                                    document.getReference().update("lowScore", score);
+                                }
+
+
                             }
 
 
                         }
-
-
-                    }
 
                         for (int i = 0; i < qrList.size(); i++) {
                             QRAdapterList.add(new QRCode(NameArray[i], lowScoreArray[i]));
@@ -231,12 +231,21 @@ public class FragmentUserProfile extends Fragment {
 
                         //sort array
                         Arrays.sort(lowScoreArray);
-                        //set lowest score for player
-                        playerProfile.setLowScore((int) lowScoreArray[0]);
-                        //set lowest score for database
-                        document.getReference().update("lowScore", lowScoreArray[0]);
+                        //set lowest score for player and database
+                        if (lowScoreArray.length > 0) {
+                            playerProfile.setLowScore((int) lowScoreArray[0]);
+                            document.getReference().update("lowScore", lowScoreArray[0]);
+                        } else {
+                            playerProfile.setLowScore(-1);
+                            document.getReference().update("lowScore", -1);
+                        }
+
                         //set the text view for lowest score
-                        lowScore.setText(String.valueOf(playerProfile.getLowScore()));
+                        if (playerProfile.getLowScore() == -1) {
+                            lowScore.setText("N/A");
+                        } else {
+                            lowScore.setText(String.valueOf(playerProfile.getLowScore()));
+                        }
                         highScore.setText(String.valueOf(playerProfile.getHighScore()));
 
                         //set name for lowest score and  highest score
