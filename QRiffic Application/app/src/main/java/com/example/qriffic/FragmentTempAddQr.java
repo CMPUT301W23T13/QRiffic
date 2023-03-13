@@ -88,11 +88,6 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_temp_add_qr, container, false);
 
-        // get username from the bundle
-        Bundle bundle = getArguments();
-        assert bundle != null;
-        String activeUsername = bundle.getString("username");
-
         DBAccessor dba = new DBAccessor();
 
         // get reference to the button, EditText, and TextView
@@ -150,11 +145,11 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                         // when switch is set to on, store the QRCode's geolocation
                         // TODO: get current user's username instead of "Matlock"
                         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     } else {
                         // when switch is set to off, store as N/A
                         GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, "Matlock");
                     }
 
                     // display QRCode info on screen
@@ -170,7 +165,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     // update QRCode collection in database
                     dba.setQR(tempQR.getIdHash(), tempQR);
                     // update current player's captured QRCode collection in database
-                    dba.addToCaptured(activeUsername, tempQR);
+                    dba.addToCaptured("Matlock", tempQR);
 
                 }
             }

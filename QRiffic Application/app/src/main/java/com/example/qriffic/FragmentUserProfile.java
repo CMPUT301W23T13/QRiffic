@@ -3,7 +3,6 @@ package com.example.qriffic;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +20,7 @@ import com.google.android.material.color.utilities.Score;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -39,6 +39,7 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class FragmentUserProfile extends Fragment {
+
 
 
     DBAccessor dba = new DBAccessor();
@@ -63,6 +64,7 @@ public class FragmentUserProfile extends Fragment {
 
 
 
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -73,9 +75,6 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-
-
-
     //initialize variables
     private String username;
 
@@ -83,12 +82,25 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-
-
+//    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+//    private static final String ARG_PARAM2 = "param2";
+//
+//    // TODO: Rename and change types of parameters
+//    private String mParam1;
+//    private String mParam2;
+//
+//
+//    private String username;
+//    private String email;
+//    private Integer score;
+//
+//
     public FragmentUserProfile() {
         // Required empty public constructor
     }
-
+//
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -115,6 +127,7 @@ public class FragmentUserProfile extends Fragment {
 
         Bundle bundle = getArguments();
 
+
         //initialize the text views
         TextView tvUsername = view.findViewById(R.id.user_name);
         TextView tvEmail = view.findViewById(R.id.profile_email);
@@ -135,6 +148,10 @@ public class FragmentUserProfile extends Fragment {
 
         username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
         dataPasser.onDataPass(username);
+
+        username = bundle.getString("username");
+        System.out.println("username"+username);
+
         PlayerProfile playerProfile = new PlayerProfile();
 
 

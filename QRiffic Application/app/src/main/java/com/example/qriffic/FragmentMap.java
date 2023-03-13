@@ -3,12 +3,10 @@ package com.example.qriffic;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest.permission;
 
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,7 +24,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 // DIFFERENT APPROACH TO IMPLEMENT MAPS
@@ -94,9 +91,6 @@ import java.util.Objects;
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
-
-
-
 
     GoogleMap map;
     MapView mapView;
@@ -168,10 +162,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         CameraUpdateFactory.newLatLng(new LatLng(0, 0));
         CameraUpdateFactory.zoomTo(15);
     }
-
-
-
-
 
 
     @Override
