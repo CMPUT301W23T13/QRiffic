@@ -67,9 +67,6 @@ public class DBAccessor {
                         return;
                     }
 
-                    fetchedPlayer = new PlayerProfile(null, null, null,
-                            null, 0, 0, new ArrayList<>());
-
                     player.setUsername(fetchedPlayer.getUsername());
                     player.setUniqueID(fetchedPlayer.getUniqueID());
                     player.setEmail(fetchedPlayer.getEmail());
