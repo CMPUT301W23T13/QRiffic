@@ -18,7 +18,7 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rounded_corner"
 
             android:backgroundTint="@color/purple_500"
@@ -31,20 +31,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rounded_top_component"
             android:backgroundTint="@color/boxGrey"
-            android:layout_marginTop="10dp"
-            android:layout_marginHorizontal="10dp"
-            android:padding="15dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/user_score_text"
@@ -53,7 +53,7 @@
                     android:text="@string/user_score_text"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/user_score"
@@ -62,15 +62,15 @@
                     android:text="1234567"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/user_scanned_text"
@@ -79,7 +79,7 @@
                     android:text="@string/user_scanned_text"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/user_scanned"
@@ -89,7 +89,7 @@
                     android:text="34"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -100,7 +100,7 @@
             android:background="@drawable/rounded_bottom_component"
             android:backgroundTint="@color/boxDarkGrey"
             android:layout_marginHorizontal="10dp"
-            android:padding="10dp"
+            android:padding="8dp"
             android:gravity="center">
 
             <TextView
@@ -111,7 +111,7 @@
                 android:text="ashketchum@gmail.com"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/profile_phone"
@@ -121,168 +121,135 @@
                 android:text="555-867-5309"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/label_best"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
+            android:text="@string/label_best"
+            android:textAlignment="center"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="0.5"
-            android:visibility="gone">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#BCDAF8"
+            android:gravity="center"
 
-
-            <TextView
-                android:id="@+id/label_best"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="Highest Score"
-                android:textAlignment="center"
-                android:textColor="@android:color/holo_green_dark"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageTop"
-                app:layout_constraintTop_toBottomOf="@+id/topQRName" />
-
-            <TextView
-                android:id="@+id/topQRName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="Hexagonal Purple Australian Foozodza"
-                android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@+id/imageTop"
-                app:layout_constraintTop_toTopOf="@+id/imageTop" />
-
-            <TextView
-                android:id="@+id/topQRName2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="512pts"
-                android:textAlignment="center"
-                android:textColor="@android:color/holo_green_light"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/label_best"
-                app:layout_constraintTop_toBottomOf="@+id/topQRName" />
-
-            <TextView
-                android:id="@+id/topQRName3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="10pts"
-                android:textAlignment="center"
-                android:textColor="@android:color/holo_red_light"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageBot"
-                app:layout_constraintTop_toTopOf="@+id/imageBot" />
-
-            <TextView
-                android:id="@+id/botQRName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="Grand Blue Ritwik's Fochamnit"
-                android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageBot"
-                app:layout_constraintTop_toBottomOf="@+id/label_bot" />
-
-            <TextView
-                android:id="@+id/label_bot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-
-                android:paddingStart="10sp"
-                android:paddingTop="5sp"
-                android:paddingEnd="10sp"
-                android:paddingBottom="5sp"
-                android:text="Lowest Score"
-                android:textAlignment="center"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/topQRName3"
-                app:layout_constraintTop_toTopOf="@+id/topQRName3" />
-
-
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/imageTop"
-                android:layout_width="82dp"
-                android:layout_height="71dp"
-                android:src="@drawable/eg_identicon"
-                app:layout_constraintBottom_toTopOf="@+id/imageBot"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_score" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/eg_identicon" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/topQRName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hexagonal Purple Australian Foozodza"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/topQRName2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="512pts"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_500"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/label_bot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+
+            android:text="@string/label_bot"
+            android:textAlignment="center"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#FDBBBB"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/imageBot"
-                android:layout_width="87dp"
-                android:layout_height="71dp"
-                android:src="@drawable/eg_identicon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageTop" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/eg_identicon" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/botQRName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grand Blue Ritwik's Fochamnit"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/topQRName3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="10pts"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_500"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/all_qrmon_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
+            android:text="@string/all_qrmon_label"
+            android:textAlignment="center"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp" />
 
         <ListView
             android:id="@+id/profileList"
             android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="0.5"
-            android:visibility="gone"/>
-    </LinearLayout>
+            android:layout_height="0px" />
 
+    </LinearLayout>
 </FrameLayout>

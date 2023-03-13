@@ -45,4 +45,7 @@
     <!-- Profile Screen -->
     <string name="user_score_text">Total Score</string>
     <string name="user_scanned_text">Total Scanned</string>
+    <string name="label_best">Highest Score</string>
+    <string name="label_bot">Lowest Score</string>
+    <string name="all_qrmon_label">All QRMons</string>
 </resources>
