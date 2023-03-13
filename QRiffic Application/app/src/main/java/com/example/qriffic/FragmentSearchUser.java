@@ -131,8 +131,8 @@ public class FragmentSearchUser extends Fragment {
                                         playerprofile.setUsername(etSearch.getText().toString());
 
                                         //set the player fields using db accessor
-                                        dba = new DBAccessor();
-                                        dba.setPlayer(playerprofile);
+//                                        dba = new DBAccessor();
+//                                        dba.setPlayer(playerprofile);
 //                                      send the username to the playerprofile fragment
                                         bundle.putString("username", etSearch.getText().toString());
                                         fragmentUserProfile.setArguments(bundle);

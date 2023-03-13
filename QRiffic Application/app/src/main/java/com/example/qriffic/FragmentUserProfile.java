@@ -72,8 +72,7 @@ public class FragmentUserProfile extends Fragment {
     private String username;
 
 
-    //view id's
-    public TextView tvUsername;
+
 
 
 
@@ -107,9 +106,24 @@ public class FragmentUserProfile extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
         Bundle bundle = getArguments();
+
+        //initialize the text views
+        TextView tvUsername = view.findViewById(R.id.user_name);
+        TextView tvEmail = view.findViewById(R.id.profile_email);
+        TextView tvPhoneNum = view.findViewById(R.id.profile_phone);
+        TextView noScanned = view.findViewById(R.id.user_scanned);
+        TextView totalScore = view.findViewById(R.id.user_score);
+
+        //initialize and array list of QR codes
+        qrList = new ArrayList<>();
+        profileList = view.findViewById(R.id.profileList);
+        pListAdapter = new ArrayAdapter<>(getContext(),R.layout.qr_dex_content, qrList);
+        profileList.setAdapter(pListAdapter);
+
+
+
         username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
         dataPasser.onDataPass(username);
-        System.out.println("username"+username);
         PlayerProfile playerProfile = new PlayerProfile();
         //get from database the user data based on username
         DocumentReference docRef = db.collection("Players").document(username);
@@ -120,10 +134,30 @@ public class FragmentUserProfile extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+
+                        //set the user data to the player profile
                         playerProfile.setEmail(document.getString("email"));
                         playerProfile.setHighScore(document.getLong("highScore").intValue());
                         playerProfile.setLowScore(document.getLong("lowScore").intValue());
                         playerProfile.setPhoneNum(document.getString("phoneNum"));
+                        qrList = (ArrayList<QRCode>) document.get("captured");
+                        System.out.println("qrList"+qrList);
+
+
+                        //set the text views to the user data
+                        tvUsername.setText(username);
+                        tvEmail.setText(playerProfile.getEmail());
+                        tvPhoneNum.setText(playerProfile.getPhoneNum());
+
+
+
+                        //find number of QR codes in the list
+                        Integer numQRCodes = qrList.size();
+                        noScanned.setText(numQRCodes.toString());
+
+                        //find total score
+
+
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                     } else {
@@ -138,6 +172,7 @@ public class FragmentUserProfile extends Fragment {
 
 
 
+
         return view;
     }
 
@@ -146,7 +181,12 @@ public class FragmentUserProfile extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         profileList = view.findViewById(R.id.profileList);
         pListAdapter = new ArrayAdapter<>(getContext(),R.layout.qr_dex_content, qrList);
+        PlayerProfile playerProfile = new PlayerProfile();
+//        System.out.println("qrList in viewcreated:"+qrList);
 //        profileList.setAdapter(pListAdapter);
+
+
+//        TextView tvHighScore = view.findViewById(R.id.profile_high_score);
 
 
         //code to add QR codes to the list goes here
