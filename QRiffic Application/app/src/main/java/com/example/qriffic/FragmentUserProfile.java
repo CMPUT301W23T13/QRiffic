@@ -254,6 +254,7 @@ public class FragmentUserProfile extends Fragment {
                             document.getReference().update("highScore", lowScoreArray[lowScoreArray.length - 1]);
                             lowScore.setText(String.valueOf(playerProfile.getLowScore()));
                             highScore.setText(String.valueOf(playerProfile.getHighScore()));
+                            totalScore.setText(String.valueOf(totalScoreInt));
                         } else {
                             playerProfile.setLowScore(-1);
                             playerProfile.setHighScore(-1);

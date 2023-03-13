@@ -97,7 +97,7 @@
                     android:id="@+id/user_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_na"
+                    android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
                     android:textSize="24sp" />
