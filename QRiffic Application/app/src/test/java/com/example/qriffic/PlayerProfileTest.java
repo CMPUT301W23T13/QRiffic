@@ -3,7 +3,7 @@ package com.example.qriffic;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 
 /**
@@ -11,19 +11,17 @@ import java.util.ArrayList;
  */
 public class PlayerProfileTest {
 
-    private QRCode mockQRCode() throws NoSuchAlgorithmException {
-        return new QRCode("abcdef");
+    private QRCode mockQRCode() {
+        return new QRCode("abcdef", null, null);
     }
 
-    private PlayerProfile mockPlayerProfile() throws NoSuchAlgorithmException {
+    private PlayerProfile mockPlayerProfile() {
 
-        return new PlayerProfile("username", "uuid",
-                new ContactInfo("Canada", "Edmonton", "999.999.9999",
-                        "username@outlook.com"), 0, 0, new ArrayList<QRCode>());
+        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999", 0, 0, new ArrayList<QRCode>());
     }
 
     @Test
-    void testGetters() throws NoSuchAlgorithmException {
+    void testGetters() {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
 
@@ -33,14 +31,10 @@ public class PlayerProfileTest {
         assertEquals("uuid", mockPlayerProfile.getUniqueID());
         assertNotEquals("uuid2", mockPlayerProfile.getUniqueID());
 
-        assertEquals("Canada", mockPlayerProfile.getContactInfo().getCountry());
-        assertEquals("Edmonton", mockPlayerProfile.getContactInfo().getCity());
-        assertEquals("999.999.9999", mockPlayerProfile.getContactInfo().getPhone());
-        assertEquals("username@outlook.com", mockPlayerProfile.getContactInfo().getEmail());
-        assertNotEquals("USA", mockPlayerProfile.getContactInfo().getCountry());
-        assertNotEquals("New York", mockPlayerProfile.getContactInfo().getCity());
-        assertNotEquals("123.999.9999", mockPlayerProfile.getContactInfo().getPhone());
-        assertNotEquals("player@outlook.com", mockPlayerProfile.getContactInfo().getEmail());
+        assertEquals("999.999.9999", mockPlayerProfile.getPhoneNum());
+        assertEquals("username@outlook.com", mockPlayerProfile.getEmail());
+        assertNotEquals("123.999.9999", mockPlayerProfile.getPhoneNum());
+        assertNotEquals("player@outlook.com", mockPlayerProfile.getEmail());
 
         // CHANGE THIS WHEN WE HAVE SCORE CALCULATOR
         assertEquals(0, mockPlayerProfile.getHighScore());
@@ -54,7 +48,27 @@ public class PlayerProfileTest {
     }
 
     @Test
-    void testAddQRCode() throws NoSuchAlgorithmException {
+    void testSetters() {
+        PlayerProfile mockPlayerProfile = mockPlayerProfile();
+
+        mockPlayerProfile.setUsername("testUsername");
+        assertEquals(mockPlayerProfile.getUsername(), "testUsername");
+
+        mockPlayerProfile.setEmail("testEmail");
+        assertEquals(mockPlayerProfile.getEmail(), "testEmail");
+
+        mockPlayerProfile.setPhoneNum("testPhoneNum");
+        assertEquals(mockPlayerProfile.getPhoneNum(), "testPhoneNum");
+
+        mockPlayerProfile.setHighScore(100);
+        assertEquals(mockPlayerProfile.getHighScore(), 100);
+
+        mockPlayerProfile.setLowScore(100);
+        assertEquals(mockPlayerProfile.getLowScore(), 100);
+    }
+
+    @Test
+    void testAddQRCode() {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();
@@ -68,15 +82,15 @@ public class PlayerProfileTest {
         assertNotEquals(0, mockPlayerProfile.getCaptured().size());
 
         assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
-        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123")));
+        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", null, null)));
     }
 
     @Test
-    void testDeleteQRCode() throws NoSuchAlgorithmException {
+    void testDeleteQRCode() {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();
-        QRCode mockQRCode2 = new QRCode("123");
+        QRCode mockQRCode2 = new QRCode("123", null, null);
 
         mockPlayerProfile.addQRCode(mockQRCode);
 

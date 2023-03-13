@@ -1,131 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_crt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentProfileCreate"
-    android:id="@+id/profile_crt"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:visibility="visible"
+    tools:context=".FragmentProfileCreate">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3">
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="45dp"
+
+                android:text="@string/create_username_title"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_username"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="30dp"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/boxGrey"
+
+                android:hint="@string/create_username_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingHorizontal="10dp" />
+
+            <TextView
+                android:id="@+id/username_warning"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+
+                android:text="@string/create_username_warning"
+                android:textAlignment="center"
+                android:textColor="#D60A0A"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="45dp"
+
+                android:text="@string/create_email_title"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="30dp"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/boxGrey"
+                android:layout_marginBottom="30dp"
+
+                android:hint="@string/create_email_hint"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="10dp" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="45dp"
+
+                android:text="@string/create_phone_title"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_phone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="30dp"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/boxGrey"
+
+                android:hint="@string/create_phone_hint"
+                android:importantForAutofill="no"
+                android:inputType="phone"
+                android:paddingHorizontal="10dp" />
+        </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="@string/username"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_username"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp" />
+        <Button
+            android:id="@+id/enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_button"
+            app:layout_constraintBottom_toBottomOf="parent"
 
-    <EditText
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.2"
+            tools:ignore="MissingConstraints" />
 
-        android:id="@+id/edit_username"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#CCC8C8"
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_warning"
+            android:textAlignment="center"
+            android:textColor="#E60A0A"
 
-        android:hint="@string/enter_username"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp" />
+            android:textSize="20sp"
 
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="@string/e_mail"
-
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_email"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <EditText
-        android:id="@+id/edit_email"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#CCC8C8"
-        android:hint="@string/enter_email_id"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/phone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        android:importantForAutofill="no" />
-
-    <TextView
-        android:id="@+id/phone"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="@string/phone_no"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_phone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <EditText
-        android:id="@+id/edit_phone"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#CCC8C8"
-        android:hint="@string/enter_phone_no"
-        android:importantForAutofill="no"
-        android:inputType="phone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.428"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-16dp" />
-
-    <Button
-        android:id="@+id/enter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enter"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_phone"
-        app:layout_constraintVertical_bias="0.193"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="@string/warning_msg"
-        android:textAlignment="center"
-        android:textColor="#E60A0A"
-        android:textSize="20sp"
-
-        android:textStyle="bold"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter"
-        app:layout_constraintVertical_bias="0.175"
-        tools:layout_editor_absoluteX="0dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/enter"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

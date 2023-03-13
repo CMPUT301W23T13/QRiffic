@@ -22,4 +22,7 @@
     <style name="Theme.QRiffic.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.QRiffic.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <color name="boxGrey">#E1E3E5</color>
+    <color name="boxDarkGrey">#C5C7C9</color>
 </resources>

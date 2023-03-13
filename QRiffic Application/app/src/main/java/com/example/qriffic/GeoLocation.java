@@ -1,12 +1,15 @@
 package com.example.qriffic;
 
 /**
- * This class defines a location on earth
+ * This class defines a GeoLocation
  */
-public class Location {
+public class GeoLocation {
 
-    private String longitude;
-    private String latitude;
+    private double longitude;
+    private double latitude;
+    private String city;
+
+    public GeoLocation() {}
 
     /**
      * This is the constructor for a Location object
@@ -15,35 +18,36 @@ public class Location {
      * @param latitude
      * The latitude as a string
      */
-    public Location(String longitude, String latitude) {
+    public GeoLocation(double longitude, double latitude, String city) {
 
         this.longitude = longitude;
         this.latitude = latitude;
+        this.city = city;
     }
 
     /**
      * This method returns the longitude of a Location object
      * @return
-     * The longitude as a string
+     * The longitude as a double
      */
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
     /**
      * This method returns the latitude of a Location object
      * @return
-     * The latitude as a string
+     * The latitude as a double
      */
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
     /**
-     * This method returns the longitude and latitude of a Location object
+     * This method returns the city of a Location object
      * @return
-     * The longitude and latitude combined, separated by a comma, as one string
+     * The city as a string
      */
-    public String getLongLat() {
-        return longitude + ", " + latitude;
+    public String getCity() {
+        return city;
     }
 }
