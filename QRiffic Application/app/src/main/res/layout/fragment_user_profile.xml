@@ -52,7 +52,7 @@
                     android:text="ashketchum@gmail.com"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/profile_phone"
@@ -62,7 +62,7 @@
                     android:text="555-867-5309"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -91,7 +91,7 @@
                     android:text="@string/user_score_text"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/user_score"
@@ -100,7 +100,7 @@
                     android:text="1234567"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -117,7 +117,7 @@
                     android:text="@string/user_scanned_text"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/user_scanned"
@@ -127,7 +127,7 @@
                     android:text="34"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -140,7 +140,7 @@
             android:text="@string/label_best"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -173,7 +173,7 @@
                     android:text="Hexagonal Purple Australian Foozodza"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/topQRName2"
@@ -183,7 +183,7 @@
                     android:text="512pts"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -196,7 +196,7 @@
             android:text="@string/label_bot"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                     android:text="Grand Blue Ritwik's Fochamnit"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/topQRName3"
@@ -238,7 +238,7 @@
                     android:text="10pts"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -251,7 +251,7 @@
             android:text="@string/all_qrmon_label"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <ListView
             android:id="@+id/profileList"
