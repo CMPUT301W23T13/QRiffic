@@ -61,11 +61,6 @@ public class FragmentUserProfile extends Fragment {
 
 
 
-
-
-
-
-
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -141,7 +136,7 @@ public class FragmentUserProfile extends Fragment {
         TextView botQRName = view.findViewById(R.id.botQRName);
 
         //initialize and array list of QR codes
-        qrList = new ArrayList<QRCode>();
+        qrList = new ArrayList<>();
         profileList = view.findViewById(R.id.profileList);
 
 
@@ -150,7 +145,7 @@ public class FragmentUserProfile extends Fragment {
         username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
         dataPasser.onDataPass(username);
 
-        username = bundle.getString("username");
+//        username = bundle.getString("username");
         System.out.println("username"+username);
 
         PlayerProfile playerProfile = new PlayerProfile();
@@ -167,6 +162,9 @@ public class FragmentUserProfile extends Fragment {
                     if (document.exists()) {
 
                         //set the user data to the player profile
+                        playerProfile.setUsername(document.getString("username"));
+                        System.out.println("username from useeprofile fragment"+playerProfile.getUsername());
+
                         playerProfile.setEmail(document.getString("email"));
                         playerProfile.setHighScore(document.getLong("highScore").intValue());
                         playerProfile.setLowScore(document.getLong("lowScore").intValue());
@@ -277,6 +275,9 @@ public class FragmentUserProfile extends Fragment {
                             }
                         }
 
+
+
+
 //                        pListAdapter = new QRcodeAdapter(requireContext(), qrList);
 //                        profileList.setAdapter(pListAdapter);
 
@@ -289,7 +290,7 @@ public class FragmentUserProfile extends Fragment {
 
 
                         //set the text views to the user data
-                        tvUsername.setText(username);
+                        tvUsername.setText(playerProfile.getUsername());
                         tvEmail.setText(playerProfile.getEmail());
                         tvPhoneNum.setText(playerProfile.getPhoneNum());
 
