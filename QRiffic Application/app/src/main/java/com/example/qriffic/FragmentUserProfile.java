@@ -214,7 +214,7 @@ public class FragmentUserProfile extends Fragment {
 
                                 totalScoreInt += score;
 
-                                totalScore.setText(String.valueOf(totalScoreInt)+"pts");
+                                totalScore.setText(String.valueOf(totalScoreInt));
 
                                 //update highest score in database
                                 if (score > playerProfile.getHighScore()) {
