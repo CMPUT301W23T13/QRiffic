@@ -1,7 +1,10 @@
 package com.example.qriffic;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +21,9 @@ import android.widget.FrameLayout;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import com.journeyapps.barcodescanner.CaptureActivity;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 public class MainActivity extends AppCompatActivity implements FragmentUserProfile.OnDataPass {
 
@@ -67,11 +73,33 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
                 changeFragment(new FragmentMap());
                 break;
             case R.id.scan_QR:
-                changeFragment(new FragmentTempAddQr()); // TEMP FRAGMENT!
+                scanCode();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void scanCode() {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Scan a QR code");
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        barLauncher.launch(options);
+    }
+
+    ActivityResultLauncher barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Scan Result");
+            builder.setMessage(result.getContents());
+            builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+        }
+    });
 
     @Override
     public boolean onSupportNavigateUp() {
