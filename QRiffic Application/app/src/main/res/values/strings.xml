@@ -50,5 +50,7 @@
     <string name="all_qrmon_label">All QRMons</string>
 
     <string name="profile_na">N/A</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
