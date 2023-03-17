@@ -1,7 +1,6 @@
 package com.example.qriffic;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QRcodeAdapter extends ArrayAdapter<QRCode>{
+public class QRCodeAdapter extends ArrayAdapter<QRCode>{
 
     private Context context;
     private List<QRCode> qrCodes = new ArrayList<>();
@@ -22,7 +21,7 @@ public class QRcodeAdapter extends ArrayAdapter<QRCode>{
 
 
 
-    public QRcodeAdapter(@NonNull Context context, @NonNull ArrayList<QRCode> objects) {
+    public QRCodeAdapter(@NonNull Context context, @NonNull ArrayList<QRCode> objects) {
         super(context, 0, objects );
 //        this.context = context;
 //        this.qrCodes = objects;
@@ -56,7 +55,7 @@ public class QRcodeAdapter extends ArrayAdapter<QRCode>{
             scoreTextView.setText(String.valueOf(qrCode.getScore()));
         }
         else {
-            System.out.println("QRcodeAdapter QRCode is null at position "+position);
+            System.out.println("QRCodeAdapter QRCode is null at position "+position);
         }
 
 

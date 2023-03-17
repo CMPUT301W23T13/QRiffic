@@ -3,7 +3,6 @@ package com.example.qriffic;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,22 +16,18 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.color.utilities.Score;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +42,7 @@ public class FragmentDisplaySearchedUser extends Fragment {
 
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
-    private QRcodeAdapter qrAdapter;
+    private QRCodeAdapter qrAdapter;
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -202,7 +197,7 @@ public class FragmentDisplaySearchedUser extends Fragment {
                         }
 
                         dataList = new ArrayList<QRCode>();
-                        qrAdapter = new QRcodeAdapter(getContext(), dataList);
+                        qrAdapter = new QRCodeAdapter(getContext(), dataList);
 
                         for (int i = 0; i < qrList.size(); i++) {
                             dataList.add(new QRCode(NameArray[i], lowScoreArray[i]));
@@ -215,7 +210,7 @@ public class FragmentDisplaySearchedUser extends Fragment {
 
 
 
-//                        pListAdapter = new QRcodeAdapter(requireContext(), QRAdapterList);
+//                        pListAdapter = new QRCodeAdapter(requireContext(), QRAdapterList);
 //                        profileList.setAdapter(pListAdapter);
 
 
@@ -253,7 +248,7 @@ public class FragmentDisplaySearchedUser extends Fragment {
 
 
 
-//                        pListAdapter = new QRcodeAdapter(requireContext(), qrList);
+//                        pListAdapter = new QRCodeAdapter(requireContext(), qrList);
 //                        profileList.setAdapter(pListAdapter);
 
 
