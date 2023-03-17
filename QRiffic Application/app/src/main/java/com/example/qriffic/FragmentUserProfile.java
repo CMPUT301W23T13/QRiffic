@@ -150,7 +150,7 @@ public class FragmentUserProfile extends Fragment {
 
                         //set the user data to the player profile
                         playerProfile.setUsername(document.getString("username"));
-                        System.out.println("username from useeprofile fragment"+playerProfile.getUsername());
+                        System.out.println("username from userprofile fragment"+playerProfile.getUsername());
 
                         playerProfile.setEmail(document.getString("email"));
                         playerProfile.setHighScore(document.getLong("highScore").intValue());

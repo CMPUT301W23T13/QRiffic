@@ -46,7 +46,7 @@ public class DBAccessor {
      * @param name
      * The username of the Player
      * @return
-     * The PlayerProfile object
+     * The PlayerProfile object (null if username not in DB)
      */
     public void getPlayer(PlayerProfile player, String name) {
         /*
