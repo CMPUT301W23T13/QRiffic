@@ -178,7 +178,6 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
 
                     // generate QR code image
                     String url = "https://www.gravatar.com/avatar/" + hash + "?s=55&d=identicon&r=PG%22";
-                    Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
                     Glide.with(getContext())
                             .load(url)
                             .centerCrop()
