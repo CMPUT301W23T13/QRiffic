@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -224,6 +226,23 @@ public class FragmentUserProfile extends Fragment {
                             lowScore.setText(String.valueOf(playerProfile.getLowScore()));
                             highScore.setText(String.valueOf(playerProfile.getHighScore()));
                             totalScore.setText(String.valueOf(totalScoreInt));
+
+                            //set images for highest and lowest score
+                            String highurl = "https://www.gravatar.com/avatar/" + playerProfile.getHighScore() + "?s=55&d=identicon&r=PG%22";
+                            Glide.with(getContext())
+                                    .load(highurl)
+                                    .centerCrop()
+                                    .error(R.drawable.ic_launcher_background)
+                                    .into((ImageView) view.findViewById(R.id.imageTop));
+
+                            String lowurl = "https://www.gravatar.com/avatar/" + playerProfile.getLowScore() + "?s=55&d=identicon&r=PG%22";
+                            Glide.with(getContext())
+                                    .load(lowurl)
+                                    .centerCrop()
+                                    .error(R.drawable.ic_launcher_background)
+                                    .into((ImageView) view.findViewById(R.id.imageBot));
+
+
                         } else {
                             playerProfile.setLowScore(-1);
                             playerProfile.setHighScore(-1);

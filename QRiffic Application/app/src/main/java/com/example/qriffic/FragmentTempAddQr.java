@@ -177,13 +177,12 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     dba.addToCaptured(activeUsername, tempQR);
 
                     // generate QR code image
-                    String url = "https://www.gravatar.com/avatar/" + hash + "?s=55&d=identicon&r=PG%22";
+                    String url = "https://www.gravatar.com/avatar/" + tempQR.getScore() + "?s=55&d=identicon&r=PG%22";
                     Glide.with(getContext())
                             .load(url)
                             .centerCrop()
                             .error(R.drawable.ic_launcher_background)
                             .into((ImageView) view.findViewById(R.id.image_identicon));
-
                 }
             }
         });
