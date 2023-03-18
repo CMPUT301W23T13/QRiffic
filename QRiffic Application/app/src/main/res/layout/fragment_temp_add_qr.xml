@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_temp_add_qr"
     android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         android:id="@+id/button_add_qr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
+        android:layout_gravity="center"
         android:layout_marginBottom="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
@@ -24,7 +25,7 @@
         android:id="@+id/editText_enter_qr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
+        android:layout_gravity="center"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
@@ -37,7 +38,7 @@
         android:id="@+id/textView_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
+        android:layout_gravity="right|top"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
@@ -51,9 +52,16 @@
         android:id="@+id/switch_store_qr_geolocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom|right"
+        android:layout_gravity="center|right"
         android:layout_marginBottom="65dp"
         android:text="Track Location?" />
+
+    <ImageView
+        android:id="@+id/image_identicon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left|top"
+        android:src="@drawable/eg_identicon" />
 
 
 </FrameLayout>

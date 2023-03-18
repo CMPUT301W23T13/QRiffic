@@ -19,8 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
@@ -172,6 +176,13 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                     // update current player's captured QRCode collection in database
                     dba.addToCaptured(activeUsername, tempQR);
 
+                    // generate QR code image
+                    String url = "https://www.gravatar.com/avatar/" + tempQR.getScore() + "?s=55&d=identicon&r=PG%22";
+                    Glide.with(getContext())
+                            .load(url)
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_background)
+                            .into((ImageView) view.findViewById(R.id.image_identicon));
                 }
             }
         });
