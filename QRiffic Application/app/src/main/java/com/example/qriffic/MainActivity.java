@@ -16,9 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-
 public class MainActivity extends AppCompatActivity implements FragmentUserProfile.OnDataPass {
 
     private AppBarConfiguration appBarConfiguration;
@@ -67,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
                 changeFragment(new FragmentMap());
                 break;
             case R.id.scan_QR:
-                changeFragment(new FragmentTempAddQr()); // TEMP FRAGMENT!
+                changeFragment(new FragmentScanner());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -88,10 +85,6 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
         Bundle bundle = new Bundle();
         bundle.putString("username", passed_username);
         fr.setArguments(bundle);
-
-
-
-
 
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
         transaction1.add(R.id.fragmentContainerView, fr);
