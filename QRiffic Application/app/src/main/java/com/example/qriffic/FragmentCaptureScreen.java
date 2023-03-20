@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +20,19 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
+
+    double currLongitude;
+    double currLatitude;
+    String currCity;
+    QRCode qrCode;
+    String username;
 
     public FragmentCaptureScreen() {
         // Required empty public constructor
@@ -38,6 +47,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_capture_screen, container, false);
+        DBAccessor dba = new DBAccessor();
 
         // get reference to the LocationManager
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(getActivity().LOCATION_SERVICE);
@@ -51,10 +61,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         Bundle bundle = getArguments();
         TextView textView = view.findViewById(R.id.textview_qr_code);
         String rawString = bundle.getString("barcode_data");
-        String username = bundle.getString("username");
-        double currLongitude = 9999;
-        double currLatitude = 9999;
-        String currCity = "Unknown";
+        username = bundle.getString("username");
+        Button capture = view.findViewById(R.id.button_capture);
+        Switch trackLocation = view.findViewById(R.id.switch_track_location);
 
         // get the current location (check for location permissions first)
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -79,20 +88,40 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
         // create a new QRCode object
         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-        QRCode tempQR = new QRCode(rawString, geoLocation, username);
+        qrCode = new QRCode(rawString, geoLocation, username);
 
         // display QRCode info on screen
-        String hash = tempQR.getIdHash();
+        String hash = qrCode.getIdHash();
         String last6 = hash.substring(hash.length() - 6);
         String newText = "last6hex: " + last6 +
-                "\nname: " + tempQR.getName() +
-                "\nscore: " + tempQR.getScore() +
-                "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
-                "\nlatitude: " + tempQR.getGeoLocation().getLatitude() +
-                "\ncity: " + tempQR.getGeoLocation().getCity();
+                "\nname: " + qrCode.getName() +
+                "\nscore: " + qrCode.getScore() +
+                "\nlongitude: " + qrCode.getGeoLocation().getLongitude() +
+                "\nlatitude: " + qrCode.getGeoLocation().getLatitude() +
+                "\ncity: " + qrCode.getGeoLocation().getCity();
         textView.setText(newText);
 
+        capture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                if (!trackLocation.isChecked()) {
+                    qrCode.setGeoLocation(new GeoLocation(9999, 9999, "N/A"));
+                }
+                //update QRCode collection in DB
+                dba.setQR(qrCode.getIdHash(), qrCode);
+                // update player's captured list in DB
+                dba.addToCaptured(username, qrCode);
+
+                // go back to the user profile screen
+                FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                fragmentUserProfile.setArguments(bundle);
+
+                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, fragmentUserProfile).commit();
+            }
+        });
         return view;
     }
 

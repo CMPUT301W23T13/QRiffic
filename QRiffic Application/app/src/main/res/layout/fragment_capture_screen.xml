@@ -18,4 +18,20 @@
         android:textColor="@color/purple_500"
         android:textSize="20sp" />
 
+    <Button
+        android:id="@+id/button_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="50dp"
+        android:text="Capture" />
+
+    <Switch
+        android:id="@+id/switch_track_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom|right"
+        android:layout_marginBottom="60dp"
+        android:text="Track Location" />
+
 </FrameLayout>
