@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -20,11 +21,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import com.bumptech.glide.Glide;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
@@ -64,6 +66,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         username = bundle.getString("username");
         Button capture = view.findViewById(R.id.button_capture);
         Switch trackLocation = view.findViewById(R.id.switch_track_location);
+        ImageView locationPhoto = view.findViewById(R.id.imageview_qr_code);
 
         // get the current location (check for location permissions first)
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -89,6 +92,14 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         // create a new QRCode object
         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
         qrCode = new QRCode(rawString, geoLocation, username);
+
+        // generate QR code image
+        String url = "https://www.gravatar.com/avatar/" + qrCode.getScore() + "?s=55&d=identicon&r=PG%22";
+        Glide.with(getContext())
+                .load(url)
+                .centerCrop()
+                .error(R.drawable.ic_launcher_background)
+                .into((ImageView) view.findViewById(R.id.imageview_qr_code));
 
         // display QRCode info on screen
         String hash = qrCode.getIdHash();
@@ -120,6 +131,14 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 fragmentUserProfile.setArguments(bundle);
 
                 requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, fragmentUserProfile).commit();
+            }
+        });
+
+        // when the user clicks the location photo, open the camera
+        locationPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("clicked");
             }
         });
         return view;
