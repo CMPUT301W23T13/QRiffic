@@ -1,13 +1,17 @@
 package com.example.qriffic;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -35,6 +41,11 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     String currCity;
     QRCode qrCode;
     String username;
+    TextView textView;
+    String rawString;
+    Button capture;
+    Switch trackLocation;
+    ImageView locationImage;
 
     public FragmentCaptureScreen() {
         // Required empty public constructor
@@ -61,12 +72,12 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         }
 
         Bundle bundle = getArguments();
-        TextView textView = view.findViewById(R.id.textview_qr_code);
-        String rawString = bundle.getString("barcode_data");
+        textView = view.findViewById(R.id.textview_qr_code);
+        rawString = bundle.getString("barcode_data");
         username = bundle.getString("username");
-        Button capture = view.findViewById(R.id.button_capture);
-        Switch trackLocation = view.findViewById(R.id.switch_track_location);
-        ImageView locationPhoto = view.findViewById(R.id.imageview_qr_code);
+        capture = view.findViewById(R.id.button_capture);
+        trackLocation = view.findViewById(R.id.switch_track_location);
+        locationImage = view.findViewById(R.id.imageview_location_image);
 
         // get the current location (check for location permissions first)
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -134,15 +145,28 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             }
         });
 
-        // when the user clicks the location photo, open the camera
-        locationPhoto.setOnClickListener(new View.OnClickListener() {
+        // when the user clicks the location photo, open the camera]
+        // and save the photo to the locationImage ImageView
+        locationImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("clicked");
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                activityResultLauncher.launch(intent);
             }
         });
         return view;
     }
+
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    locationImage.setImageBitmap(bitmap);
+                }
+            });
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
