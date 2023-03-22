@@ -32,6 +32,7 @@ public class FragmentSplash extends Fragment {
     public FragmentSplash() {
         // Required empty public constructor
     }
+    private UsernamePersistent usernamePersistent;
 
 //    /**
 //     * Use this factory method to create a new instance of
@@ -52,41 +53,10 @@ public class FragmentSplash extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentSplashBinding.inflate(inflater, container, false);
+        usernamePersistent = new UsernamePersistent(getActivity().getApplicationContext());
+
         return binding.getRoot();
     }
-
-    /**
-     * Deletes a username file if it exists
-     */
-    protected void deleteUsername() {
-        if (fetchUsername() != null) {
-            getActivity().getApplicationContext().deleteFile("username");
-        }
-    }
-
-    /**
-     * Checks if a username has been saved
-     *
-     * @return true if a username has already been saved (username file exists)
-     * false otherwise
-     */
-    protected String fetchUsername() {
-        try {
-            // Try to read the username from file
-            FileInputStream secretIDInputStream = getActivity().getApplicationContext().openFileInput("username");
-            byte[] uniqueIDBytes = new byte[36];
-            secretIDInputStream.read(uniqueIDBytes);
-            username = "";
-            for (int i = 0; i < 36; i++) {
-                username += (char) uniqueIDBytes[i];
-            }
-        } catch (Exception FileNotFoundException) {
-            // No uniqueID file found
-            return null;
-        }
-        return username;
-    }
-
 
     /**
      * Checks if a username has been saved and navigates to profileCreate if not
@@ -99,7 +69,7 @@ public class FragmentSplash extends Fragment {
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
         //deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
-        String username = fetchUsername();
+        String username = usernamePersistent.fetchUsername();
         Bundle bundle = new Bundle();
         if (username == null) {  // handle profile creation if necessary
             this.navController.navigate(R.id.action_fragmentSplash_to_ProfileCreate, bundle);
