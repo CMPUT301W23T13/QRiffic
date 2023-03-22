@@ -75,6 +75,7 @@ public class DBAccessor {
                     player.setLowScore(fetchedPlayer.getLowScore());
 
                     for (QRCode qrCode : fetchedPlayer.getCaptured()) {
+                        System.out.println("in DBAccessor: " + qrCode.getName());
                         player.addQRCode(qrCode);
                     }
 
