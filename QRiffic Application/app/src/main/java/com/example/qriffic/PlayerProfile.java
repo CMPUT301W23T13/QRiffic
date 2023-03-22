@@ -13,7 +13,7 @@ public class PlayerProfile {
     private String phoneNum;
     private int highScore;
     private int lowScore;
-    private ArrayList<QRCode> captured;
+    private ArrayList<QRCode> captured = new ArrayList<QRCode>();
     private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
 
     /**
