@@ -58,10 +58,13 @@ public class Fragment_QR_Detail extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         instanceList.clear();
+
+                        //Change this code to modify the data that is queried from the database
                         for (QueryDocumentSnapshot doc : value) {
                             QRCode qrCode = doc.toObject(QRCode.class);
                             instanceList.add(qrCode);
                         }
+
                         instanceAdapter.notifyDataSetChanged();
                     }
                 });
