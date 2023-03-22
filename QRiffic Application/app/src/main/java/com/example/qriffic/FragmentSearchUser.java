@@ -94,7 +94,8 @@ public class FragmentSearchUser extends Fragment {
                                     else {
                                         // display the user's profile
                                         PlayerProfile playerprofile = new PlayerProfile();
-                                        FragmentDisplaySearchedUser fragmentUserProfile = new FragmentDisplaySearchedUser();
+                                        //FragmentDisplaySearchedUser fragmentUserProfile = new FragmentDisplaySearchedUser();
+                                        FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();
                                         Bundle bundle = new Bundle();
                                         playerprofile.setUsername(etSearch.getText().toString());
 
