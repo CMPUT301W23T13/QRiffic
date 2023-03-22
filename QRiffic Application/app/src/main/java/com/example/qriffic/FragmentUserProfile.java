@@ -4,15 +4,18 @@ import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -270,10 +273,6 @@ public class FragmentUserProfile extends Fragment {
                         tvEmail.setText(playerProfile.getEmail());
                         tvPhoneNum.setText(playerProfile.getPhoneNum());
 
-
-
-
-
                         //find number of QR codes in the list
                         Integer numQRCodes = qrList.size();
                         noScanned.setText(numQRCodes.toString());
@@ -291,13 +290,24 @@ public class FragmentUserProfile extends Fragment {
             }
         });
 
-
-
-
-
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        profileListView = getView().findViewById(R.id.profileList);
+        profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                QRCode qrCode = (QRCode) parent.getItemAtPosition(position);
+                String name = qrCode.getName();
+                bundle.putString("name", name);
+                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+            }
+        });
+    }
 
 
 

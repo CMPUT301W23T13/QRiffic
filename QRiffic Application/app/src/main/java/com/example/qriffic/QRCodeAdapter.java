@@ -44,9 +44,6 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode>{
             view = convertView;
         }
 
-
-
-
         QRCode qrCode = getItem(position);
         if (qrCode != null) {
             System.out.println("QRCode is not null");
