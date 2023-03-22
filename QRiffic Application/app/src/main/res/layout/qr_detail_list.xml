@@ -62,14 +62,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.05"
+            android:paddingLeft="3dp"
             app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
         <TextView
             android:id="@+id/qr_detail_location_text"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.95"
             android:gravity="center_vertical"
+            android:paddingStart="3dp"
             android:text="Pallet Town, 0x0"
             android:textColor="@color/black"
             android:textSize="12sp" />

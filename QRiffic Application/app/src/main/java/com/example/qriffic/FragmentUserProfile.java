@@ -263,12 +263,11 @@ public class FragmentUserProfile extends Fragment {
                             }
                         }
 
-
-
                         //set the text views to the user data
                         tvUsername.setText(playerProfile.getUsername());
                         tvEmail.setText(playerProfile.getEmail());
                         tvPhoneNum.setText(playerProfile.getPhoneNum());
+
 
                         //find number of QR codes in the list
                         Integer numQRCodes = qrList.size();
@@ -287,7 +286,6 @@ public class FragmentUserProfile extends Fragment {
             }
         });
 
-
         //navigate to QR detail page by clicking on top, bot, or listview
         ImageView imageTop = view.findViewById(R.id.imageTop);
         ImageView imageBot = view.findViewById(R.id.imageBot);
@@ -296,7 +294,7 @@ public class FragmentUserProfile extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("name", topQRName.getText().toString());
+                bundle.putString("QRID", topQRName.getText().toString());
                 Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
@@ -305,7 +303,7 @@ public class FragmentUserProfile extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("name", botQRName.getText().toString());
+                bundle.putString("QRID", botQRName.getText().toString());
                 Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
@@ -317,7 +315,7 @@ public class FragmentUserProfile extends Fragment {
                 Bundle bundle = new Bundle();
                 QRCode qrCode = (QRCode) parent.getItemAtPosition(position);
                 String QRID = qrCode.getIdHash();
-                bundle.putString("ID", QRID);
+                bundle.putString("QRID", QRID);
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
