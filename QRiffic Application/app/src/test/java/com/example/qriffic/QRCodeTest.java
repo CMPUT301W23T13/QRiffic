@@ -13,7 +13,7 @@ public class QRCodeTest {
     private QRCode mockQRCode() {
 
         return new QRCode("uyhpOIUYHPDFnklmd;sajfonui893",
-                new GeoLocation(53.1234, 12.5623, "Edmonton"), "Ash");
+                new GeoLocation(53.1234, 12.5623, "Edmonton"), "Ash", null, null);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class QRCodeTest {
 
         QRCode mockQRCode = mockQRCode();
 
-        assertEquals(0, mockQRCode.compareTo(new QRCode("uyhpOIUYHPDFnklmd;sajfonui893", null, "Ash")));
-        assertNotEquals(0, mockQRCode.compareTo(new QRCode("ayhpOIUYHPDFnklmd;sajfonui893",null,  "Ash")));
+        assertEquals(0, mockQRCode.compareTo(new QRCode("uyhpOIUYHPDFnklmd;sajfonui893", null, "Ash", null, null)));
+        assertNotEquals(0, mockQRCode.compareTo(new QRCode("ayhpOIUYHPDFnklmd;sajfonui893",null,  "Ash", null, null)));
     }
 }

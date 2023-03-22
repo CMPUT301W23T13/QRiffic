@@ -1,6 +1,8 @@
 package com.example.qriffic;
 
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,11 +37,12 @@ public class QRCode implements Comparable {
     }
 
     private int score;
-//    private LocationImage locationImage
     private GeoLocation geoLocation;
     private String idHash;
     private String name;
     private String username;
+    private Bitmap locationImage;
+    private String comment;
 
     /**
      * This is an empty constructor for a QRCode object
@@ -56,16 +59,14 @@ public class QRCode implements Comparable {
      * @param username
      * The username of the player who scanned the QR code
      */
-    public QRCode(String rawString, GeoLocation geoLocation, String username) {
-        // REMEMBER TO ADD LOCATIONIMAGE TO PARAMETERS AT SOME POINT
+    public QRCode(String rawString, GeoLocation geoLocation, String username, Bitmap locationImage,
+                  String comment) {
 
         this.idHash = new Hash(rawString).getHash();
-        //this.locationImage = locationImage;
+        this.locationImage = locationImage;
         this.geoLocation = geoLocation;
         this.username = username;
-
-
-        // name might need its own class, this is very long
+        this.comment = comment;
 
         // last 6 digits of the hash
         String last6 = this.idHash.substring(this.idHash.length()-6);
@@ -161,6 +162,24 @@ public class QRCode implements Comparable {
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * This method returns the location image of a QRCode object
+     * @return
+     * The location image as a Bitmap
+     */
+    public Bitmap getLocationImage() {
+        return locationImage;
+    }
+
+    /**
+     * This method returns the comment of a QRCode object
+     * @return
+     * The comment as a String
+     */
+    public String getComment() {
+        return comment;
     }
 }
 

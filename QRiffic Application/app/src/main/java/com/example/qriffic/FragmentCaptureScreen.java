@@ -12,10 +12,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -46,6 +49,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     Button capture;
     Switch trackLocation;
     ImageView locationImage;
+    EditText comment;
 
     public FragmentCaptureScreen() {
         // Required empty public constructor
@@ -78,6 +82,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         capture = view.findViewById(R.id.button_capture);
         trackLocation = view.findViewById(R.id.switch_track_location);
         locationImage = view.findViewById(R.id.imageview_location_image);
+        comment = view.findViewById(R.id.edittext_comment);
 
         // get the current location (check for location permissions first)
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -102,7 +107,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
         // create a new QRCode object
         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-        qrCode = new QRCode(rawString, geoLocation, username);
+        qrCode = new QRCode(rawString, geoLocation, username, null, null);
 
         // generate QR code image
         String url = "https://www.gravatar.com/avatar/" + qrCode.getScore() + "?s=55&d=identicon&r=PG%22";
@@ -131,7 +136,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     qrCode.setGeoLocation(new GeoLocation(9999, 9999, "N/A"));
                 }
                 //update QRCode collection in DB
-                dba.setQR(qrCode.getIdHash(), qrCode);
+                //dba.setQR(qrCode.getIdHash(), qrCode);
                 // update player's captured list in DB
                 dba.addToCaptured(username, qrCode);
 
@@ -154,6 +159,31 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 activityResultLauncher.launch(intent);
             }
         });
+
+
+        // comments cannot be longer than 128 characters
+        comment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // check if the comment is longer than 128 characters
+                if (s.length() > 128) {
+                    comment.setError("Comments cannot be longer than 128 characters");
+                    String truncatedInput = s.subSequence(0, Math.min(s.length(), 128)).toString();
+                    comment.setText(truncatedInput);
+                    comment.setSelection(truncatedInput.length());
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 128) {
+                    comment.setError("Comments cannot be longer than 128 characters");
+                }
+            }
+        });
+
         return view;
     }
 
