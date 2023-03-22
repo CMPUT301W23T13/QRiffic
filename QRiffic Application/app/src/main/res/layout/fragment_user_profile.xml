@@ -143,13 +143,14 @@
             android:textSize="20sp" />
 
         <LinearLayout
+            android:id="@+id/top_score_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="#A5ECE4"
-            android:gravity="center"
 
+            android:gravity="center"
             android:orientation="horizontal"
             android:padding="8dp">
 
@@ -200,6 +201,7 @@
             android:textSize="20sp" />
 
         <LinearLayout
+            android:id="@+id/bot_score_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"

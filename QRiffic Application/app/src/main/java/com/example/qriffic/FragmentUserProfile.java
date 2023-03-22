@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,10 +150,6 @@ public class FragmentUserProfile extends Fragment {
                         ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
 
-
-
-
-
                         //find total score
                         long totalScoreInt = 0;
 
@@ -290,24 +287,44 @@ public class FragmentUserProfile extends Fragment {
             }
         });
 
-        return view;
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        profileListView = getView().findViewById(R.id.profileList);
+        //navigate to QR detail page by clicking on top, bot, or listview
+        ImageView imageTop = view.findViewById(R.id.imageTop);
+        ImageView imageBot = view.findViewById(R.id.imageBot);
+
+        imageTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("name", topQRName.getText().toString());
+                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+            }
+        });
+
+        imageBot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("name", botQRName.getText().toString());
+                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+            }
+        });
+
+        profileListView = view.findViewById(R.id.profileList);
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 QRCode qrCode = (QRCode) parent.getItemAtPosition(position);
-                String name = qrCode.getName();
-                bundle.putString("name", name);
+                String QRID = qrCode.getIdHash();
+                bundle.putString("ID", QRID);
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
+
+        return view;
     }
+
 
 
 
