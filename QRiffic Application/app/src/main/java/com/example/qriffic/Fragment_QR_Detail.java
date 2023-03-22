@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,20 +37,45 @@ public class Fragment_QR_Detail extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
         if (getArguments() != null) {
+            //get the proper thing from the user profile bundle, whatever that ends up being
             String toastString = getArguments().getString("QRID");
             Toast.makeText(getContext(), "ID is" + toastString, Toast.LENGTH_SHORT).show();
         }
-    }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_qr_detail, container, false);
+
+
+        setMainImage(view);
+        setScoreAndName(view);
+        populateList(view);
+
+
+        return view;
+    }
+
+    private void setMainImage(View view) {
+        String highurl = "https://www.gravatar.com/avatar/" + "FILL ME IN WITH A CORRECT REFERENCE TO THE QRMON'S SCORE" + "?s=55&d=identicon&r=PG%22";
+        Glide.with(getContext())
+                .load(highurl)
+                .centerCrop()
+                .error(R.drawable.ic_launcher_background)
+                .into((ImageView) view.findViewById(R.id.qr_detail_image));
+    }
+
+    private void setScoreAndName(View view) {
+        TextView name = view.findViewById(R.id.qr_detail_name);
+        TextView score = view.findViewById(R.id.qr_detail_score);
+        name.setText("TEST QR MON NAME");
+        score.setText("9999999999");
+    }
+
+    private void populateList(View view) {
         qrDetailList = view.findViewById(R.id.qr_detail_list);
         instanceList = new ArrayList<>();
 
@@ -68,11 +96,8 @@ public class Fragment_QR_Detail extends Fragment {
                         instanceAdapter.notifyDataSetChanged();
                     }
                 });
-
-
         instanceAdapter = new QRDetailFeed(getContext(), instanceList);
         qrDetailList.setAdapter(instanceAdapter);
-        return view;
     }
 
 }
