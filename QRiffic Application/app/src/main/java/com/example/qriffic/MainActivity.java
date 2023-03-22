@@ -16,11 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-public class MainActivity extends AppCompatActivity implements FragmentUserProfile.OnDataPass {
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-
+    private UsernamePersistent usernamePersistent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-
+        usernamePersistent = new UsernamePersistent(getApplicationContext());
     }
 
 
@@ -80,25 +80,15 @@ public class MainActivity extends AppCompatActivity implements FragmentUserProfi
     private void changeFragment(Fragment fr){
         FrameLayout fl = (FrameLayout) findViewById(R.id.fragmentContainerView);
         fl.removeAllViews();
-        System.out.println("username"+passed_username);
 
+        String username = usernamePersistent.fetchUsername();
         Bundle bundle = new Bundle();
-        bundle.putString("username", passed_username);
+        bundle.putString("username", username);
         fr.setArguments(bundle);
 
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
         transaction1.add(R.id.fragmentContainerView, fr);
 
         transaction1.commit();
-    }
-
-    private String passed_username;
-
-
-    @Override
-    public String onDataPass(String data) {
-        passed_username = data.replaceAll("[^a-zA-Z0-9!]", "");
-//        passed_username = new String(data.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-        return passed_username;
     }
 }

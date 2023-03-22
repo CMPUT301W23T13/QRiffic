@@ -39,29 +39,11 @@ import java.util.Map;
  */
 public class FragmentUserProfile extends Fragment {
 
-
     DBAccessor dba = new DBAccessor();
 
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
     private QRCodeAdapter qrAdapter;
-
-
-
-    public interface OnDataPass {
-        String onDataPass(String data);
-    }
-
-
-    private OnDataPass dataPasser;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        dataPasser = (OnDataPass) context;
-    }
-
-
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -117,10 +99,6 @@ public class FragmentUserProfile extends Fragment {
         qrList = new ArrayList<>();
 
         username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
-        dataPasser.onDataPass(username);
-
-//        username = bundle.getString("username");
-        System.out.println("username"+username);
 
         PlayerProfile playerProfile = new PlayerProfile();
 
