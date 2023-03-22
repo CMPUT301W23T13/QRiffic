@@ -20,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -108,10 +107,8 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 if (!trackLocation.isChecked()) {
                     qrCode.setGeoLocation(new GeoLocation(9999, 9999, "N/A"));
                 }
-                //update QRCode collection in DB
-                dba.setQR(qrCode.getIdHash(), qrCode);
-                // update player's captured list in DB
-                dba.addToCaptured(username, qrCode);
+                // update player's captured list and QRs collection in DB
+                dba.addQR(username, qrCode);
 
                 // go back to the user profile screen
                 FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();
