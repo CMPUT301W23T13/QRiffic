@@ -43,29 +43,11 @@ import java.util.Map;
  */
 public class FragmentUserProfile extends Fragment {
 
-
     DBAccessor dba = new DBAccessor();
 
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
     private QRCodeAdapter qrAdapter;
-
-
-
-    public interface OnDataPass {
-        String onDataPass(String data);
-    }
-
-
-    private OnDataPass dataPasser;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        dataPasser = (OnDataPass) context;
-    }
-
-
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -121,168 +103,110 @@ public class FragmentUserProfile extends Fragment {
         qrList = new ArrayList<>();
 
         username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
-        dataPasser.onDataPass(username);
-
-//        username = bundle.getString("username");
-        System.out.println("username"+username);
 
         PlayerProfile playerProfile = new PlayerProfile();
-
-        //get from database the user data based on username
-        DocumentReference docRef = db.collection("Players").document(username);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @SuppressLint({"RestrictedApi", "SetTextI18n"})
+        playerProfile.addListener(new fetchListener() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
+            public void onFetchComplete() {
+                qrList = (ArrayList<QRCode>) playerProfile.getCaptured();
 
-                        //set the user data to the player profile
-                        playerProfile.setUsername(document.getString("username"));
-                        System.out.println("username from userprofile fragment"+playerProfile.getUsername());
+                ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
-                        playerProfile.setEmail(document.getString("email"));
-                        playerProfile.setHighScore(document.getLong("highScore").intValue());
-                        playerProfile.setLowScore(document.getLong("lowScore").intValue());
-                        playerProfile.setPhoneNum(document.getString("phoneNum"));
-                        qrList = (ArrayList<QRCode>) document.get("captured");
-                        ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
+                //find total score
+                long totalScoreInt = 0;
 
+                //create array for lowest score
+                long[] lowScoreArray = new long[qrList.size()];
+                String[] NameArray = new String[qrList.size()];
 
-                        //find total score
-                        long totalScoreInt = 0;
+                //make a dictionary for the scores and names
+                HashMap<String, Integer> NameMap = new HashMap<>();
 
-                        //create array for lowest score
-                        long[] lowScoreArray = new long[qrList.size()];
-                        String[] NameArray = new String[qrList.size()];
+                for (int i = 0; i < qrList.size(); i++) {
+                    NameMap.put(qrList.get(i).getName(), qrList.get(i).getScore());
+                    totalScoreInt += qrList.get(i).getScore();
+                    lowScoreArray[i] = qrList.get(i).getScore();
+                    NameArray[i] = qrList.get(i).getName();
 
-                        //make a dictionary for the scores and names
-                        HashMap<String, Long> NameMap = new HashMap<>();
-
-                        for (int i = 0; i < qrList.size(); i++) {
-                            Object obj = qrList.get(i);
-                            if (obj instanceof HashMap) {
-                                HashMap<String, Object> qrMap = (HashMap<String, Object>) obj;
-                                long score = (long) qrMap.get("score");
-                                String name = (String) qrMap.get("name");
-
-                                NameMap.put(name, score);
-
-
-
-
-                                //add to array
-                                lowScoreArray[i] = score;
-                                NameArray[i] = name;
-
-                                //get total score
-
-                                totalScoreInt += score;
-
-                                totalScore.setText(String.valueOf(totalScoreInt));
-
-                                //update highest score in database
-                                if (score > playerProfile.getHighScore()) {
-                                    playerProfile.setHighScore((int) score);
-                                    document.getReference().update("highScore", score);
-                                }
-
-                                //update lowest score in database
-                                if (score < playerProfile.getLowScore()) {
-                                    playerProfile.setLowScore((int) score);
-                                    document.getReference().update("lowScore", score);
-                                }
-
-
-                            }
-
-
-                        }
-
-
-                        dataList = new ArrayList<QRCode>();
-                        qrAdapter = new QRCodeAdapter(getContext(), dataList);
-
-                        for (int i = 0; i < qrList.size(); i++) {
-                            dataList.add(new QRCode(NameArray[i], lowScoreArray[i]));
-                        }
-
-                        qrAdapter.notifyDataSetChanged();
-                        System.out.println("dataList"+dataList);
-                        System.out.println("qrAdapter"+qrAdapter);
-
-                        profileListView = view.findViewById(R.id.profileList);
-                        profileListView.setAdapter(qrAdapter);
-
-
-                        //sort array
-                        Arrays.sort(lowScoreArray);
-                        //set lowest score for player and database
-                        if (lowScoreArray.length > 0) {
-                            playerProfile.setLowScore((int) lowScoreArray[0]);
-                            document.getReference().update("lowScore", lowScoreArray[0]);
-                            document.getReference().update("highScore", lowScoreArray[lowScoreArray.length - 1]);
-                            lowScore.setText(String.valueOf(playerProfile.getLowScore()));
-                            highScore.setText(String.valueOf(playerProfile.getHighScore()));
-                            totalScore.setText(String.valueOf(totalScoreInt));
-
-                            //set images for highest and lowest score
-                            String highurl = "https://www.gravatar.com/avatar/" + playerProfile.getHighScore() + "?s=55&d=identicon&r=PG%22";
-                            Glide.with(getContext())
-                                    .load(highurl)
-                                    .centerCrop()
-                                    .error(R.drawable.ic_launcher_background)
-                                    .into((ImageView) view.findViewById(R.id.imageTop));
-
-                            String lowurl = "https://www.gravatar.com/avatar/" + playerProfile.getLowScore() + "?s=55&d=identicon&r=PG%22";
-                            Glide.with(getContext())
-                                    .load(lowurl)
-                                    .centerCrop()
-                                    .error(R.drawable.ic_launcher_background)
-                                    .into((ImageView) view.findViewById(R.id.imageBot));
-
-
-                        } else {
-                            playerProfile.setLowScore(-1);
-                            playerProfile.setHighScore(-1);
-                            lowScore.setText("N/A");
-                            highScore.setText("N/A");
-                            document.getReference().update("lowScore", -1);
-                            document.getReference().update("highScore", -1);
-                        }
-
-                        //set name for lowest score and  highest score
-                        for (Map.Entry<String, Long> entry : NameMap.entrySet()) {
-
-                            if (entry.getValue() == (playerProfile.getHighScore())) {
-                                topQRName.setText(entry.getKey());
-                            }
-                            if (entry.getValue()==(playerProfile.getLowScore())) {
-                                botQRName.setText(entry.getKey());
-                            }
-                        }
-
-                        //set the text views to the user data
-                        tvUsername.setText(playerProfile.getUsername());
-                        tvEmail.setText(playerProfile.getEmail());
-                        tvPhoneNum.setText(playerProfile.getPhoneNum());
-
-
-                        //find number of QR codes in the list
-                        Integer numQRCodes = qrList.size();
-                        noScanned.setText(numQRCodes.toString());
-
-
-
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
                 }
+
+                totalScore.setText(String.valueOf(totalScoreInt));
+
+                dataList = new ArrayList<QRCode>();
+                qrAdapter = new QRCodeAdapter(getContext(), dataList);
+
+                for (int i = 0; i < qrList.size(); i++) {
+                    dataList.add(new QRCode(NameArray[i], lowScoreArray[i]));
+                }
+
+                qrAdapter.notifyDataSetChanged();
+                System.out.println("dataList"+dataList);
+                System.out.println("qrAdapter"+qrAdapter);
+
+                profileListView = view.findViewById(R.id.profileList);
+                profileListView.setAdapter(qrAdapter);
+
+
+                //sort array
+                Arrays.sort(lowScoreArray);
+                //set lowest score for player and database
+                if (lowScoreArray.length > 0) {
+                    //playerProfile.setLowScore((int) lowScoreArray[0]);
+                    //document.getReference().update("lowScore", lowScoreArray[0]);
+                    //document.getReference().update("highScore", lowScoreArray[lowScoreArray.length - 1]);
+                    lowScore.setText(String.valueOf(playerProfile.getLowScore()));
+                    highScore.setText(String.valueOf(playerProfile.getHighScore()));
+                    totalScore.setText(String.valueOf(totalScoreInt));
+
+                    //set images for highest and lowest score
+                    String highurl = "https://www.gravatar.com/avatar/" + playerProfile.getHighScore() + "?s=55&d=identicon&r=PG%22";
+                    Glide.with(getContext())
+                        .load(highurl)
+                        .centerCrop()
+                        .error(R.drawable.ic_launcher_background)
+                        .into((ImageView) view.findViewById(R.id.imageTop));
+
+                    String lowurl = "https://www.gravatar.com/avatar/" + playerProfile.getLowScore() + "?s=55&d=identicon&r=PG%22";
+                    Glide.with(getContext())
+                        .load(lowurl)
+                        .centerCrop()
+                        .error(R.drawable.ic_launcher_background)
+                        .into((ImageView) view.findViewById(R.id.imageBot));
+                } else {
+                    playerProfile.setLowScore(-1);
+                    playerProfile.setHighScore(-1);
+                    lowScore.setText("N/A");
+                    highScore.setText("N/A");
+                    //document.getReference().update("lowScore", -1);
+                    //document.getReference().update("highScore", -1);
+                }
+
+                //set name for lowest score and  highest score
+                for (QRCode qrCode : qrList) {
+                    if (qrCode.getScore() == playerProfile.getHighScore()) {
+                        topQRName.setText(qrCode.getName());
+                    }
+
+                    if (qrCode.getScore() == playerProfile.getLowScore()) {
+                        botQRName.setText(qrCode.getName());
+                    }
+
+                }
+
+                //set the text views to the user data
+                tvUsername.setText(playerProfile.getUsername());
+                tvEmail.setText(playerProfile.getEmail());
+                tvPhoneNum.setText(playerProfile.getPhoneNum());
+
+                //find number of QR codes in the list
+                Integer numQRCodes = qrList.size();
+                noScanned.setText(numQRCodes.toString());
+
+            }
+
+            @Override
+            public void onFetchFailure() {
+
             }
         });
 
@@ -319,11 +243,9 @@ public class FragmentUserProfile extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
+        dba.getPlayer(playerProfile, username);
 
         return view;
     }
-
-
-
 
 }

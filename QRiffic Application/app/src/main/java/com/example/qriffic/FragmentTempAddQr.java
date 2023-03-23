@@ -22,16 +22,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 
 /**
@@ -152,13 +148,12 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                         }
 
                         // when switch is set to on, store the QRCode's geolocation
-                        // TODO: get current user's username instead of "Matlock"
                         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername, null, null);
                     } else {
                         // when switch is set to off, store as N/A
                         GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername, null, null);
                     }
 
                     // display QRCode info on screen
@@ -171,10 +166,8 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             "\nlatitude: " + tempQR.getGeoLocation().getLatitude() +
                             "\ncity: " + tempQR.getGeoLocation().getCity();
                     temp.setText(newText);
-                    // update QRCode collection in database
-                    dba.setQR(tempQR.getIdHash(), tempQR);
                     // update current player's captured QRCode collection in database
-                    dba.addToCaptured(activeUsername, tempQR);
+                    dba.addQR(activeUsername, tempQR);
 
                     // generate QR code image
                     String url = "https://www.gravatar.com/avatar/" + tempQR.getScore() + "?s=55&d=identicon&r=PG%22";

@@ -25,12 +25,15 @@ public class FragmentProfileCreate extends Fragment {
     private EditText editTextEmail;
     private EditText editTextPhone;
     private TextView textViewUsernameWarning;
+    private UsernamePersistent usernamePersistent;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         binding = ProfileCreateBinding.inflate(inflater, container, false);
+        usernamePersistent = new UsernamePersistent(getActivity().getApplicationContext());
+
         return binding.getRoot();
     }
 
@@ -78,7 +81,7 @@ public class FragmentProfileCreate extends Fragment {
                             new ArrayList<>());
                         dba.setPlayer(profile);
 
-                        saveUsername(profile.getUsername());
+                        usernamePersistent.saveUsername(profile.getUsername());
 
                         Bundle bundle = new Bundle();
                         bundle.putString("username", profile.getUsername());
@@ -99,19 +102,5 @@ public class FragmentProfileCreate extends Fragment {
         binding = null;
     }
 
-    /**
-     * Saves username to file for persistence
-     * @param username
-     */
-    protected void saveUsername(String username) {
-        File secretIDFile = new File(getActivity().getApplicationContext().getFilesDir(), "username");
-        try {
-            secretIDFile.createNewFile();
-            FileOutputStream secretIDOutputStream = new FileOutputStream(secretIDFile);
-            secretIDOutputStream.write(username.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
