@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_userProfile_to_searchUser"
             app:destination="@id/searchUser" />
+        <action
+            android:id="@+id/action_userProfile_to_fragment_QR_Detail"
+            app:destination="@id/fragment_QR_Detail" />
     </fragment>
     <fragment
         android:id="@+id/fragmentSplash"
@@ -60,5 +63,10 @@
             android:id="@+id/action_fragmentSplash_to_userProfile"
             app:destination="@id/userProfile" />
     </fragment>
+    <fragment
+        android:id="@+id/fragment_QR_Detail"
+        android:name="com.example.qriffic.Fragment_QR_Detail"
+        android:label="fragment__q_r__detail"
+        tools:layout="@layout/fragment_qr_detail" />
 
 </navigation>
