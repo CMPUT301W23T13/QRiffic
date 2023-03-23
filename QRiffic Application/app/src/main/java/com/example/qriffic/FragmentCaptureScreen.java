@@ -202,8 +202,8 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         //qrCode.setComment(commentEditText.getText().toString());
         //update QRCode collection in DB
         //dba.setQR(qrCode.getIdHash(), qrCode);
-        // update player's captured list in DB
-        dba.addToCaptured(username, qrCode);
+        // update player's captured list and QRs collection in DB
+        dba.addQR(username, qrCode);
 
         // go back to the user profile screen
         FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();
