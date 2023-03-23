@@ -36,6 +36,24 @@ public class QRCode implements Comparable {
         this.username = username;
     }
 
+    /**
+     * This method sets the location image of the QR code
+     * @param locationImage
+     * The location image of the QR code
+     */
+    public void setLocationImage(Bitmap locationImage) {
+        this.locationImage = locationImage;
+    }
+
+    /**
+     * This method sets the comment of the QR code
+     * @param comment
+     * The comment of the QR code
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     private int score;
     private GeoLocation geoLocation;
     private String idHash;
