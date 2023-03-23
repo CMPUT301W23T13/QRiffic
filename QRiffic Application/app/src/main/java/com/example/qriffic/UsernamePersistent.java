@@ -1,9 +1,11 @@
 package com.example.qriffic;
 
 import android.content.Context;
+import android.icu.lang.UScript;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -30,6 +32,9 @@ public class UsernamePersistent {
             secretIDInputStream.read(uniqueIDBytes);
             username = "";
             for (int i = 0; i < 36; i++) {
+                if (uniqueIDBytes[i] == 0) {
+                    break;
+                }
                 username += (char) uniqueIDBytes[i];
             }
         } catch (Exception FileNotFoundException) {
