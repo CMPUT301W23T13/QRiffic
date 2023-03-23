@@ -22,16 +22,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 
 /**
@@ -170,10 +166,8 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             "\nlatitude: " + tempQR.getGeoLocation().getLatitude() +
                             "\ncity: " + tempQR.getGeoLocation().getCity();
                     temp.setText(newText);
-                    // update QRCode collection in database
-                    dba.setQR(tempQR.getIdHash(), tempQR);
                     // update current player's captured QRCode collection in database
-                    dba.addToCaptured(activeUsername, tempQR);
+                    dba.addQR(activeUsername, tempQR);
 
                     // generate QR code image
                     String url = "https://www.gravatar.com/avatar/" + tempQR.getScore() + "?s=55&d=identicon&r=PG%22";
