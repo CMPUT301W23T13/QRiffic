@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class PlayerProfileTest {
 
     private QRCode mockQRCode() {
-        return new QRCode("abcdef", null, null);
+        return new QRCode("abcdef", null, null, null, null);
     }
 
     private PlayerProfile mockPlayerProfile() {
@@ -82,7 +82,7 @@ public class PlayerProfileTest {
         assertNotEquals(0, mockPlayerProfile.getCaptured().size());
 
         assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
-        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", null, null)));
+        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", null, null, null, null)));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class PlayerProfileTest {
 
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();
-        QRCode mockQRCode2 = new QRCode("123", null, null);
+        QRCode mockQRCode2 = new QRCode("123", null, null, null, null);
 
         mockPlayerProfile.addQRCode(mockQRCode);
 
