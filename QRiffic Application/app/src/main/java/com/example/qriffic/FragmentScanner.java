@@ -63,6 +63,7 @@ public class FragmentScanner extends Fragment {
 
         // camera permission handling is done in onResume()
         barcodeView = view.findViewById(R.id.barcode_scanner);
+        barcodeView.setStatusText("");
         barcodeView.decodeContinuous(callback);
 
         return view;

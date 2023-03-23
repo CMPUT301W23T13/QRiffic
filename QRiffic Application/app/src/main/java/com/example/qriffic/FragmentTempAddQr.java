@@ -152,13 +152,12 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                         }
 
                         // when switch is set to on, store the QRCode's geolocation
-                        // TODO: get current user's username instead of "Matlock"
                         GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername, null, null);
                     } else {
                         // when switch is set to off, store as N/A
                         GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername);
+                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername, null, null);
                     }
 
                     // display QRCode info on screen
