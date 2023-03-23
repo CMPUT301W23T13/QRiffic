@@ -3,21 +3,31 @@ package com.example.qriffic;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import android.graphics.Bitmap;
 
 
 /**
  * Test suite for QRCode class
  */
 public class QRCodeTest {
+    private String mockComment() {
 
+        return "This is a comment";
+    }
+    private String mockComment2() {
+
+        return "This is a comment2";
+    }
     private QRCode mockQRCode() {
 
         return new QRCode("uyhpOIUYHPDFnklmd;sajfonui893",
-                new GeoLocation(53.1234, 12.5623, "Edmonton"), "Ash", null, null);
+                new GeoLocation(53.1234, 12.5623, "Edmonton"), "Ash", null, mockComment());
     }
 
     @Test
     void testGetters() {
+
+        // DO BITMAP TESTS IN ROBOTIUM
 
         QRCode mockQRCode = mockQRCode();
 
@@ -44,6 +54,9 @@ public class QRCodeTest {
 
         assertEquals("Grand Purple Garrett's Miteergur", mockQRCode.getName());
         assertNotEquals("NAMED MONSTER", mockQRCode.getName());
+
+        assertEquals(mockComment(), mockQRCode.getComment());
+        assertNotEquals(mockComment2(), mockQRCode.getComment());
     }
 
     @Test
