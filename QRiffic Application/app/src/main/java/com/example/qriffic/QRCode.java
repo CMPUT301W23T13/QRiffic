@@ -93,9 +93,9 @@ public class QRCode implements Comparable {
         List<String> names1 = Arrays.asList("Minuscule", "Lesser", "Reticulated", "Spotted",
                 "Round", "Boxy", "Triangular", "Octagonal", "Hexagonal", "Aquatic", "Jungle",
                 "Long", "Tall", "Short", "Great", "Grand");
-        List<String> names2 = Arrays.asList(" Red", " Orange", " Yellow", " Green", " Blue",
-                " Purple", " Grey", " Black", " White", " Pink", " Aqua", " Maroon", " Mint",
-                " Navy", " Emerald", " Golden");
+        List<String> names2 = Arrays.asList(" Young", " Old", " Ancient", " Leaping", " Flying",
+                " Burrowing", " Inverted", " Joyous", " Juvenile", " Mature", " Larval", " Adult",
+                " Skimming"," Floating", " Fluffy", " Smooth");
         List<String> names3 = Arrays.asList("", " Abram's", " Idlar's", " Ritwik's", " Kunal's",
                 " Carissa's", " Luke's", " Garrett's", " Alden's", " Asian", " North American",
                 " South American", " European", " African", " Australian", " Canadian");
