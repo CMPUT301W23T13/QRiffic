@@ -41,8 +41,7 @@ public class DBAccessor {
      * The PlayerProfile object to be added
      */
     public void setPlayer(PlayerProfile player) {
-        String name = player.getUsername();
-        playersColRef.document(name).set(player);
+        playersColRef.document(player.getUsername()).set(player);
     }
 
     /**
@@ -100,6 +99,7 @@ public class DBAccessor {
     
     /**
      * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
+     * with no comment
      * @param player
      * The username of the PlayerProfile object to be added to
      * @param qr
@@ -124,7 +124,7 @@ public class DBAccessor {
         QRPlayerData.put("username", player);
         QRPlayerData.put("comment", comment);
         QRPlayerData.put("geoLocation", qr.getGeoLocation());
-        QRPlayerData.put("location_photo", null);  //change null to qr.getLocationPhoto() after location photo is added to QRCode class
+        QRPlayerData.put("locationImage", qr.getLocationImage());
         qrColRef.document(qr.getIdHash()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
