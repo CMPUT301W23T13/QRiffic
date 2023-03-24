@@ -61,6 +61,61 @@ public class QRData {
         }};
     }
 
+    public void addUser(QRCode qr) {
+        this.addUser(qr.getUsername(), qr.getComment(), qr.getLocationImage(), qr.getGeoLocation());
+    }
+
+    public void addUser(String username, String comment, Bitmap locationImage, GeoLocation geoLocation) {
+        this.users.put(username, new HashMap<String, Object>() {{
+            put("comment", comment);
+            put("locationImage", locationImage);
+            put("geoLocation", geoLocation);
+            put("username", username);
+        }});
+    }
+
+
+
+    /**
+     * This method adds a fetchListener to the QRData object
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 24/03/2023
+     *
+     * @param toAdd
+     */
+    public void addListener(fetchListener toAdd) {
+        listeners.add(toAdd);
+    }
+
+    /**
+     * This method calls all onFetchComplete() listeners
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 24/03/2023
+     *
+     */
+    public void fetchComplete() {
+        for (fetchListener fl : listeners)
+            fl.onFetchComplete();
+    }
+
+    /**
+     * This method calls all onFetchFailure() listeners
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 24/03/2023
+     */
+    public void fetchFailed() {
+        for (fetchListener fl : listeners)
+            fl.onFetchFailure();
+    }
 
 
 }
