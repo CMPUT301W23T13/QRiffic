@@ -70,7 +70,6 @@ public class DBAccessor {
                                 }
                             }
                         });
-
     }
 
     /**
@@ -191,7 +190,37 @@ public class DBAccessor {
                         }
                     }
                 });
+    }
 
+    /**
+     * This method removes a QRCode from a PlayerProfile object's captured list
+     * and removes the user from the that QRCode's users in the QRs collection
+     * @param qr
+     * The QRCode object to be removed
+     */
+    public void deleteQR(QRCode qr) {
+        qrColRef.document(qr.getIdHash()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // qr in db
+                                QRData dbQRData = document.toObject(QRData.class);
+                                dbQRData.removeUser(qr);
+                                qrColRef.document(qr.getIdHash()).set(dbQRData);
+                            } else {
+                                // qr not in db
+                                throw new IllegalArgumentException("QRCode does not exist in database");
+                            }
+                        } else {
+                            throw new IllegalArgumentException("Failed to get QRData");
+                        }
+                    }
+                }
+        );
+        playersColRef.document(qr.getUsername()).update("captured", FieldValue.arrayRemove(qr));
     }
     
     /**
