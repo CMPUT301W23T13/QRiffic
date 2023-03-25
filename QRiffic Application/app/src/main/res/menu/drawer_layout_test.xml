@@ -4,35 +4,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/qr_dex"
-        android:orderInCategory="100"
-        android:title="QR-DEX"
-        app:showAsAction="never" />
+    <group android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/action_profile"
-        android:orderInCategory="100"
-        android:title="@string/user_profile"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/leaderboard"
-        android:orderInCategory="100"
-        android:title="@string/leaderboard"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/search_users"
-        android:orderInCategory="100"
-        android:title="@string/search_users"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/scan_QR"
-        android:orderInCategory="100"
-        android:title="@string/scan_qr"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/map"
-        android:orderInCategory="100"
-        android:title="@string/map"
-        app:showAsAction="never" />
+        <item
+            android:id="@+id/qr_dex"
+            android:title="QR-DEX"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_profile"
+            android:title="@string/user_profile"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/leaderboard"
+            android:title="@string/leaderboard"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/search_users"
+            android:title="@string/search_users"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/scan_QR"
+            android:title="@string/scan_qr"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/map"
+            android:title="@string/map"
+            app:showAsAction="never" />
+    </group>
 </menu>

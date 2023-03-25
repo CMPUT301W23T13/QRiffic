@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar(binding.appBarMain.toolbar);
         usernamePersistent = new UsernamePersistent(getApplicationContext());
 
         // new drawer layout
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.userProfile, R.id.searchUser, R.id.leaderboard, R.id.QRDex, R.id.map, R.id.capture_layout)
+                R.id.userProfile, R.id.searchUser, R.id.leaderboard, R.id.QRDex, R.id.map, R.id.capture_layout, R.id.fragment_qrdex)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
@@ -56,40 +56,40 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        switch(id){
-            case R.id.search_users:
-                changeFragment(new FragmentSearchUser());
-            break;
-            case R.id.leaderboard:
-                changeFragment(new FragmentLeaderboard());
-            break;
-            case R.id.action_profile:
-                changeFragment(new FragmentUserProfile());
-                break;
-            case R.id.qr_dex:
-                changeFragment(new FragmentQRDex());
-                break;
-            case R.id.map:
-                changeFragment(new FragmentMap());
-                break;
-            case R.id.scan_QR:
-                changeFragment(new FragmentScanner());
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        Fragment fragment = null;
+//        Class fragmentClass = null;
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        switch(id){
+//            case R.id.search_users:
+//                changeFragment(new FragmentSearchUser());
+//            break;
+//            case R.id.leaderboard:
+//                changeFragment(new FragmentLeaderboard());
+//            break;
+//            case R.id.action_profile:
+//                changeFragment(new FragmentUserProfile());
+//                break;
+//            case R.id.qr_dex:
+//                changeFragment(new FragmentQRDex());
+//                break;
+//            case R.id.map:
+//                changeFragment(new FragmentMap());
+//                break;
+//            case R.id.scan_QR:
+//                changeFragment(new FragmentScanner());
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.fragment_cont);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
