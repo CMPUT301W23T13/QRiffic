@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.example.qriffic.databinding.FragmentSplashBinding;
 import com.google.firebase.FirebaseApp;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -68,6 +71,27 @@ public class FragmentSplash extends Fragment {
         this.navController = Navigation.findNavController(getView());
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
         dba = new DBAccessor();
+
+        //DBACCESSOR TEST ZONE STARTS
+//        QRCode testQR = new QRCode("testtt", null, "testuser1", null, "test comment here");
+//        PlayerProfile testProfile = new PlayerProfile("testname", "testuuid", "username@outlook.com", "999.999.9999", 0, 0, new ArrayList<QRCode>());
+//        dba.setPlayer(testProfile);
+//        Log.d("TESTPRINT", "Before add: " + testQR.getIdHash());
+//        dba.addQR("testname", testQR);
+//        QRData testQRData = new QRData();
+//        testQRData.addListener(new fetchListener() {
+//            @Override
+//            public void onFetchComplete() {
+//                Log.d("TESTPRINT", String.valueOf(testQRData.getUsers()));
+//            }
+//            @Override
+//            public void onFetchFailure() {
+//                Log.d("TESTPRINT", "failed fetch");
+//            }
+//        });
+//        dba.getQRData(testQRData, testQR.getIdHash());
+        //DBACCESSOR TEST ZONE ENDS
+
         //deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
         String username = usernamePersistent.fetchUsername();
         Bundle bundle = new Bundle();

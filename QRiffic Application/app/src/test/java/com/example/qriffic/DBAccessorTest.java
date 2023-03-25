@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class DBAccessorTest {
 
     private QRCode mockQRCode() {
-        return new QRCode("abcdef", null, null, null, null);
+        return new QRCode("testt", null, "testuser1", null, "test comment here");
     }
 
     private PlayerProfile mockPlayerProfile() {

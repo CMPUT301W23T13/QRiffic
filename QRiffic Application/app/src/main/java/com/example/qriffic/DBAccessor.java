@@ -3,7 +3,11 @@ package com.example.qriffic;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -41,8 +45,7 @@ public class DBAccessor {
      * The PlayerProfile object to be added
      */
     public void setPlayer(PlayerProfile player) {
-        String name = player.getUsername();
-        playersColRef.document(name).set(player);
+        playersColRef.document(player.getUsername()).set(player);
     }
 
     /**
@@ -97,7 +100,7 @@ public class DBAccessor {
                 }
         });
     }
-    
+
     /**
      * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
      * @param player
@@ -106,25 +109,45 @@ public class DBAccessor {
      * The QRCode object to be added
      */
     public void addQR(String player, QRCode qr) {
-        addQR(player, qr, null);
+        playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
+        QRData qrData = new QRData(qr);
+        qrColRef.document(qrData.getIdHash()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // qr in QRs collection in db
+                                QRData dbQRData = document.toObject(QRData.class);
+                                dbQRData.addUser(qr);
+                                qrColRef.document(qr.getIdHash()).set(dbQRData);
+                            } else {
+                                // qr not in QRs collection in db
+                                qrColRef.document(qr.getIdHash()).set(qrData);
+                            }
+                        } else {
+                            Log.d("TESTPRINT", "Failed to get QRData");
+                        }
+                    }
+                });
     }
 
+    //OLD METHOD. DO NOT USE. USE addQR() INSTEAD. Only retained here for reference
     /**
      * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
      * @param player
      * The username of the PlayerProfile object to be added to
      * @param qr
      * The QRCode object to be added
-     * @param comment
-     * The comment to be added to be added
      */
-    public void addQR(String player, QRCode qr, String comment) {
+    public void addQROLD(String player, QRCode qr) {
         playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
         Map<String, Object> QRPlayerData = new HashMap<>();
         QRPlayerData.put("username", player);
-        QRPlayerData.put("comment", comment);
+        QRPlayerData.put("comment", qr.getComment());
         QRPlayerData.put("geoLocation", qr.getGeoLocation());
-        QRPlayerData.put("location_photo", null);  //change null to qr.getLocationPhoto() after location photo is added to QRCode class
+        QRPlayerData.put("locationImage", qr.getLocationImage());
         qrColRef.document(qr.getIdHash()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -144,6 +167,40 @@ public class DBAccessor {
                     }
                 });
 
+    }
+    
+    /**
+     * This method fetches a QRData object from the database and overwrites its data onto a
+     * given QRData object
+     * @param qrData
+     * The QRData object to be overwritten to
+     * @param idHash
+     * The idHash of the QRData object to be fetched
+     */
+    public void getQRData(QRData qrData, String idHash) {
+        qrColRef.document(idHash).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // qr in db
+                                QRData dbQRData = document.toObject(QRData.class);
+                                qrData.setIdHash(dbQRData.getIdHash());
+                                qrData.setName(dbQRData.getName());
+                                qrData.setScore(dbQRData.getScore());
+                                qrData.setUsers(dbQRData.getUsers());
+                                qrData.fetchComplete();
+                            } else {
+                                // qr not in db
+                                qrData.fetchFailed();
+                            }
+                        } else {
+                            Log.d("TESTPRINT", "Failed to get QRData");
+                        }
+                    }
+                });
     }
 
 

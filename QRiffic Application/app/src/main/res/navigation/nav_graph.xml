@@ -17,12 +17,12 @@
     <fragment
         android:id="@+id/nav_leaderboard"
         android:name="com.example.qriffic.FragmentLeaderboard"
-        android:label="fragment_leaderboard"
+        android:label="@string/leaderboard"
         tools:layout="@layout/fragment_leaderboard" />
     <fragment
         android:id="@+id/nav_searchUser"
         android:name="com.example.qriffic.FragmentSearchUser"
-        android:label="fragment_search_user"
+        android:label="@string/search_user_label"
         tools:layout="@layout/fragment_search_user">
         <action
             android:id="@+id/action_nav_searchUser_to_fragmentUserSearchedProfile"
@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/nav_userProfile"
         android:name="com.example.qriffic.FragmentUserProfile"
-        android:label="fragment_user_profile"
+        android:label="@string/user_profile_label"
         tools:layout="@layout/fragment_user_profile" >
         <action
             android:id="@+id/action_userProfile_to_fragment_QR_Detail"
@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/nav_Splash"
         android:name="com.example.qriffic.FragmentSplash"
-        android:label="fragment_splash"
+        android:label=""
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_fragmentSplash_to_ProfileCreate"
@@ -55,21 +55,21 @@
     <fragment
         android:id="@+id/nav_QRDetail"
         android:name="com.example.qriffic.Fragment_QR_Detail"
-        android:label="fragment__q_r__detail"
+        android:label="@string/qr_detail_label"
         tools:layout="@layout/fragment_qr_detail" />
     <fragment
         android:id="@+id/nav_map"
         android:name="com.example.qriffic.FragmentMap"
-        android:label="fragment_maps"
+        android:label="@string/map_label"
         tools:layout="@layout/fragment_maps" />
     <fragment
         android:id="@+id/nav_scanner"
         android:name="com.example.qriffic.FragmentScanner"
-        android:label="FragmentScanner" />
+        android:label="@string/scanner_label" />
     <fragment
         android:id="@+id/fragmentUserSearchedProfile"
         android:name="com.example.qriffic.FragmentUserSearchedProfile"
-        android:label="FragmentUserSearchedProfile" >
+        android:label="@string/search_user_label" >
         <action
             android:id="@+id/action_fragmentUserSearchedProfile_to_nav_QRDetail"
             app:destination="@id/nav_QRDetail" />
