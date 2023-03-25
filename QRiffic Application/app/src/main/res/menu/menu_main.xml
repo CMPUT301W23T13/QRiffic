@@ -1,39 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.qriffic.MainActivity">
-
-    <item
-        android:id="@+id/QRDex"
-        android:orderInCategory="100"
-        android:title="QR-DEX"
-        app:showAsAction="never" />
-    
-    <item
-        android:id="@+id/action_profile"
-        android:orderInCategory="100"
-        android:title="@string/user_profile"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/leaderboard"
-        android:orderInCategory="100"
-        android:title="@string/leaderboard"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/search_users"
-        android:orderInCategory="100"
-        android:title="@string/search_users"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/scan_QR"
-        android:orderInCategory="100"
-        android:title="@string/scan_qr"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/map"
-        android:orderInCategory="100"
-        android:title="@string/map"
-        app:showAsAction="never" />
-
-</menu>
+    tools:context="com.example.qriffic.MainActivity"/>
 

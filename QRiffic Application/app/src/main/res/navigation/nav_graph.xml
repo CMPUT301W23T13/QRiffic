@@ -6,11 +6,6 @@
     app:startDestination="@id/fragmentSplash">
 
     <fragment
-        android:id="@+id/QRDex"
-        android:name="com.example.qriffic.FragmentQRDex"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_qrdex" />
-    <fragment
         android:id="@+id/ProfileCreate"
         android:name="com.example.qriffic.FragmentProfileCreate"
         android:label="@string/second_fragment_label"

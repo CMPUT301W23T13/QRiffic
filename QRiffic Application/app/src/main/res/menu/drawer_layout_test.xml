@@ -7,10 +7,6 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/QRDex"
-            android:title="QR-DEX" />
-
-        <item
             android:id="@+id/userProfile"
             android:title="@string/user_profile"
             app:showAsAction="never" />

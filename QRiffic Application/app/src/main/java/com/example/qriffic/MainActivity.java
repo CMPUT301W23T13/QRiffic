@@ -37,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        // these JUST tell the navigator that these destinations are top level. You can add
+        // to the navigation menu and it will still navigate
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.QRDex, R.id.userProfile, R.id.leaderboard2)
+                R.id.userProfile, R.id.leaderboard2)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
@@ -73,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
 //            break;
 //            case R.id.action_profile:
 //                changeFragment(new FragmentUserProfile());
-//                break;
-//            case R.id.qr_dex:
-//                changeFragment(new FragmentQRDex());
 //                break;
 //            case R.id.map:
 //                changeFragment(new FragmentMap());
