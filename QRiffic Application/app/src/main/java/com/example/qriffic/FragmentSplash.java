@@ -84,7 +84,9 @@ public class FragmentSplash extends Fragment {
         //DBACCESSOR TEST ZONE ENDS
 
 
-        //deleteUsername(); // uncomment to delete uniqueID file and test 1st visit or not
+        // uncomment to delete uniqueID file and test 1st visit or not
+        //usernamePersistent.deleteUsername();
+        //
         String username = usernamePersistent.fetchUsername();
         Bundle bundle = new Bundle();
         if (username == null) {  // handle profile creation if necessary

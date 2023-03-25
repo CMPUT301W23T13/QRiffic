@@ -39,6 +39,7 @@ public class FragmentProfileUpdate extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         editTextUsername = view.findViewById(R.id.edit_username);
+        editTextUsername.setEnabled(false);
         editTextEmail = view.findViewById(R.id.edit_email);
         editTextPhone = view.findViewById(R.id.edit_phone);
         textViewUsernameWarning = view.findViewById(R.id.username_warning);
