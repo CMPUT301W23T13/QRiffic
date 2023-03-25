@@ -135,7 +135,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
     private void initViewsAndValues(View view) {
         Bundle bundle = getArguments();
-        textView = view.findViewById(R.id.textview_qr_code);
+        //textView = view.findViewById(R.id.textview_qr_code);
         rawString = bundle.getString("barcode_data");
         username = bundle.getString("username");
         captureButton = view.findViewById(R.id.button_capture);
@@ -225,7 +225,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 "\nlongitude: " + qrCode.getGeoLocation().getLongitude() +
                 "\nlatitude: " + qrCode.getGeoLocation().getLatitude() +
                 "\ncity: " + qrCode.getGeoLocation().getCity();
-        textView.setText(newText);
+        //textView.setText(newText);
     }
 
     @Override
