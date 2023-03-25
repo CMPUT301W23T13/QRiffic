@@ -30,10 +30,31 @@ public class Fragment_QR_Detail extends Fragment {
 
     ListView qrDetailList;
     QRDetailAdapter instanceAdapter;
+    QRData instance;
     private ArrayList<QRCode> instanceList;
 
     public Fragment_QR_Detail() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String QRID = getArguments().getString("QRID");
+        Toast.makeText(getContext(), "QRCode is " + QRID, Toast.LENGTH_SHORT).show();
+        DBAccessor dba = new DBAccessor();
+        QRData qrData = new QRData();
+        qrData.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                instance = qrData;
+            }
+            @Override
+            public void onFetchFailure() {
+                Toast.makeText(getContext(), "Failed to fetch QR data", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dba.getQRData(qrData, QRID);
     }
 
     @Override
