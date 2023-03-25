@@ -144,13 +144,45 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
-                                System.out.println(document.getData().get("idHash"));
-                                idHash.add("Haash");
+//                                System.out.println(document.getData().get("idHash"));
+//                                idHash.add("Haash");
+                                String id = (String) document.getData().get("idHash");
+                                idHash.add((String) document.getData().get("idHash"));
 
-//                                idHash.add("Hash="+ (String) document.getData().get("idHash"));
+
+                                QRData qrData = new QRData();
+
+//                                dba.getQRData(qrData,id);
+//                                System.out.println(qrData);
+
+
+
+                                db.collection("QRs").document(id).collection("qr_assoc_players")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @SuppressLint("RestrictedApi")
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d(TAG, document.getId() + " => " + document.getData());
+//                                                        System.out.println("username:"+document.getData().get("username"));
+
+                                                        GeoLocation geoLocation = new GeoLocation();
+                                                        System.out.println(document.getData().get("geoLocation"));
+
+
+
+                                                    }
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
 
 
                             }
+//                            System.out.println("idHash = "+idHash);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -158,7 +190,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                 });
 
 
-        System.out.println("idHash = "+idHash);
+
+
+
+
 
 
 
