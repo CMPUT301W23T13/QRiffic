@@ -2,7 +2,6 @@ package com.example.qriffic;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         // to the navigation menu and it will still navigate
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.userProfile, R.id.leaderboard2)
+                R.id.nav_scanner,R.id.nav_map,R.id.nav_userProfile,R.id.nav_searchUser,R.id.nav_leaderboard)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
@@ -58,33 +57,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        Fragment fragment = null;
-//        Class fragmentClass = null;
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        switch(id){
-//            case R.id.search_users:
-//                changeFragment(new FragmentSearchUser());
-//            break;
-//            case R.id.leaderboard:
-//                changeFragment(new FragmentLeaderboard());
-//            break;
-//            case R.id.action_profile:
-//                changeFragment(new FragmentUserProfile());
-//                break;
-//            case R.id.map:
-//                changeFragment(new FragmentMap());
-//                break;
-//            case R.id.scan_QR:
-//                changeFragment(new FragmentScanner());
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     public boolean onSupportNavigateUp() {
