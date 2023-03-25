@@ -146,6 +146,39 @@ public class DBAccessor {
 
     }
 
+    // TEST FUNCTION: Testing alternative storage method using QRData class
+    public void addQR2(String player, QRCode qr) {
+        playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
+        QRData qrData = new QRData(qr);
+        qrColRef.document(qrData.getIdHash()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (!documentSnapshot.exists()) {
+                            // the QRCode is not in the database
+
+                            qrColRef.document(qr.getIdHash()).collection("qr_assoc_players").document(player).set(qrData);
+                        } else {
+                            // the QRCode is in the database
+                            qrColRef.document(qr.getIdHash()).collection("qr_assoc_players").document(player).set(qrData);
+                        }
+                    }
+                });
+        qrColRef.document(qrData.getIdHash()).set(qrData);
+    }
+
+    // getQR is a WIP. DO NOT USE YET
+    /**
+     * This method fetches a QRCode object from the database and overwrites its data onto a
+     * given PlayerProfile object
+     * @param name
+     * The username of the Player
+     * @param player
+     * The PlayerProfile object to be overwritten to
+     */
+    public void getQR(PlayerProfile player, String name) {
+    }
+
 
 
 }
