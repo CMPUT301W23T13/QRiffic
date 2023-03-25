@@ -17,7 +17,7 @@ public class PlayerProfileTest {
 
     private PlayerProfile mockPlayerProfile() {
 
-        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999", 0, 0, new ArrayList<QRCode>());
+        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999",  new ArrayList<QRCode>());
     }
 
     @Test
@@ -80,6 +80,8 @@ public class PlayerProfileTest {
 
         assertEquals(1, mockPlayerProfile.getCaptured().size());
         assertNotEquals(0, mockPlayerProfile.getCaptured().size());
+        assertEquals(mockQRCode.getScore(), mockPlayerProfile.getLowScore());
+        assertEquals(mockQRCode.getScore(), mockPlayerProfile.getHighScore());
 
         assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
         assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", null, null, null, null)));

@@ -21,7 +21,7 @@ public class DBAccessorTest {
     }
 
     private PlayerProfile mockPlayerProfile() {
-        return new PlayerProfile("testname", "testuuid", "username@outlook.com", "999.999.9999", 0, 0, new ArrayList<QRCode>());
+        return new PlayerProfile("testname", "testuuid", "username@outlook.com", "999.999.9999", new ArrayList<QRCode>());
     }
 
     @Test

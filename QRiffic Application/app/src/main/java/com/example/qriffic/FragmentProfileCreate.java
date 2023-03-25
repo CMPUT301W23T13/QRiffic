@@ -76,8 +76,6 @@ public class FragmentProfileCreate extends Fragment {
                             null,
                             editTextEmail.getText().toString(),
                             editTextPhone.getText().toString(),
-                            0,
-                            0,
                             new ArrayList<>());
                         dba.setPlayer(profile);
 
