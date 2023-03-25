@@ -97,9 +97,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         map.setMyLocationEnabled(true);
 
         // get username from the bundle
-        Bundle bundle = getArguments();
-        assert bundle != null;
-        String activeUsername = bundle.getString("username");
+//        Bundle bundle = getArguments();
+////        assert bundle != null;
+//        String activeUsername = bundle.getString("username");
 
 
         //add marker and move camera
@@ -112,17 +112,29 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
         // Get the list of locations from the database
         dba = new DBAccessor();
-        PlayerProfile player = new PlayerProfile();
+        QRCode qr = new QRCode();
+//        PlayerProfile player = new PlayerProfile();
+//
+//        player.addListener(new fetchListener() {
+//            @Override
+//            public void onFetchComplete() {
+//
+//            }
+//
+//            @Override
+//            public void onFetchFailure() {
+//
+//            }
+//        });
 
-        //list of document names
-        List<String> documentNames = new ArrayList<>();
-
-        dba.getPlayer(player,activeUsername);
-//        System.out.println("document names: " + documentNames);
 
 
-        // get the document name of all documents from the QR collection in firebase
-        db.collection("QR")
+        // Get the list of locations from the database
+        //initialize an array for storing qr
+        List<QRCode> qrList = new ArrayList<QRCode>();
+        List<QRData> QRData = new ArrayList<QRData>();
+        List<String> idHash = new ArrayList<String>();
+        db.collection("QRs")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @SuppressLint("RestrictedApi")
@@ -131,10 +143,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                //add the document name to the list
-                                System.out.println("document name: " + document.getId());
-                                documentNames.add(document.getId());
 
+                                System.out.println(document.getData().get("idHash"));
+                                idHash.add("Haash");
+
+//                                idHash.add("Hash="+ (String) document.getData().get("idHash"));
 
 
                             }
@@ -144,7 +157,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                     }
                 });
 
-        System.out.println("document names: " + documentNames);
+
+        System.out.println("idHash = "+idHash);
+
+
 
 
 
