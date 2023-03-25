@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class Fragment_QR_Detail extends Fragment {
 
     ListView qrDetailList;
-    QRDetailFeed instanceAdapter;
+    QRDetailAdapter instanceAdapter;
     private ArrayList<QRCode> instanceList;
 
     public Fragment_QR_Detail() {
@@ -96,7 +96,7 @@ public class Fragment_QR_Detail extends Fragment {
                         instanceAdapter.notifyDataSetChanged();
                     }
                 });
-        instanceAdapter = new QRDetailFeed(getContext(), instanceList);
+        instanceAdapter = new QRDetailAdapter(getContext(), instanceList);
         qrDetailList.setAdapter(instanceAdapter);
     }
 
