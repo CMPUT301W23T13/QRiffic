@@ -40,6 +40,7 @@ import com.bumptech.glide.Glide;
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
     private DBAccessor dba;
+    private UsernamePersistent usernamePersistent;
     private double currLongitude;
     private double currLatitude;
     private String currCity;
@@ -136,7 +137,8 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         Bundle bundle = getArguments();
         //textView = view.findViewById(R.id.textview_qr_code);
         rawString = bundle.getString("barcode_data");
-        username = bundle.getString("username");
+        usernamePersistent = new UsernamePersistent(requireActivity());
+        username = usernamePersistent.fetchUsername();
         congratsTextView = view.findViewById(R.id.textview_congrats);
         captureButton = view.findViewById(R.id.button_capture);
         trackLocationSwitch = view.findViewById(R.id.switch_track_location);

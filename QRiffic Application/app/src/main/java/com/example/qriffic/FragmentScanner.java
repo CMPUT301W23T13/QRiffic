@@ -44,7 +44,6 @@ public class FragmentScanner extends Fragment {
                 Fragment fragment = new FragmentCaptureScreen();
                 Bundle bundle = new Bundle();
                 bundle.putString("barcode_data", result.getText());
-                bundle.putString("username", getArguments().getString("username"));
                 fragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, fragment).commit();
             }
