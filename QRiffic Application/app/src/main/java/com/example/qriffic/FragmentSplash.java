@@ -74,13 +74,13 @@ public class FragmentSplash extends Fragment {
 
 
         //DBACCESSOR TEST ZONE STARTS
-        String testUsername = "test1234";
-        QRCode testQR = new QRCode("testtt", null, testUsername, null, "test comment here");
-        PlayerProfile testProfile = new PlayerProfile(testUsername, "testuuid", "username@outlook.com", "999.999.9999", new ArrayList<QRCode>());
-
-        dba.setPlayer(testProfile);
-        dba.addQR(testProfile.getUsername(), testQR);
-        dba.deleteQR(testQR);
+//        String testUsername = "test1234";
+//        QRCode testQR = new QRCode("testtt", null, testUsername, null, "test comment here");
+//        PlayerProfile testProfile = new PlayerProfile(testUsername, "testuuid", "username@outlook.com", "999.999.9999", new ArrayList<QRCode>());
+//
+//        dba.setPlayer(testProfile);
+//        dba.addQR(testProfile.getUsername(), testQR);
+//        dba.deleteQR(testQR);
         //DBACCESSOR TEST ZONE ENDS
 
 
