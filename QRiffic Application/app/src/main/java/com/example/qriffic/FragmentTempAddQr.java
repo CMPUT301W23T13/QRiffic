@@ -24,6 +24,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.auth.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -89,9 +90,10 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         View view = inflater.inflate(R.layout.fragment_temp_add_qr, container, false);
 
         // get username from the bundle
-        Bundle bundle = getArguments();
-        assert bundle != null;
-        String activeUsername = bundle.getString("username");
+
+        UsernamePersistent usernamePersistent = new UsernamePersistent(getActivity().getApplicationContext());
+        String activeUsername = usernamePersistent.fetchUsername();
+
 
         DBAccessor dba = new DBAccessor();
 
