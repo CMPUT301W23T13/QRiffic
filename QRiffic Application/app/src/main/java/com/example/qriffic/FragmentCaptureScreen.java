@@ -171,8 +171,13 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     0, 0, FragmentCaptureScreen.this);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            currLongitude = location.getLongitude();
-            currLatitude = location.getLatitude();
+            if (location != null) {
+                currLongitude = location.getLongitude();
+                currLatitude = location.getLatitude();
+            }else {
+                currLongitude = 0;
+                currLatitude = 0;
+            }
         }
         // get the city name from longitude and latitude
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
