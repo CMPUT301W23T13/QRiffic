@@ -4,7 +4,7 @@
     tools:context="com.example.qriffic.MainActivity">
 
     <item
-        android:id="@+id/qr_dex"
+        android:id="@+id/QRDex"
         android:orderInCategory="100"
         android:title="QR-DEX"
         app:showAsAction="never" />

@@ -61,7 +61,7 @@ public class MainActivityTest {
         // check if qr dex fragment is visible
         solo.clickOnActionBarItem(R.id.toolbar);
         sleep(5000);
-        solo.clickOnView(solo.getView(R.id.qr_dex));
+        solo.clickOnView(solo.getView(R.id.QRDex));
         fragment = fragmentManager.findFragmentById(R.id.fragment_qrdex);
         assertTrue(fragment != null && fragment.isVisible());
 

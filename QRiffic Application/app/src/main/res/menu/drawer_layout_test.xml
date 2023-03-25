@@ -7,29 +7,16 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/qr_dex"
-            android:title="QR-DEX"
-            app:showAsAction="never" />
+            android:id="@+id/QRDex"
+            android:title="QR-DEX" />
 
         <item
-            android:id="@+id/action_profile"
+            android:id="@+id/userProfile"
             android:title="@string/user_profile"
             app:showAsAction="never" />
         <item
-            android:id="@+id/leaderboard"
+            android:id="@+id/leaderboard2"
             android:title="@string/leaderboard"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/search_users"
-            android:title="@string/search_users"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/scan_QR"
-            android:title="@string/scan_qr"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/map"
-            android:title="@string/map"
             app:showAsAction="never" />
     </group>
 </menu>
