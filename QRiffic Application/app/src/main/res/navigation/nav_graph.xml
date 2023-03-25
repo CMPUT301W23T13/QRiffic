@@ -3,70 +3,76 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentSplash">
+    app:startDestination="@id/nav_Splash">
 
     <fragment
-        android:id="@+id/QRDex"
-        android:name="com.example.qriffic.FragmentQRDex"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_qrdex"/>
-    <fragment
-        android:id="@+id/ProfileCreate"
+        android:id="@+id/nav_profileCreate"
         android:name="com.example.qriffic.FragmentProfileCreate"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/profile_create">
         <action
             android:id="@+id/action_ProfileCreate_to_userProfile"
-            app:destination="@id/userProfile" />
+            app:destination="@id/nav_userProfile" />
     </fragment>
     <fragment
-        android:id="@+id/leaderboard2"
+        android:id="@+id/nav_leaderboard"
         android:name="com.example.qriffic.FragmentLeaderboard"
         android:label="fragment_leaderboard"
         tools:layout="@layout/fragment_leaderboard" />
     <fragment
-        android:id="@+id/searchUser"
+        android:id="@+id/nav_searchUser"
         android:name="com.example.qriffic.FragmentSearchUser"
         android:label="fragment_search_user"
-        tools:layout="@layout/fragment_search_user" >
+        tools:layout="@layout/fragment_search_user">
         <action
-            android:id="@+id/action_searchUser_to_userProfile"
-            app:destination="@id/userProfile" />
+            android:id="@+id/action_nav_searchUser_to_fragmentUserSearchedProfile"
+            app:destination="@id/fragmentUserSearchedProfile" />
     </fragment>
     <fragment
-        android:id="@+id/userProfile"
+        android:id="@+id/nav_userProfile"
         android:name="com.example.qriffic.FragmentUserProfile"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" >
         <action
-            android:id="@+id/action_userProfile_to_QRDex"
-            app:destination="@id/QRDex" />
-        <action
-            android:id="@+id/action_userProfile_to_leaderboard2"
-            app:destination="@id/leaderboard2" />
-        <action
-            android:id="@+id/action_userProfile_to_searchUser"
-            app:destination="@id/searchUser" />
-        <action
             android:id="@+id/action_userProfile_to_fragment_QR_Detail"
-            app:destination="@id/fragment_QR_Detail" />
+            app:destination="@id/nav_QRDetail" />
+        <action
+            android:id="@+id/action_nav_userProfile_to_nav_profileCreate"
+            app:destination="@id/nav_profileCreate" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentSplash"
+        android:id="@+id/nav_Splash"
         android:name="com.example.qriffic.FragmentSplash"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_fragmentSplash_to_ProfileCreate"
-            app:destination="@id/ProfileCreate" />
+            app:destination="@id/nav_profileCreate" />
         <action
             android:id="@+id/action_fragmentSplash_to_userProfile"
-            app:destination="@id/userProfile" />
+            app:destination="@id/nav_userProfile" />
     </fragment>
     <fragment
-        android:id="@+id/fragment_QR_Detail"
+        android:id="@+id/nav_QRDetail"
         android:name="com.example.qriffic.Fragment_QR_Detail"
         android:label="fragment__q_r__detail"
         tools:layout="@layout/fragment_qr_detail" />
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.example.qriffic.FragmentMap"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/nav_scanner"
+        android:name="com.example.qriffic.FragmentScanner"
+        android:label="FragmentScanner" />
+    <fragment
+        android:id="@+id/fragmentUserSearchedProfile"
+        android:name="com.example.qriffic.FragmentUserSearchedProfile"
+        android:label="FragmentUserSearchedProfile" >
+        <action
+            android:id="@+id/action_fragmentUserSearchedProfile_to_nav_QRDetail"
+            app:destination="@id/nav_QRDetail" />
+    </fragment>
 
 </navigation>

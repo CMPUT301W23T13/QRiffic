@@ -10,15 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-public class QRDetailFeed extends ArrayAdapter<QRCode> {
+public class QRDetailAdapter extends ArrayAdapter<QRCode> {
     private ArrayList<QRCode> instanceList;
     private Context context;
 
-    public QRDetailFeed(Context context, ArrayList<QRCode> qrCodes) {
+    public QRDetailAdapter(Context context, ArrayList<QRCode> qrCodes) {
         super(context, 0, qrCodes);
         this.instanceList = qrCodes;
         this.context = context;
