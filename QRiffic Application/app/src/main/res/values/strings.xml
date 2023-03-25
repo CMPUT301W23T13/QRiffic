@@ -2,8 +2,15 @@
     <string name="app_name">QRiffic</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">fragment_user_profile</string>
-    <string name="second_fragment_label">fragment_profile_create</string>
+    <string name="first_fragment_label">My Profile</string>
+    <string name="second_fragment_label">Create a Profile</string>
+    <string name="leaderboard_label">Leaderboard</string>
+    <string name="search_user_label">Search User</string>
+    <string name="user_profile_label">My Profile</string>
+    <string name="qr_detail_label">QR Detail</string>
+    <string name="map_label">Map</string>
+    <string name="scanner_label">Scanner</string>
+    <string name="searched_profile_label">Profile</string>
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
