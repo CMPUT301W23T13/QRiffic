@@ -45,12 +45,14 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     private String currCity;
     private QRCode qrCode;
     private String username;
-    private TextView textView;
     private String rawString;
     private Button captureButton;
     private Switch trackLocationSwitch;
     private ImageView locationImageView;
     private EditText commentEditText;
+    private TextView nameScoreTextView;
+    private TextView geoLocationTextView;
+    private TextView congratsTextView;
     private Bitmap locationImage;
 
 
@@ -73,7 +75,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         initViewsAndValues(view);
         createNewQRCode();
         generateIdenticon(view);
-        displayQRCodeText();
+        displayUpdatedText();
 
         // when the user clicks the capture button, upload the QRCode to the database
         captureButton.setOnClickListener(new View.OnClickListener() {
@@ -112,9 +114,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 128) {
-                    commentEditText.setError("Comments cannot be longer than 128 characters");
-                }
             }
         });
 
@@ -138,10 +137,13 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         //textView = view.findViewById(R.id.textview_qr_code);
         rawString = bundle.getString("barcode_data");
         username = bundle.getString("username");
+        congratsTextView = view.findViewById(R.id.textview_congrats);
         captureButton = view.findViewById(R.id.button_capture);
         trackLocationSwitch = view.findViewById(R.id.switch_track_location);
         locationImageView = view.findViewById(R.id.imageview_location_image);
+        nameScoreTextView = view.findViewById(R.id.textview_name_score);
         commentEditText = view.findViewById(R.id.edittext_comment);
+        geoLocationTextView = view.findViewById(R.id.textview_geolocation);
     }
 
     private void initLocation() {
@@ -215,17 +217,22 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 .replace(R.id.fragmentContainerView, fragmentUserProfile).commit();
     }
 
-    private void displayQRCodeText() {
-        // display QRCode info on screen
-        String hash = qrCode.getIdHash();
-        String last6 = hash.substring(hash.length() - 6);
-        String newText = "last6hex: " + last6 +
-                "\nname: " + qrCode.getName() +
-                "\nscore: " + qrCode.getScore() +
-                "\nlongitude: " + qrCode.getGeoLocation().getLongitude() +
-                "\nlatitude: " + qrCode.getGeoLocation().getLatitude() +
-                "\ncity: " + qrCode.getGeoLocation().getCity();
-        //textView.setText(newText);
+    private void displayUpdatedText() {
+        String monsterName = qrCode.getName();
+        String monsterScore = String.valueOf(qrCode.getScore());
+        String monsterLat = String.valueOf(qrCode.getGeoLocation().getLatitude());
+        String monsterLong = String.valueOf(qrCode.getGeoLocation().getLongitude());
+        String monsterCity = qrCode.getGeoLocation().getCity();
+
+        String nameScoreText = monsterName + "\n" + monsterScore + " pts";
+        String congratsText = "Congrats! You found a new " + monsterName + "!" +
+                "What would you like to do?";
+        String geolocationText = " + Add geolocation\n Lat: " + monsterLat + "\n Long: " +
+                monsterLong + "\n City: " + monsterCity;
+
+        nameScoreTextView.setText(nameScoreText);
+        congratsTextView.setText(congratsText);
+        geoLocationTextView.setText(geolocationText);
     }
 
     @Override

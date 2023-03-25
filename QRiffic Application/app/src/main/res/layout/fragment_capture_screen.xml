@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textview_name_score"
             android:layout_width="200dp"
             android:layout_height="75dp"
             android:layout_marginTop="192dp"
@@ -38,7 +38,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textview_congrats"
             android:layout_width="380dp"
             android:layout_height="75dp"
             android:layout_marginTop="68dp"
@@ -46,7 +46,6 @@
             android:backgroundTint="#D5D9FE"
             android:text="Congrats! You found a new Monster Name! What would you like to do?"
             android:textAlignment="center"
-
             android:textColor="#2F3FCC"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,11 +78,11 @@
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_congrats" />
 
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/textview_geolocation"
             android:layout_width="380dp"
             android:layout_height="75dp"
             android:background="@drawable/rounded_corner"
@@ -136,11 +135,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Store Geolocation?"
-            app:layout_constraintBottom_toBottomOf="@+id/textView9"
-            app:layout_constraintEnd_toEndOf="@+id/textView9"
+            app:layout_constraintBottom_toBottomOf="@+id/textview_geolocation"
+            app:layout_constraintEnd_toEndOf="@+id/textview_geolocation"
             app:layout_constraintHorizontal_bias="0.96"
-            app:layout_constraintStart_toStartOf="@+id/textView9"
-            app:layout_constraintTop_toTopOf="@+id/textView9"
+            app:layout_constraintStart_toStartOf="@+id/textview_geolocation"
+            app:layout_constraintTop_toTopOf="@+id/textview_geolocation"
             app:layout_constraintVertical_bias="0.437" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
