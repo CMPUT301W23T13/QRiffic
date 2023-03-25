@@ -146,14 +146,7 @@ public class FragmentUserProfile extends Fragment {
                 profileListView = view.findViewById(R.id.profileList);
                 profileListView.setAdapter(qrAdapter);
 
-
-                //sort array
-                Arrays.sort(lowScoreArray);
-                //set lowest score for player and database
-                if (lowScoreArray.length > 0) {
-                    //playerProfile.setLowScore((int) lowScoreArray[0]);
-                    //document.getReference().update("lowScore", lowScoreArray[0]);
-                    //document.getReference().update("highScore", lowScoreArray[lowScoreArray.length - 1]);
+                if (qrList.size() > 0) {
                     lowScore.setText(String.valueOf(playerProfile.getLowScore()));
                     highScore.setText(String.valueOf(playerProfile.getHighScore()));
                     totalScore.setText(String.valueOf(totalScoreInt));
@@ -177,8 +170,6 @@ public class FragmentUserProfile extends Fragment {
                     playerProfile.setHighScore(-1);
                     lowScore.setText("N/A");
                     highScore.setText("N/A");
-                    //document.getReference().update("lowScore", -1);
-                    //document.getReference().update("highScore", -1);
                 }
 
                 //set name for lowest score and  highest score
@@ -190,7 +181,6 @@ public class FragmentUserProfile extends Fragment {
                     if (qrCode.getScore() == playerProfile.getLowScore()) {
                         botQRName.setText(qrCode.getName());
                     }
-
                 }
 
                 //set the text views to the user data
@@ -201,7 +191,6 @@ public class FragmentUserProfile extends Fragment {
                 //find number of QR codes in the list
                 Integer numQRCodes = qrList.size();
                 noScanned.setText(numQRCodes.toString());
-
             }
 
             @Override
