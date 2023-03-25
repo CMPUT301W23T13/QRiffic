@@ -23,7 +23,11 @@
         android:id="@+id/nav_searchUser"
         android:name="com.example.qriffic.FragmentSearchUser"
         android:label="fragment_search_user"
-        tools:layout="@layout/fragment_search_user"/>
+        tools:layout="@layout/fragment_search_user">
+        <action
+            android:id="@+id/action_nav_searchUser_to_placeholder"
+            app:destination="@id/nav_searched_Profile" />
+    </fragment>
     <fragment
         android:id="@+id/nav_userProfile"
         android:name="com.example.qriffic.FragmentUserProfile"
@@ -32,6 +36,9 @@
         <action
             android:id="@+id/action_userProfile_to_fragment_QR_Detail"
             app:destination="@id/nav_QRDetail" />
+        <action
+            android:id="@+id/action_nav_userProfile_to_nav_profileCreate"
+            app:destination="@id/nav_profileCreate" />
     </fragment>
     <fragment
         android:id="@+id/nav_Splash"
@@ -59,5 +66,10 @@
         android:id="@+id/nav_scanner"
         android:name="com.example.qriffic.FragmentScanner"
         android:label="FragmentScanner" />
+    <fragment android:id="@+id/nav_searched_Profile" >
+        <action
+            android:id="@+id/action_nav_searched_Profile_to_nav_QRDetail"
+            app:destination="@id/nav_QRDetail" />
+    </fragment>
 
 </navigation>
