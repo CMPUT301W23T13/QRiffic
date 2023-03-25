@@ -26,13 +26,13 @@ import java.util.ArrayList;
 /**
  * This fragment is used to display the details of a QR code.
  */
-public class Fragment_QR_Detail extends Fragment {
+public class FragmentQRDetail extends Fragment {
 
     ListView qrDetailList;
     QRDetailAdapter instanceAdapter;
     private ArrayList<QRCode> instanceList;
 
-    public Fragment_QR_Detail() {
+    public FragmentQRDetail() {
         // Required empty public constructor
     }
 

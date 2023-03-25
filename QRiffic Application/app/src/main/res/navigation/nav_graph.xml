@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_QRDetail"
-        android:name="com.example.qriffic.Fragment_QR_Detail"
+        android:name="com.example.qriffic.FragmentQRDetail"
         android:label="@string/qr_detail_label"
         tools:layout="@layout/fragment_qr_detail" />
     <fragment
