@@ -49,6 +49,31 @@ public class DBAccessor {
     }
 
     /**
+     * This method updates the contact info of an existing Player in the database.
+     * Throws an error if the player does not exist in the database.
+     * @param player
+     * The PlayerProfile object with the updated info
+     */
+    public void updateContactInfo(PlayerProfile player) {
+        playersColRef.document(player.getUsername()).get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        playersColRef.document(player.getUsername()).update("phoneNum", player.getPhoneNum());
+                                        playersColRef.document(player.getUsername()).update("email", player.getEmail());
+                                    } else {
+                                        throw new IllegalArgumentException("Player does not exist in database");
+                                    }
+                                }
+                            }
+                        });
+
+    }
+
+    /**
      * This method fetches a PlayerProfile object from the database and overwrites its data onto a
      * given PlayerProfile object
      * @param name
