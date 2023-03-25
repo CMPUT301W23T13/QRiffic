@@ -2,6 +2,7 @@ package com.example.qriffic;
 
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 

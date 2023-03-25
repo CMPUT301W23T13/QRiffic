@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qriffic.databinding.ProfileCreateBinding;
@@ -42,51 +43,39 @@ public class FragmentProfileUpdate extends Fragment {
         editTextPhone = view.findViewById(R.id.edit_phone);
         textViewUsernameWarning = view.findViewById(R.id.username_warning);
 
+        PlayerProfile profile = new PlayerProfile();
+        DBAccessor dba = new DBAccessor();
+        profile.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                editTextUsername.setText(profile.getUsername());
+                editTextEmail.setText(profile.getEmail());
+                editTextPhone.setText(profile.getPhoneNum());
+            }
+
+            @Override
+            public void onFetchFailure() {
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dba.getPlayer(profile, usernamePersistent.fetchUsername());
+
         binding.enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //write to file, and then navigate back to QRDex
 
                 if (editTextUsername.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please enter a username", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                DBAccessor dba = new DBAccessor();
+                profile.setUsername(editTextUsername.getText().toString());
+                profile.setEmail(editTextEmail.getText().toString());
+                profile.setPhoneNum(editTextPhone.getText().toString());
+                dba.updateContactInfo(profile);
 
-                PlayerProfile profile = new PlayerProfile();
-                profile.addListener(new fetchListener() {
-                    @Override
-                    public void onFetchComplete() {
-                        // the query was able to fetch a PlayerProfile,
-                        // so the username is already taken
-                        editTextUsername.setText("");
-                        textViewUsernameWarning.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onFetchFailure() {
-                        // the query was unable to fetch a PlayerProfile,
-                        // so the username is available
-                        PlayerProfile profile = new PlayerProfile(
-                            editTextUsername.getText().toString(),
-                            null,
-                            editTextEmail.getText().toString(),
-                            editTextPhone.getText().toString(),
-                            new ArrayList<>());
-                        dba.setPlayer(profile);
-
-                        usernamePersistent.saveUsername(profile.getUsername());
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username", profile.getUsername());
-
-                        NavHostFragment.findNavController(FragmentProfileUpdate.this)
-                            .navigate(R.id.action_ProfileCreate_to_userProfile, bundle);
-                    }
-                });
-
-                dba.getPlayer(profile, editTextUsername.getText().toString());
+                Navigation.findNavController(view).popBackStack();
             }
         });
     }
