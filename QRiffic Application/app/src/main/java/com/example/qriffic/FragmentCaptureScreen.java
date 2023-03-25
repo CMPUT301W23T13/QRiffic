@@ -225,7 +225,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         String monsterCity = qrCode.getGeoLocation().getCity();
 
         String nameScoreText = monsterName + "\n" + monsterScore + " pts";
-        String congratsText = "Congrats! You found a new " + monsterName + "!" +
+        String congratsText = "Congrats! You found a new " + monsterName + "! " +
                 "What would you like to do?";
         String geolocationText = " + Add geolocation\n Lat: " + monsterLat + "\n Long: " +
                 monsterLong + "\n City: " + monsterCity;
