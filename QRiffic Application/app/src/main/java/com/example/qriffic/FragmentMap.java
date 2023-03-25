@@ -1,18 +1,21 @@
 package com.example.qriffic;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
+import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.Manifest.permission;
-
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,72 +24,17 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-// DIFFERENT APPROACH TO IMPLEMENT MAPS
-//public class MapsFragment extends Fragment implements OnMapReadyCallback {
-//
-//    private GoogleMap mMap;
-//    private MapView mMapView;
-//    private View mView;
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        mView = inflater.inflate(R.layout.fragment_maps, container, false);
-//
-//        return mView;
-//    }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        mMapView = mView.findViewById(R.id.mapView);
-//        mMapView.onCreate(savedInstanceState);
-//        mMapView.onResume();
-//        mMapView.getMapAsync(this);
-//    }
-//
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//
-//        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mMapView.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        mMapView.onPause();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        mMapView.onDestroy();
-//    }
-//
-//    @Override
-//    public void onLowMemory() {
-//        super.onLowMemory();
-//        mMapView.onLowMemory();
-//    }
-//}
+
 
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
@@ -94,6 +42,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
     GoogleMap map;
     MapView mapView;
+    DBAccessor dba;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Nullable
     @Override
@@ -145,15 +96,66 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         }
         map.setMyLocationEnabled(true);
 
+        // get username from the bundle
+        Bundle bundle = getArguments();
+        assert bundle != null;
+        String activeUsername = bundle.getString("username");
 
 
         //add marker and move camera
         // Create a list of LatLng objects for the markers
         List<LatLng> markerLatLngList = new ArrayList<>();
-        markerLatLngList.add(new LatLng(37.7749, -122.4194)); // San Francisco
-        markerLatLngList.add(new LatLng(40.7128, -74.0060)); // New York City
-        markerLatLngList.add(new LatLng(51.5074, -0.1278)); // London
-        markerLatLngList.add(new LatLng(35.6895, 139.6917)); // Tokyo
+//        markerLatLngList.add(new LatLng(37.7749, -122.4194)); // San Francisco
+//        markerLatLngList.add(new LatLng(40.7128, -74.0060)); // New York City
+//        markerLatLngList.add(new LatLng(51.5074, -0.1278)); // London
+//        markerLatLngList.add(new LatLng(35.6895, 139.6917)); // Tokyo
+
+        // Get the list of locations from the database
+        dba = new DBAccessor();
+        PlayerProfile player = new PlayerProfile();
+
+        //list of document names
+        List<String> documentNames = new ArrayList<>();
+
+        dba.getPlayer(player,activeUsername);
+//        System.out.println("document names: " + documentNames);
+
+
+        // get the document name of all documents from the QR collection in firebase
+        db.collection("QR")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("RestrictedApi")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                //add the document name to the list
+                                System.out.println("document name: " + document.getId());
+                                documentNames.add(document.getId());
+
+
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        System.out.println("document names: " + documentNames);
+
+
+
+
+
+
+
+
+
+
+
 
         // Add a marker for each LatLng using a loop
         for (LatLng latLng : markerLatLngList) {
