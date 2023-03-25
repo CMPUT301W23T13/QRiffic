@@ -65,7 +65,12 @@
     <fragment
         android:id="@+id/nav_scanner"
         android:name="com.example.qriffic.FragmentScanner"
-        android:label="FragmentScanner" />
+        android:label="FragmentScanner"
+        tools:layout="@layout/fragment_scanner">
+        <action
+            android:id="@+id/action_nav_scanner_to_nav_capture_screen"
+            app:destination="@id/nav_capture_screen" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentUserSearchedProfile"
         android:name="com.example.qriffic.FragmentUserSearchedProfile"
@@ -73,6 +78,15 @@
         <action
             android:id="@+id/action_fragmentUserSearchedProfile_to_nav_QRDetail"
             app:destination="@id/nav_QRDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_capture_screen"
+        android:name="com.example.qriffic.FragmentCaptureScreen"
+        android:label="FragmentCaptureScreen"
+        tools:layout="@layout/fragment_capture_screen">
+        <action
+            android:id="@+id/action_nav_capture_screen_to_nav_userProfile"
+            app:destination="@id/nav_userProfile" />
     </fragment>
 
 </navigation>

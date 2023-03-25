@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import java.io.IOException;
 import java.util.List;
@@ -83,6 +84,10 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             @Override
             public void onClick(View v) {
                 uploadToDB();
+                // go back to the user profile screen
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                Navigation.findNavController(view).navigate(R.id.nav_userProfile, bundle);
             }
         });
 
@@ -208,15 +213,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         //dba.setQR(qrCode.getIdHash(), qrCode);
         // update player's captured list and QRs collection in DB
         dba.addQR(username, qrCode);
-
-        // go back to the user profile screen
-        FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();
-        Bundle bundle = new Bundle();
-        bundle.putString("username", username);
-        fragmentUserProfile.setArguments(bundle);
-
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainerView, fragmentUserProfile).commit();
     }
 
     private void displayUpdatedText() {
