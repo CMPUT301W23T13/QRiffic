@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,8 +105,9 @@ public class FragmentSearchUser extends Fragment {
 //                                        dba.setPlayer(playerprofile);
 //                                      send the username to the playerprofile fragment
                                         bundle.putString("username", etSearch.getText().toString());
-                                        fragmentUserProfile.setArguments(bundle);
-                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,fragmentUserProfile).commit();
+//                                        fragmentUserProfile.setArguments(bundle);
+//                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,fragmentUserProfile).commit();
+                                        Navigation.findNavController(v).navigate(R.id.action_nav_searchUser_to_fragmentUserSearchedProfile, bundle);
 
                                     }
                                 }
