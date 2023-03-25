@@ -3,7 +3,11 @@ package com.example.qriffic;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -96,18 +100,6 @@ public class DBAccessor {
                 }
         });
     }
-    
-    /**
-     * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
-     * with no comment
-     * @param player
-     * The username of the PlayerProfile object to be added to
-     * @param qr
-     * The QRCode object to be added
-     */
-    public void addQR(String player, QRCode qr) {
-        addQR(player, qr, null);
-    }
 
     /**
      * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
@@ -115,14 +107,45 @@ public class DBAccessor {
      * The username of the PlayerProfile object to be added to
      * @param qr
      * The QRCode object to be added
-     * @param comment
-     * The comment to be added to be added
      */
-    public void addQR(String player, QRCode qr, String comment) {
+    public void addQR(String player, QRCode qr) {
+        playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
+        QRData qrData = new QRData(qr);
+        qrColRef.document(qrData.getIdHash()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // qr in QRs collection in db
+                                QRData dbQRData = document.toObject(QRData.class);
+                                dbQRData.addUser(qr);
+                                qrColRef.document(qr.getIdHash()).set(dbQRData);
+                            } else {
+                                // qr not in QRs collection in db
+                                qrColRef.document(qr.getIdHash()).set(qrData);
+                            }
+                        } else {
+                            Log.d("TESTPRINT", "Failed to get QRData");
+                        }
+                    }
+                });
+    }
+
+    //OLD METHOD. DO NOT USE. USE addQR() INSTEAD. Only retained here for reference
+    /**
+     * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
+     * @param player
+     * The username of the PlayerProfile object to be added to
+     * @param qr
+     * The QRCode object to be added
+     */
+    public void addQROLD(String player, QRCode qr) {
         playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
         Map<String, Object> QRPlayerData = new HashMap<>();
         QRPlayerData.put("username", player);
-        QRPlayerData.put("comment", comment);
+        QRPlayerData.put("comment", qr.getComment());
         QRPlayerData.put("geoLocation", qr.getGeoLocation());
         QRPlayerData.put("locationImage", qr.getLocationImage());
         qrColRef.document(qr.getIdHash()).get()
@@ -145,38 +168,39 @@ public class DBAccessor {
                 });
 
     }
-
-    // TEST FUNCTION: Testing alternative storage method using QRData class
-    public void addQR2(String player, QRCode qr) {
-        playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
-        QRData qrData = new QRData(qr);
-        qrColRef.document(qrData.getIdHash()).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    
+    /**
+     * This method fetches a QRData object from the database and overwrites its data onto a
+     * given QRData object
+     * @param qrData
+     * The QRData object to be overwritten to
+     * @param idHash
+     * The idHash of the QRData object to be fetched
+     */
+    public void getQRData(QRData qrData, String idHash) {
+        qrColRef.document(idHash).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (!documentSnapshot.exists()) {
-                            // the QRCode is not in the database
-
-                            qrColRef.document(qr.getIdHash()).collection("qr_assoc_players").document(player).set(qrData);
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // qr in db
+                                QRData dbQRData = document.toObject(QRData.class);
+                                qrData.setIdHash(dbQRData.getIdHash());
+                                qrData.setName(dbQRData.getName());
+                                qrData.setScore(dbQRData.getScore());
+                                qrData.setUsers(dbQRData.getUsers());
+                                qrData.fetchComplete();
+                            } else {
+                                // qr not in db
+                                qrData.fetchFailed();
+                            }
                         } else {
-                            // the QRCode is in the database
-                            qrColRef.document(qr.getIdHash()).collection("qr_assoc_players").document(player).set(qrData);
+                            Log.d("TESTPRINT", "Failed to get QRData");
                         }
                     }
                 });
-        qrColRef.document(qrData.getIdHash()).set(qrData);
-    }
-
-    // getQR is a WIP. DO NOT USE YET
-    /**
-     * This method fetches a QRCode object from the database and overwrites its data onto a
-     * given PlayerProfile object
-     * @param name
-     * The username of the Player
-     * @param player
-     * The PlayerProfile object to be overwritten to
-     */
-    public void getQR(PlayerProfile player, String name) {
     }
 
 
