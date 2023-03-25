@@ -21,6 +21,10 @@ public class PlayerProfile {
      * (Required for Firestore Custom Object Translation)
      */
     public PlayerProfile() {
+        // Initial values
+        // They will be overwritten when the first QR Code is scanned
+        this.highScore = -1;
+        this.lowScore = 100000000;
     }
 
     /**
@@ -33,22 +37,27 @@ public class PlayerProfile {
      * The player's email address as a string
      * @param phoneNum
      * The player's phone number as a string
-     * @param highScore
-     * The player's high score as an integer
-     * @param lowScore
-     * The player's low score as an integer
      * @param captured
      * The player's captured QRCodes as an ArrayList of QRCode objects
      */
     public PlayerProfile(String username, String uniqueID, String email, String phoneNum,
-                         int highScore, int lowScore, ArrayList<QRCode> captured) {
+                         ArrayList<QRCode> captured) {
         this.username = username;
         this.uniqueID = uniqueID;
         this.email = email;
         this.phoneNum = phoneNum;
-        this.highScore = highScore;
-        this.lowScore = lowScore;
+        this.highScore = -1;
+        this.lowScore = 100000000;
         this.captured = captured;
+
+        for (QRCode qr : captured) {
+            if (qr.getScore() > highScore) {
+                highScore = qr.getScore();
+            }
+            if (qr.getScore() < lowScore) {
+                lowScore = qr.getScore();
+            }
+        }
     }
 
     /**
@@ -220,6 +229,7 @@ public class PlayerProfile {
         // Do we cap the amount of QR codes you can collect?
         captured.add(qrCode);
         updateHighScore(qrCode.getScore());
+        updateLowScore(qrCode.getScore());
     }
 
     /**
@@ -242,7 +252,7 @@ public class PlayerProfile {
      * The score to be compared to the current high score
      */
     public void updateHighScore(int score) {
-        highScore = Math.max(highScore, score);
+        this.highScore = Math.max(highScore, score);
     }
 
     /**
@@ -251,7 +261,7 @@ public class PlayerProfile {
      * The score to be compared to the current low score
      */
     public void updateLowScore(int score) {
-        lowScore = Math.min(lowScore, score);
+        this.lowScore = Math.min(lowScore, score);
     }
 
 }
