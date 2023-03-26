@@ -13,6 +13,7 @@ import com.google.firebase.FirebaseApp;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DBAccessorTest {
 
@@ -21,7 +22,7 @@ public class DBAccessorTest {
     }
 
     private PlayerProfile mockPlayerProfile() {
-        return new PlayerProfile("testname", "testuuid", "username@outlook.com", "999.999.9999", new ArrayList<QRCode>());
+        return new PlayerProfile("testname", "testuuid", "username@outlook.com", "999.999.9999", new HashMap<String, QRCode>());
     }
 
     @Test
