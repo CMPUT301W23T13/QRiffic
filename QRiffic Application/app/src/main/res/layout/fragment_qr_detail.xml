@@ -6,71 +6,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1"
-    tools:context=".FragmentQRDetail">
+    android:padding="10dp"
+    tools:context=".Fragment_QR_Detail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.35"
-        android:background="@color/boxDarkGrey">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
 
         <ImageView
             android:id="@+id/qr_detail_image"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
             android:src="@drawable/eg_identicon"
-            app:layout_constraintBottom_toTopOf="@+id/qr_detail_nameScoreLinearLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/qr_detail_nameScoreLinearLayout"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/light_baby_blue"
+            android:backgroundTint="@color/purple_200"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/qr_detail_image">
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.93">
 
             <TextView
                 android:id="@+id/qr_detail_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="Name"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/qr_detail_score"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="Super Long Name Test"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/qr_detail_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:text="Score"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
         android:id="@+id/qr_detail_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.65" />
-
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -93,6 +93,7 @@ public class FragmentUserProfile extends Fragment {
         TextView tvUsername = view.findViewById(R.id.user_name);
         TextView tvEmail = view.findViewById(R.id.profile_email);
         TextView tvPhoneNum = view.findViewById(R.id.profile_phone);
+        TextView tvEmptyQRMon = view.findViewById(R.id.empty_qrmon_label);
         TextView noScanned = view.findViewById(R.id.user_scanned);
         TextView totalScore = view.findViewById(R.id.user_score);
         TextView highScore = view.findViewById(R.id.topQRName2);
@@ -151,6 +152,7 @@ public class FragmentUserProfile extends Fragment {
                     lowScore.setText(String.valueOf(playerProfile.getLowScore()));
                     highScore.setText(String.valueOf(playerProfile.getHighScore()));
                     totalScore.setText(String.valueOf(totalScoreInt));
+                    tvEmptyQRMon.setVisibility(View.GONE);
 
                     //set images for highest and lowest score
                     String highurl = "https://www.gravatar.com/avatar/" + playerProfile.getHighScore() + "?s=55&d=identicon&r=PG%22";
@@ -167,6 +169,7 @@ public class FragmentUserProfile extends Fragment {
                         .error(R.drawable.ic_launcher_background)
                         .into((ImageView) view.findViewById(R.id.imageBot));
                 } else {
+                    tvEmptyQRMon.setVisibility(View.VISIBLE);
                     playerProfile.setLowScore(-1);
                     playerProfile.setHighScore(-1);
                     lowScore.setText("N/A");
