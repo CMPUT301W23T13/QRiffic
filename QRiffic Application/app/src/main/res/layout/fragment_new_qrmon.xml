@@ -21,7 +21,7 @@
                 android:layout_marginBottom="10dp">
 
                 <ImageView
-                    android:id="@+id/qr_detail_image"
+                    android:id="@+id/qr_add_image"
                     android:layout_width="256dp"
                     android:layout_height="256dp"
                     android:src="@drawable/eg_identicon"
@@ -31,7 +31,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
-                    android:id="@+id/qr_detail_nameScoreLinearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corner"
@@ -47,7 +46,7 @@
                     app:layout_constraintVertical_bias="0.93">
 
                     <TextView
-                        android:id="@+id/qr_detail_name"
+                        android:id="@+id/qr_add_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Super Long Name Test"
@@ -56,7 +55,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/qr_detail_score"
+                        android:id="@+id/qr_add_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Score"
@@ -66,6 +65,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:id="@+id/qr_add_congrats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -93,14 +93,12 @@
                     android:weightSum="1">
 
                     <ImageView
-                        android:id="@+id/imageView5"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="0.1"
                         app:srcCompat="@drawable/add_icon" />
 
                     <TextView
-                        android:id="@+id/qr_detail_PID_text"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="3dp"
@@ -111,6 +109,7 @@
                         android:text="Add comment" />
 
                     <Button
+                        android:id="@+id/qr_add_comment_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#DF5B5B"
@@ -123,7 +122,7 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/qr_detail_comment_text"
+                    android:id="@+id/qr_add_comment_text"
                     android:layout_width="match_parent"
                     android:padding="7dp"
                     android:background="@drawable/rounded_bottom_component"
@@ -149,14 +148,12 @@
                     android:weightSum="1">
 
                     <ImageView
-                        android:id="@+id/imageView5"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="0.1"
                         app:srcCompat="@drawable/add_icon" />
 
                     <TextView
-                        android:id="@+id/qr_detail_PID_text"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="3dp"
@@ -167,6 +164,7 @@
                         android:text="Add photo" />
 
                     <Button
+                        android:id="@+id/qr_add_photo_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#DF5B5B"
@@ -188,13 +186,14 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:id="@+id/qr_detail_image"
+                        android:id="@+id/qr_add_location_image"
                         android:layout_width="256dp"
                         android:layout_height="256dp"
                         android:src="@drawable/eg_identicon"
                         android:visibility="gone"/>
 
                     <LinearLayout
+                        android:id="@+id/qr_add_image_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -233,14 +232,12 @@
                     android:weightSum="1">
 
                     <ImageView
-                        android:id="@+id/imageView5"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="0.1"
                         app:srcCompat="@drawable/add_icon" />
 
                     <TextView
-                        android:id="@+id/qr_detail_PID_text"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="3dp"
@@ -251,6 +248,7 @@
                         android:text="Add geolocation"/>
 
                     <Button
+                        android:id="@+id/qr_add_geo_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#DF5B5B"
@@ -272,6 +270,7 @@
                     android:gravity="center">
 
                     <LinearLayout
+                        android:id="@+id/qr_add_geolocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -299,7 +298,7 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/confirm_fab"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
