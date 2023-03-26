@@ -98,7 +98,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
         //add marker and move camera
         // Create a list of LatLng objects for the markers
-        List<LatLng> markerLatLngList = new ArrayList<>();
+//        List<LatLng> markerLatLngList = new ArrayList<>();
 //        markerLatLngList.add(new LatLng(37.7749, -122.4194)); // San Francisco
 //        markerLatLngList.add(new LatLng(40.7128, -74.0060)); // New York City
 //        markerLatLngList.add(new LatLng(51.5074, -0.1278)); // London
@@ -142,6 +142,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 //                                HashMap<String,<>
 
                                 QRData qrData = new QRData();
+                                //make a list for lat and lon
+                                List<Double> lat = new ArrayList<Double>();
+                                List<Double> lon = new ArrayList<Double>();
 
                                 qrData.addListener(new fetchListener() {
                                     @Override
@@ -150,26 +153,45 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 //                                        System.out.println("user="+qrData.getUsers());
 
+
+
+
                                         //get the value from hashmap Users without knowing the key
 
                                         for (String key : qrData.getUsers().keySet()) {
 //                                            System.out.println("key = " + key);
 //                                            System.out.println("value = " + qrData.getUsers().get(key));
                                             HashMap<String,Object> user = (HashMap<String, Object>) qrData.getUsers().get(key);
-                                            System.out.println("user = " + user.get("geoLocation"));
+//                                            System.out.println("user = " + user.get("geoLocation"));
+                                            //get the lat and lon
+                                            HashMap<String,Object> geoLocation = (HashMap<String, Object>) user.get("geoLocation");
+
+//                                            System.out.println("lat = " + geoLocation.get("latitude"));
+//                                            System.out.println("lon = " + geoLocation.get("longitude"));
+
+
+                                            //convert all the value to double
+                                            Double latitude = (Double) geoLocation.get("latitude");
+                                            Double longitude = (Double) geoLocation.get("longitude");
+
+
+                                           //add the lat and lon to the markerLatLngList
+                                            List<LatLng> markerLatLngList = new ArrayList<>();
+
+                                            //if lat long != 9999.0
+                                            if(latitude != 9999.0 && longitude != 9999.0){
+                                                markerLatLngList.add(new LatLng(longitude,latitude));
+                                            }
+                                            // Add a marker for each LatLng using a loop
+                                            for (LatLng latLng : markerLatLngList) {
+                                                map.addMarker(new MarkerOptions().position(latLng));
+                                            }
+
+                                            //move the camera to the first marker
+                                            CameraUpdateFactory.newLatLng(new LatLng((Double) geoLocation.get("longitude"), (Double) geoLocation.get("latitude")));
+                                            CameraUpdateFactory.zoomTo(15);
+
                                         }
-
-
-
-
-
-
-//                                        Integer lat = (Integer) qrData.getUsers().get("geolocation").get("latitude");
-//                                        Integer lon = (Integer) qrData.getUsers().get("geolocation").get("longitude");
-//                                        System.out.println("lat = "+lat);
-
-
-
 
                                     }
 
@@ -179,9 +201,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                     }
                                 });
                                 dba.getQRData(qrData, id);
-
-//                                idHash.add((String) document.getData().get("idHash"));
-
 
 
 
@@ -219,12 +238,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 
 
-        // Add a marker for each LatLng using a loop
-        for (LatLng latLng : markerLatLngList) {
-            map.addMarker(new MarkerOptions().position(latLng));
-        }
-        CameraUpdateFactory.newLatLng(new LatLng(0, 0));
-        CameraUpdateFactory.zoomTo(15);
+//        // Add a marker for each LatLng using a loop
+//        for (LatLng latLng : markerLatLngList) {
+//            map.addMarker(new MarkerOptions().position(latLng));
+//        }
+//        CameraUpdateFactory.newLatLng(new LatLng(0, 0));
+//        CameraUpdateFactory.zoomTo(15);
     }
 
 
