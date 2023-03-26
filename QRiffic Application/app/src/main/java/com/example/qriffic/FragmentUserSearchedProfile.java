@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -92,7 +91,7 @@ public class FragmentUserSearchedProfile extends Fragment {
         playerProfile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
-                qrList = (ArrayList<QRCode>) playerProfile.getCaptured();
+                qrList = (ArrayList<QRCode>) playerProfile.getCapturedAsList();
 
                 ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 

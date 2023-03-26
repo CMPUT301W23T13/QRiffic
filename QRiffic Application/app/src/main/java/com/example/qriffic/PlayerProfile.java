@@ -1,6 +1,7 @@
 package com.example.qriffic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class defines a player profile
@@ -13,18 +14,55 @@ public class PlayerProfile {
     private String phoneNum;
     private int highScore;
     private int lowScore;
-    private ArrayList<QRCode> captured = new ArrayList<QRCode>();
-    private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
+    private HashMap<String, QRCode> captured;
+    private ArrayList<fetchListener> listeners;
 
     /**
      * This is an empty constructor for a PlayerProfile object
      * (Required for Firestore Custom Object Translation)
      */
     public PlayerProfile() {
+        this.captured = new HashMap<String, QRCode>();
+        this.listeners = new ArrayList<fetchListener>();
         // Initial values
         // They will be overwritten when the first QR Code is scanned
         this.highScore = -1;
         this.lowScore = 100000000;
+    }
+
+    /**
+     * This is a constructor for a PlayerProfile object
+     * @param username
+     * The player's username as a String
+     * @param uniqueID
+     * The player's unique ID as a string
+     * @param email
+     * The player's email address as a string
+     * @param phoneNum
+     * The player's phone number as a string
+     * @param captured
+     * The player's captured QRCodes as a HashMap of QRCode objects
+     */
+    public PlayerProfile(String username, String uniqueID, String email, String phoneNum,
+                         HashMap<String, QRCode> captured) {
+        this.username = username;
+        this.uniqueID = uniqueID;
+        this.email = email;
+        this.phoneNum = phoneNum;
+        this.highScore = -1;
+        this.lowScore = 100000000;
+        this.captured = captured;
+        this.captured = new HashMap<String, QRCode>();
+        this.listeners = new ArrayList<fetchListener>();
+
+        for (QRCode qr : captured.values()) {
+            if (qr.getScore() > highScore) {
+                highScore = qr.getScore();
+            }
+            if (qr.getScore() < lowScore) {
+                lowScore = qr.getScore();
+            }
+        }
     }
 
     /**
@@ -48,9 +86,12 @@ public class PlayerProfile {
         this.phoneNum = phoneNum;
         this.highScore = -1;
         this.lowScore = 100000000;
-        this.captured = captured;
+        this.captured = new HashMap<String, QRCode>();
+        this.captured = new HashMap<String, QRCode>();
+        this.listeners = new ArrayList<fetchListener>();
 
         for (QRCode qr : captured) {
+            this.captured.put(qr.getIdHash(), qr);
             if (qr.getScore() > highScore) {
                 highScore = qr.getScore();
             }
@@ -58,6 +99,7 @@ public class PlayerProfile {
                 lowScore = qr.getScore();
             }
         }
+
     }
 
     /**
@@ -210,11 +252,20 @@ public class PlayerProfile {
     }
 
     /**
-     * This method returns the list of captured QRCodes of a PlayerProfile object
+     * This method returns the list of captured QRCodes of a PlayerProfile object as an ArrayList
      * @return
      * The captured QRCodes as an ArrayList of QRCode objects
      */
-    public ArrayList<QRCode> getCaptured() {
+    public ArrayList<QRCode> getCapturedAsList() {
+        return new ArrayList<QRCode>(captured.values());
+    }
+
+    /**
+     * This method returns the list of captured QRCodes of a PlayerProfile object as a HashMap
+     * @return
+     * The captured QRCodes as a HashMap of QRCode objects
+     */
+    public HashMap<String, QRCode> getCapturedAsMap() {
         return captured;
     }
 
@@ -224,26 +275,29 @@ public class PlayerProfile {
      * The QRCode object to be added to the ArrayList of QRCode objects
      */
     public void addQRCode(QRCode qrCode) {
-
-        // do we allow players to add identical QRCodes?
-        // Do we cap the amount of QR codes you can collect?
-        captured.add(qrCode);
-        updateHighScore(qrCode.getScore());
-        updateLowScore(qrCode.getScore());
+        this.captured.put(qrCode.getIdHash(), qrCode);
+        this.updateHighScore(qrCode.getScore());
+        this.updateLowScore(qrCode.getScore());
     }
 
     /**
      * This method deletes a QRCode object from the list of captured QRCodes of a
      * PlayerProfile object
      * @param qrCode
-     * The QRCode object to be deleted from the ArrayList of QRCode objects
+     * The QRCode object to be deleted from the captured
      */
     public void deleteQRCode(QRCode qrCode) {
+        this.captured.remove(qrCode.getIdHash());
+    }
 
-        if (!captured.contains(qrCode)) {
-            throw new IllegalArgumentException();
-        }
-        captured.remove(qrCode);
+    /**
+     * This method deletes a QRCode object from the list of captured QRCodes of a
+     * PlayerProfile object
+     * @param idHash
+     * The idHash of the QRCode object to be deleted from captured
+     */
+    public void deleteQRCode(String idHash) {
+        this.captured.remove(idHash);
     }
 
     /**

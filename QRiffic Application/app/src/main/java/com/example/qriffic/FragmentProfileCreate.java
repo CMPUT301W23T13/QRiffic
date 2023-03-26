@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FragmentProfileCreate extends Fragment {
     private ProfileCreateBinding binding;
@@ -80,7 +81,7 @@ public class FragmentProfileCreate extends Fragment {
                             null,
                             editTextEmail.getText().toString(),
                             editTextPhone.getText().toString(),
-                            new ArrayList<>());
+                            new HashMap<String, QRCode>());
                         dba.setPlayer(profile);
 
                         usernamePersistent.saveUsername(profile.getUsername());

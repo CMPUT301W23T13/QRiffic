@@ -1,17 +1,10 @@
 package com.example.qriffic;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,7 +94,7 @@ public class FragmentUserProfile extends Fragment {
         playerProfile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
-                qrList = (ArrayList<QRCode>) playerProfile.getCaptured();
+                qrList = (ArrayList<QRCode>) playerProfile.getCapturedAsList();
 
                 ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
