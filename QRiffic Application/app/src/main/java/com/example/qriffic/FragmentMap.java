@@ -42,7 +42,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
     GoogleMap map;
     MapView mapView;
-    DBAccessor dba;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -111,13 +110,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 //        markerLatLngList.add(new LatLng(35.6895, 139.6917)); // Tokyo
 
         // Get the list of locations from the database
-        dba = new DBAccessor();
         PlayerProfile player = new PlayerProfile();
 
         //list of document names
         List<String> documentNames = new ArrayList<>();
 
-        dba.getPlayer(player,activeUsername);
+        DBA.getPlayer(player,activeUsername);
 //        System.out.println("document names: " + documentNames);
 
 

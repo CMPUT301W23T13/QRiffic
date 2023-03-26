@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Test suite for PlayerProfile class
@@ -17,7 +18,7 @@ public class PlayerProfileTest {
 
     private PlayerProfile mockPlayerProfile() {
 
-        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999", 0, 0, new ArrayList<QRCode>());
+        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999",  new HashMap<String, QRCode>());
     }
 
     @Test
@@ -73,16 +74,18 @@ public class PlayerProfileTest {
         PlayerProfile mockPlayerProfile = mockPlayerProfile();
         QRCode mockQRCode = mockQRCode();
 
-        assertEquals(0, mockPlayerProfile.getCaptured().size());
-        assertNotEquals(1, mockPlayerProfile.getCaptured().size());
+        assertEquals(0, mockPlayerProfile.getCaptured().values().size());
+        assertNotEquals(1, mockPlayerProfile.getCaptured().values().size());
 
         mockPlayerProfile.addQRCode(mockQRCode);
 
-        assertEquals(1, mockPlayerProfile.getCaptured().size());
-        assertNotEquals(0, mockPlayerProfile.getCaptured().size());
+        assertEquals(1, mockPlayerProfile.getCaptured().values().size());
+        assertNotEquals(0, mockPlayerProfile.getCaptured().values().size());
+        assertEquals(mockQRCode.getScore(), mockPlayerProfile.getLowScore());
+        assertEquals(mockQRCode.getScore(), mockPlayerProfile.getHighScore());
 
-        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
-        assertFalse(mockPlayerProfile.getCaptured().contains(new QRCode("123", null, null, null, null)));
+        assertTrue(mockPlayerProfile.getCaptured().values().contains(mockQRCode));
+        assertFalse(mockPlayerProfile.getCaptured().values().contains(new QRCode("123", null, null, null, null)));
     }
 
     @Test
@@ -98,26 +101,26 @@ public class PlayerProfileTest {
             mockPlayerProfile.deleteQRCode(mockQRCode2);
         });
 
-        assertEquals(1, mockPlayerProfile.getCaptured().size());
-        assertNotEquals(0, mockPlayerProfile.getCaptured().size());
+        assertEquals(1, mockPlayerProfile.getCaptured().values().size());
+        assertNotEquals(0, mockPlayerProfile.getCaptured().values().size());
 
-        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode));
-        assertFalse(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+        assertTrue(mockPlayerProfile.getCaptured().values().contains(mockQRCode));
+        assertFalse(mockPlayerProfile.getCaptured().values().contains(mockQRCode2));
 
         mockPlayerProfile.addQRCode(mockQRCode2);
 
-        assertEquals(2, mockPlayerProfile.getCaptured().size());
-        assertNotEquals(1, mockPlayerProfile.getCaptured().size());
+        assertEquals(2, mockPlayerProfile.getCaptured().values().size());
+        assertNotEquals(1, mockPlayerProfile.getCaptured().values().size());
 
-        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode2));
+        assertTrue(mockPlayerProfile.getCaptured().values().contains(mockQRCode2));
 
         mockPlayerProfile.deleteQRCode(mockQRCode);
 
-        assertEquals(1, mockPlayerProfile.getCaptured().size());
-        assertNotEquals(2, mockPlayerProfile.getCaptured().size());
+        assertEquals(1, mockPlayerProfile.getCaptured().values().size());
+        assertNotEquals(2, mockPlayerProfile.getCaptured().values().size());
 
-        assertTrue(mockPlayerProfile.getCaptured().contains(mockQRCode2));
-        assertFalse(mockPlayerProfile.getCaptured().contains(mockQRCode));
+        assertTrue(mockPlayerProfile.getCaptured().values().contains(mockQRCode2));
+        assertFalse(mockPlayerProfile.getCaptured().values().contains(mockQRCode));
     }
 
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,10 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qriffic.databinding.ProfileCreateBinding;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FragmentProfileCreate extends Fragment {
     private ProfileCreateBinding binding;
@@ -40,6 +38,8 @@ public class FragmentProfileCreate extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         editTextUsername = view.findViewById(R.id.edit_username);
         editTextEmail = view.findViewById(R.id.edit_email);
         editTextPhone = view.findViewById(R.id.edit_phone);
@@ -55,7 +55,6 @@ public class FragmentProfileCreate extends Fragment {
                     return;
                 }
 
-                DBAccessor dba = new DBAccessor();
 
                 PlayerProfile profile = new PlayerProfile();
                 profile.addListener(new fetchListener() {
@@ -76,22 +75,24 @@ public class FragmentProfileCreate extends Fragment {
                             null,
                             editTextEmail.getText().toString(),
                             editTextPhone.getText().toString(),
-                            0,
-                            0,
-                            new ArrayList<>());
-                        dba.setPlayer(profile);
+                            new HashMap<String, QRCode>());
+                        DBA.setPlayer(profile);
 
                         usernamePersistent.saveUsername(profile.getUsername());
 
+                        //todo: this should be unnecessary now that we're using a persistent username
                         Bundle bundle = new Bundle();
                         bundle.putString("username", profile.getUsername());
+                        //
 
+
+                        requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
                             .navigate(R.id.action_ProfileCreate_to_userProfile, bundle);
                     }
                 });
 
-                dba.getPlayer(profile, editTextUsername.getText().toString());
+                DBA.getPlayer(profile, editTextUsername.getText().toString());
             }
         });
     }

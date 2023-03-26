@@ -11,48 +11,6 @@ import java.util.List;
  * This class defines a QRCode object
  */
 public class QRCode implements Comparable {
-    public QRCode(String name, long score) {
-        this.name = name;
-        this.score = (int) score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public void setGeoLocation(GeoLocation geoLocation) {
-        this.geoLocation = geoLocation;
-    }
-
-    public void setIdHash(String idHash) {
-        this.idHash = idHash;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * This method sets the location image of the QR code
-     * @param locationImage
-     * The location image of the QR code
-     */
-    public void setLocationImage(Bitmap locationImage) {
-        this.locationImage = locationImage;
-    }
-
-    /**
-     * This method sets the comment of the QR code
-     * @param comment
-     * The comment of the QR code
-     */
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 
     private int score;
     private GeoLocation geoLocation;
@@ -61,12 +19,18 @@ public class QRCode implements Comparable {
     private String username;
     private Bitmap locationImage;
     private String comment;
+    private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
 
     /**
      * This is an empty constructor for a QRCode object
      * (Required for Firestore Custom Object Translation)
      */
     public QRCode() {}
+
+    public QRCode(String name, long score) {
+        this.name = name;
+        this.score = (int) score;
+    }
 
     /**
      * This is a constructor for a QRCode object
@@ -135,6 +99,85 @@ public class QRCode implements Comparable {
         QRCode qrCode = (QRCode) o;
         return this.idHash.substring(idHash.length()-6)
                 .compareTo(qrCode.idHash.substring(qrCode.idHash.length()-6));
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setGeoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
+    }
+
+    public void setIdHash(String idHash) {
+        this.idHash = idHash;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * This method sets the location image of the QR code
+     * @param locationImage
+     * The location image of the QR code
+     */
+    public void setLocationImage(Bitmap locationImage) {
+        this.locationImage = locationImage;
+    }
+
+    /**
+     * This method sets the comment of the QR code
+     * @param comment
+     * The comment of the QR code
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * This method adds a fetchListener to the QRCode object
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 24/03/2023
+     *
+     * @param toAdd
+     */
+    public void addListener(fetchListener toAdd) {
+        listeners.add(toAdd);
+    }
+
+    /**
+     * This method calls all onFetchComplete() listeners
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 24/03/2023
+     *
+     */
+    public void fetchComplete() {
+        for (fetchListener fl : listeners)
+            fl.onFetchComplete();
+    }
+
+    /**
+     * This method calls all onFetchFailure() listeners
+     *
+     * This block references the following web page:
+     * Link: https://programming.guide/java/create-a-custom-event.html
+     * Author: Unavailable
+     * Date: 24/03/2023
+     */
+    public void fetchFailed() {
+        for (fetchListener fl : listeners)
+            fl.onFetchFailure();
     }
 
     /**

@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -16,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -25,8 +25,6 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class FragmentUserSearchedProfile extends Fragment {
-
-    DBAccessor dba = new DBAccessor();
 
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
@@ -91,7 +89,7 @@ public class FragmentUserSearchedProfile extends Fragment {
         playerProfile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
-                qrList = (ArrayList<QRCode>) playerProfile.getCaptured();
+                qrList = new ArrayList<QRCode>(playerProfile.getCaptured().values());
 
                 ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
@@ -129,14 +127,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 profileListView = view.findViewById(R.id.profileList);
                 profileListView.setAdapter(qrAdapter);
 
-
-                //sort array
-                Arrays.sort(lowScoreArray);
-                //set lowest score for player and database
-                if (lowScoreArray.length > 0) {
-                    //playerProfile.setLowScore((int) lowScoreArray[0]);
-                    //document.getReference().update("lowScore", lowScoreArray[0]);
-                    //document.getReference().update("highScore", lowScoreArray[lowScoreArray.length - 1]);
+                if (qrList.size() > 0) {
                     lowScore.setText(String.valueOf(playerProfile.getLowScore()));
                     highScore.setText(String.valueOf(playerProfile.getHighScore()));
                     totalScore.setText(String.valueOf(totalScoreInt));
@@ -160,8 +151,6 @@ public class FragmentUserSearchedProfile extends Fragment {
                     playerProfile.setHighScore(-1);
                     lowScore.setText("N/A");
                     highScore.setText("N/A");
-                    //document.getReference().update("lowScore", -1);
-                    //document.getReference().update("highScore", -1);
                 }
 
                 //set name for lowest score and  highest score
@@ -220,13 +209,13 @@ public class FragmentUserSearchedProfile extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                QRCode qrCode = (QRCode) parent.getItemAtPosition(position);
-                String QRID = qrCode.getIdHash();
-                bundle.putString("QRID", QRID);
+                QRCode qrCode = qrList.get(position);
+                bundle.putString("QRID", qrCode.getIdHash());
+                Toast.makeText(getContext(), qrCode.getIdHash(), Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail,bundle);
             }
         });
-        dba.getPlayer(playerProfile, username);
+        DBA.getPlayer(playerProfile, username);
 
         return view;
     }
