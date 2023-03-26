@@ -112,7 +112,7 @@
             android:id="@+id/enter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/create_button"
+            android:text="Update"
             app:layout_constraintBottom_toBottomOf="parent"
 
             app:layout_constraintEnd_toEndOf="parent"

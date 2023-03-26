@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -211,9 +212,9 @@ public class FragmentUserSearchedProfile extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                QRCode qrCode = (QRCode) parent.getItemAtPosition(position);
-                String QRID = qrCode.getIdHash();
-                bundle.putString("QRID", QRID);
+                QRCode qrCode = qrList.get(position);
+                bundle.putString("QRID", qrCode.getIdHash());
+                Toast.makeText(getContext(), qrCode.getIdHash(), Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail,bundle);
             }
         });

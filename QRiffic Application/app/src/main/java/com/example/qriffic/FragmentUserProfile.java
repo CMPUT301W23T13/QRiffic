@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -229,9 +230,8 @@ public class FragmentUserProfile extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                QRCode qrCode = (QRCode) parent.getItemAtPosition(position);
-                String QRID = qrCode.getIdHash();
-                bundle.putString("QRID", QRID);
+                QRCode qrCode = qrList.get(position);
+                bundle.putString("QRID", qrCode.getIdHash());
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,8 @@ public class FragmentProfileCreate extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         editTextUsername = view.findViewById(R.id.edit_username);
         editTextEmail = view.findViewById(R.id.edit_email);
@@ -81,9 +84,13 @@ public class FragmentProfileCreate extends Fragment {
 
                         usernamePersistent.saveUsername(profile.getUsername());
 
+
+                        // this should be unnecessary now that we're using a persistent username
                         Bundle bundle = new Bundle();
                         bundle.putString("username", profile.getUsername());
+                        //
 
+                        requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
                             .navigate(R.id.action_ProfileCreate_to_userProfile, bundle);
                     }

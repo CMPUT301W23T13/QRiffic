@@ -37,8 +37,8 @@
             android:id="@+id/action_userProfile_to_fragment_QR_Detail"
             app:destination="@id/nav_QRDetail" />
         <action
-            android:id="@+id/action_nav_userProfile_to_nav_profileCreate"
-            app:destination="@id/nav_profileCreate" />
+            android:id="@+id/action_nav_userProfile_to_fragmentProfileUpdate"
+            app:destination="@id/nav_ProfileUpdate" />
     </fragment>
     <fragment
         android:id="@+id/nav_Splash"
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_QRDetail"
-        android:name="com.example.qriffic.Fragment_QR_Detail"
+        android:name="com.example.qriffic.FragmentQRDetail"
         android:label="@string/qr_detail_label"
         tools:layout="@layout/fragment_qr_detail" />
     <fragment
@@ -74,5 +74,18 @@
             android:id="@+id/action_fragmentUserSearchedProfile_to_nav_QRDetail"
             app:destination="@id/nav_QRDetail" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_ProfileUpdate"
+        android:name="com.example.qriffic.FragmentProfileUpdate"
+        android:label="FragmentProfileUpdate" >
+        <action
+            android:id="@+id/action_fragmentProfileUpdate_to_nav_userProfile"
+            app:destination="@id/nav_userProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_tempAddQR"
+        android:name="com.example.qriffic.FragmentTempAddQr"
+        android:label="fragment_temp_add_qr"
+        tools:layout="@layout/fragment_temp_add_qr" />
 
 </navigation>
