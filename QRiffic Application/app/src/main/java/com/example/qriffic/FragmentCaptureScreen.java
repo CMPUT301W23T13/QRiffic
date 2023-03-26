@@ -39,7 +39,6 @@ import com.bumptech.glide.Glide;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
-    private DBAccessor dba;
     private double currLongitude;
     private double currLatitude;
     private String currCity;
@@ -67,7 +66,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_capture_screen, container, false);
-        dba = new DBAccessor();
 
         initLocation();
         initViewsAndValues(view);
@@ -201,9 +199,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         //qrCode.setLocationImage(locationImage);
         //qrCode.setComment(commentEditText.getText().toString());
         //update QRCode collection in DB
-        //dba.setQR(qrCode.getIdHash(), qrCode);
+        //DBA.setQR(qrCode.getIdHash(), qrCode);
         // update player's captured list and QRs collection in DB
-        dba.addQR(username, qrCode);
+        DBA.addQR(username, qrCode);
 
         // go back to the user profile screen
         FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();

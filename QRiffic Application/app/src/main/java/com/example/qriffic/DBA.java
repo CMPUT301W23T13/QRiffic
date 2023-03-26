@@ -22,23 +22,18 @@ import java.util.Map;
 /**
  * This class is used as controller to access the database
  */
-public class DBAccessor {
+public class DBA {
 
-    private FirebaseFirestore db;
-    private CollectionReference playersColRef;
-    private CollectionReference qrColRef;
-    private CollectionReference mapColRef;
-    private CollectionReference testColRef; // Temporary test collection
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static CollectionReference playersColRef= db.collection("Players");;
+    private static CollectionReference qrColRef = db.collection("QRs");
+    private static CollectionReference mapColRef = db.collection("Map");
+    private static CollectionReference testColRef = db.collection("TestCol"); // Temporary test collection
 
     /**
-     * This is the constructor for the DBAccessor class
+     * This is the constructor for the DBA class
      */
-    public DBAccessor() {
-        this.db = FirebaseFirestore.getInstance();
-        this.playersColRef = db.collection("Players");
-        this.qrColRef = db.collection("QRs");
-        this.mapColRef = db.collection("Map");
-        this.testColRef = db.collection("TestCol"); // Temporary test collection
+    public DBA() {
     }
 
     /**
@@ -46,7 +41,7 @@ public class DBAccessor {
      * @param player
      * The PlayerProfile object to be added
      */
-    public void setPlayer(PlayerProfile player) {
+    public static void setPlayer(PlayerProfile player) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("username", player.getUsername());
         data.put("uniqueID", player.getUniqueID());
@@ -64,7 +59,7 @@ public class DBAccessor {
      * @param player
      * The PlayerProfile object with the updated info
      */
-    public void updateContactInfo(PlayerProfile player) {
+    public static void updateContactInfo(PlayerProfile player) {
         playersColRef.document(player.getUsername()).get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -90,7 +85,7 @@ public class DBAccessor {
      * @param player
      * The PlayerProfile object to be overwritten to
      */
-    public void getPlayer(PlayerProfile player, String name) {
+    public static void getPlayer(PlayerProfile player, String name) {
         /*
         Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
                 + player.getUniqueID() + " " + player.getEmail() + " "
@@ -157,7 +152,7 @@ public class DBAccessor {
      * @param qr
      * The QRCode object to be added
      */
-    public void addQR(String player, QRCode qr) {
+    public static void addQR(String player, QRCode qr) {
         PlayerProfile dbPlayer = new PlayerProfile();
         dbPlayer.addListener(new fetchListener() {
             @Override
@@ -178,7 +173,7 @@ public class DBAccessor {
                 throw new IllegalArgumentException("Player does not exist in database");
             }
         });
-        this.getPlayer(dbPlayer, player);
+        getPlayer(dbPlayer, player);
         QRData qrData = new QRData(qr);
         qrColRef.document(qrData.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -210,7 +205,7 @@ public class DBAccessor {
      * @param qr
      * The QRCode object to be added
      */
-    public void addQROLD(String player, QRCode qr) {
+    public static void addQROLD(String player, QRCode qr) {
         playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
         Map<String, Object> QRPlayerData = new HashMap<>();
         QRPlayerData.put("username", player);
@@ -243,7 +238,7 @@ public class DBAccessor {
      * @param qr
      * The QRCode object to be removed
      */
-    public void deleteQR(QRCode qr) {
+    public static void deleteQR(QRCode qr) {
         qrColRef.document(qr.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -265,6 +260,18 @@ public class DBAccessor {
                     }
                 }
         );
+        PlayerProfile dbPlayer = new PlayerProfile();
+        dbPlayer.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                dbPlayer.deleteQRCode(qr);
+                DBA.setPlayer(dbPlayer);
+            }
+            @Override
+            public void onFetchFailure() {
+                throw new IllegalArgumentException("Player does not exist in database");
+            }
+        });
         playersColRef.document(qr.getUsername()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                            @Override
@@ -296,7 +303,7 @@ public class DBAccessor {
      * @param username
      * The username of the user to be removed from
      */
-    public void deleteQR(String idHash, String username) {
+    public static void deleteQR(String idHash, String username) {
         qrColRef.document(idHash).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                            @Override
@@ -349,7 +356,7 @@ public class DBAccessor {
      * @param idHash
      * The idHash of the QRData object to be fetched
      */
-    public void getQRData(QRData qrData, String idHash) {
+    public static void getQRData(QRData qrData, String idHash) {
         qrColRef.document(idHash).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override

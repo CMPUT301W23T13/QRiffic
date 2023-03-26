@@ -6,13 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import android.app.Instrumentation;
-
 import com.google.firebase.FirebaseApp;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBAccessorTest {
@@ -28,9 +25,8 @@ public class DBAccessorTest {
     @Test
     void testAddQR() {
         FirebaseApp.initializeApp(this);
-        DBAccessor dba = new DBAccessor();
-        dba.setPlayer(mockPlayerProfile());
-        dba.addQR(mockPlayerProfile().getUsername(), mockQRCode());
+        DBA.setPlayer(mockPlayerProfile());
+        DBA.addQR(mockPlayerProfile().getUsername(), mockQRCode());
     }
 
 }

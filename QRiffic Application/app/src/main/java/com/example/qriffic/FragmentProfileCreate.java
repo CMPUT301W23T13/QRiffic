@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,10 +15,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qriffic.databinding.ProfileCreateBinding;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FragmentProfileCreate extends Fragment {
@@ -60,7 +55,6 @@ public class FragmentProfileCreate extends Fragment {
                     return;
                 }
 
-                DBAccessor dba = new DBAccessor();
 
                 PlayerProfile profile = new PlayerProfile();
                 profile.addListener(new fetchListener() {
@@ -82,7 +76,7 @@ public class FragmentProfileCreate extends Fragment {
                             editTextEmail.getText().toString(),
                             editTextPhone.getText().toString(),
                             new HashMap<String, QRCode>());
-                        dba.setPlayer(profile);
+                        DBA.setPlayer(profile);
 
                         usernamePersistent.saveUsername(profile.getUsername());
 
@@ -98,7 +92,7 @@ public class FragmentProfileCreate extends Fragment {
                     }
                 });
 
-                dba.getPlayer(profile, editTextUsername.getText().toString());
+                DBA.getPlayer(profile, editTextUsername.getText().toString());
             }
         });
     }
