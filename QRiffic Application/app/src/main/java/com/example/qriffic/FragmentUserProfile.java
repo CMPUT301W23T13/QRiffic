@@ -233,6 +233,7 @@ public class FragmentUserProfile extends Fragment {
                 Bundle bundle = new Bundle();
                 QRCode qrCode = qrList.get(position);
                 bundle.putString("QRID", qrCode.getIdHash());
+                bundle.putBoolean("isUser", true);
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });

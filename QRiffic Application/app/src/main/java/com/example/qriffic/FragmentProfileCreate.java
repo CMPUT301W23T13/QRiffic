@@ -42,7 +42,7 @@ public class FragmentProfileCreate extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        ((MainActivity) getActivity()).getSupportActionBar().hide();
 
         editTextUsername = view.findViewById(R.id.edit_username);
         editTextEmail = view.findViewById(R.id.edit_email);
@@ -91,7 +91,7 @@ public class FragmentProfileCreate extends Fragment {
                         //
 
 
-                        requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                        ((MainActivity) getActivity()).getSupportActionBar().show();
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
                             .navigate(R.id.action_ProfileCreate_to_userProfile, bundle);
                     }
