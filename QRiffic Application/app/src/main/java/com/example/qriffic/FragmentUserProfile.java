@@ -28,8 +28,6 @@ import java.util.HashMap;
  */
 public class FragmentUserProfile extends Fragment {
 
-    DBAccessor dba = new DBAccessor();
-
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
     private QRCodeAdapter qrAdapter;
@@ -220,7 +218,7 @@ public class FragmentUserProfile extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
-        dba.getPlayer(playerProfile, username);
+        DBA.getPlayer(playerProfile, username);
 
         return view;
     }

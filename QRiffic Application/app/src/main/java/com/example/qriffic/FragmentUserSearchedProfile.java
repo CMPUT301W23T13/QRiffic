@@ -26,8 +26,6 @@ import java.util.HashMap;
  */
 public class FragmentUserSearchedProfile extends Fragment {
 
-    DBAccessor dba = new DBAccessor();
-
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
     private QRCodeAdapter qrAdapter;
@@ -217,7 +215,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail,bundle);
             }
         });
-        dba.getPlayer(playerProfile, username);
+        DBA.getPlayer(playerProfile, username);
 
         return view;
     }

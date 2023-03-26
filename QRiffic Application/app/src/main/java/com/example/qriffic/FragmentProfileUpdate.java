@@ -11,11 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qriffic.databinding.ProfileCreateBinding;
-
-import java.util.ArrayList;
 
 public class FragmentProfileUpdate extends Fragment {
     private ProfileCreateBinding binding;
@@ -45,7 +42,6 @@ public class FragmentProfileUpdate extends Fragment {
         textViewUsernameWarning = view.findViewById(R.id.username_warning);
 
         PlayerProfile profile = new PlayerProfile();
-        DBAccessor dba = new DBAccessor();
         profile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
@@ -59,7 +55,7 @@ public class FragmentProfileUpdate extends Fragment {
                 Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
-        dba.getPlayer(profile, usernamePersistent.fetchUsername());
+        DBA.getPlayer(profile, usernamePersistent.fetchUsername());
 
         binding.enter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +70,7 @@ public class FragmentProfileUpdate extends Fragment {
                 profile.setUsername(editTextUsername.getText().toString());
                 profile.setEmail(editTextEmail.getText().toString());
                 profile.setPhoneNum(editTextPhone.getText().toString());
-                dba.updateContactInfo(profile);
+                DBA.updateContactInfo(profile);
 
                 Navigation.findNavController(view).popBackStack();
             }

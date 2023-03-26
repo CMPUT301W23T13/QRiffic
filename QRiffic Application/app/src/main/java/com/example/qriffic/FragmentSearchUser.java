@@ -10,13 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -27,8 +23,6 @@ public class FragmentSearchUser extends Fragment {
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    private DBAccessor dba;
     private NavController navController;
 
     public FragmentSearchUser() {
@@ -101,8 +95,7 @@ public class FragmentSearchUser extends Fragment {
                                         playerprofile.setUsername(etSearch.getText().toString());
 
                                         //set the player fields using db accessor
-//                                        dba = new DBAccessor();
-//                                        dba.setPlayer(playerprofile);
+//                                        DBA.setPlayer(playerprofile);
 //                                      send the username to the playerprofile fragment
                                         bundle.putString("username", etSearch.getText().toString());
 //                                        fragmentUserProfile.setArguments(bundle);

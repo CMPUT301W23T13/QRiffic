@@ -24,7 +24,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.firestore.auth.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -95,7 +94,6 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         String activeUsername = usernamePersistent.fetchUsername();
 
 
-        DBAccessor dba = new DBAccessor();
 
         // get reference to the button, EditText, and TextView
         Button addQR = view.findViewById(R.id.button_add_qr);
@@ -169,7 +167,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             "\ncity: " + tempQR.getGeoLocation().getCity();
                     temp.setText(newText);
                     // update current player's captured QRCode collection in database
-                    dba.addQR(activeUsername, tempQR);
+                    DBA.addQR(activeUsername, tempQR);
 
                     // generate QR code image
                     String url = "https://www.gravatar.com/avatar/" + tempQR.getScore() + "?s=55&d=identicon&r=PG%22";

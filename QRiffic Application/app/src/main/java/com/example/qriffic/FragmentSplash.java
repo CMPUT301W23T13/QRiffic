@@ -1,13 +1,11 @@
 package com.example.qriffic;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,6 @@ import android.widget.Toast;
 
 import com.example.qriffic.databinding.FragmentSplashBinding;
 import com.google.firebase.FirebaseApp;
-
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -30,7 +24,6 @@ public class FragmentSplash extends Fragment {
 
     private FragmentSplashBinding binding;
     private String username;
-    private DBAccessor dba;
     private NavController navController;
     public FragmentSplash() {
         // Required empty public constructor
@@ -70,7 +63,6 @@ public class FragmentSplash extends Fragment {
         super.onResume();
         this.navController = Navigation.findNavController(getView());
         FirebaseApp.initializeApp(getActivity()); // initialize firebase
-        dba = new DBAccessor();
 
 
         //DBACCESSOR TEST ZONE STARTS
@@ -78,9 +70,9 @@ public class FragmentSplash extends Fragment {
 //        QRCode testQR = new QRCode("testtt", null, testUsername, null, "test comment here");
 //        PlayerProfile testProfile = new PlayerProfile(testUsername, "testuuid", "username@outlook.com", "999.999.9999", new ArrayList<QRCode>());
 //
-//        dba.setPlayer(testProfile);
-//        dba.addQR(testProfile.getUsername(), testQR);
-//        dba.deleteQR(testQR);
+//        DBA.setPlayer(testProfile);
+//        DBA.addQR(testProfile.getUsername(), testQR);
+//        DBA.deleteQR(testQR);
         //DBACCESSOR TEST ZONE ENDS
 
 

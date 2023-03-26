@@ -6,16 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import android.app.Instrumentation;
+import android.content.Context;
 
 import com.google.firebase.FirebaseApp;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DBAccessorTest {
+public class DBATest {
 
     private QRCode mockQRCode() {
         return new QRCode("testt", null, "testuser1", null, "test comment here");
@@ -27,10 +26,9 @@ public class DBAccessorTest {
 
     @Test
     void testAddQR() {
-        FirebaseApp.initializeApp(this);
-        DBAccessor dba = new DBAccessor();
-        dba.setPlayer(mockPlayerProfile());
-        dba.addQR(mockPlayerProfile().getUsername(), mockQRCode());
+        FirebaseApp.initializeApp(Context.getApplicationContext());
+        DBA.setPlayer(mockPlayerProfile());
+        DBA.addQR(mockPlayerProfile().getUsername(), mockQRCode());
     }
 
 }
