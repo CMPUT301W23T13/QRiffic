@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -14,6 +15,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,12 +127,12 @@ public class DBAccessor {
                     player.setHighScore(Math.toIntExact((long) fetchedPlayer.get("highScore")));
                     player.setLowScore(Math.toIntExact((long) fetchedPlayer.get("lowScore")));
 
-                    ArrayList<HashMap<String, Object>> tempMap = new ArrayList<HashMap<String, Object>>(((HashMap<String, Object>) fetchedPlayer.get("captured")).values());
+                    Collection<Object> tempCollection = ((HashMap<String, Object>) fetchedPlayer.get("captured")).values();
+                    ArrayList<Object> tempMap = new ArrayList<Object>(tempCollection);
+                    ObjectMapper mapper = new ObjectMapper();
 
                     for (int i = 0; i < tempMap.size(); i++) {
-                        System.out.println("in DBAccessor: " + qrCode.getName());
-                        QRCode qrCode = new QRCode();
-                        qrCode.setName(tempMap.get(i).toString());
+                        QRCode qrCode = mapper.convertValue(tempMap.get(i), QRCode.class);
                         player.addQRCode(qrCode);
                     }
 
@@ -156,57 +158,27 @@ public class DBAccessor {
      * The QRCode object to be added
      */
     public void addQR(String player, QRCode qr) {
-        playersColRef.document(player).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                // qr in QRs collection in db
-                                PlayerProfile dbPlayer = new PlayerProfile();
-                                Map<String, Object> fetchedPlayer = document.getData();
-                                dbPlayer.setUsername(fetchedPlayer.get("username").toString());
-                                if (fetchedPlayer.get("uniqueID") == null) {
-                                    dbPlayer.setUniqueID(null);
-                                } else {
-                                    dbPlayer.setUniqueID(fetchedPlayer.get("uniqueID").toString());
-                                }
-                                if (fetchedPlayer.get("email") == null) {
-                                    dbPlayer.setEmail(null);
-                                } else {
-                                    dbPlayer.setEmail(fetchedPlayer.get("email").toString());
-                                }
-                                if (fetchedPlayer.get("phoneNum") == null) {
-                                    dbPlayer.setPhoneNum(null);
-                                } else {
-                                    dbPlayer.setPhoneNum(fetchedPlayer.get("phoneNum").toString());
-                                }
-                                dbPlayer.setHighScore(Math.toIntExact((long) fetchedPlayer.get("highScore")));
-                                dbPlayer.setLowScore(Math.toIntExact((long) fetchedPlayer.get("lowScore")));
-                                for (QRCode qrCode : ((HashMap<String, QRCode>) fetchedPlayer.get("captured")).values()) {
-                                    dbPlayer.addQRCode(qrCode);
-                                }
-                                dbPlayer.addQRCode(qr);
-                                HashMap<String, Object> data = new HashMap<>();
-                                data.put("username", dbPlayer.getUsername());
-                                data.put("uniqueID", dbPlayer.getUniqueID());
-                                data.put("email", dbPlayer.getEmail());
-                                data.put("phoneNum", dbPlayer.getPhoneNum());
-                                data.put("highScore", dbPlayer.getHighScore());
-                                data.put("lowScore", dbPlayer.getLowScore());
-                                data.put("captured", dbPlayer.getCaptured());
-                                playersColRef.document(dbPlayer.getUsername()).set(data);
-                            } else {
-                                // qr not in QRs collection in db
-                                throw new IllegalArgumentException("User does not exist in database: "+player);
-                            }
-                        } else {
-                            Log.d("TESTPRINT", "Failed to get data");
-                        }
-                    }
-                });
-
+        PlayerProfile dbPlayer = new PlayerProfile();
+        dbPlayer.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                dbPlayer.addQRCode(qr);
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("username", dbPlayer.getUsername());
+                data.put("uniqueID", dbPlayer.getUniqueID());
+                data.put("email", dbPlayer.getEmail());
+                data.put("phoneNum", dbPlayer.getPhoneNum());
+                data.put("highScore", dbPlayer.getHighScore());
+                data.put("lowScore", dbPlayer.getLowScore());
+                data.put("captured", dbPlayer.getCaptured());
+                playersColRef.document(dbPlayer.getUsername()).set(data);
+            }
+            @Override
+            public void onFetchFailure() {
+                throw new IllegalArgumentException("Player does not exist in database");
+            }
+        });
+        this.getPlayer(dbPlayer, player);
         QRData qrData = new QRData(qr);
         qrColRef.document(qrData.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
