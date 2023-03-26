@@ -239,60 +239,7 @@ public class DBA {
      * The QRCode object to be removed
      */
     public static void deleteQR(QRCode qr) {
-        qrColRef.document(qr.getIdHash()).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                // qr in db
-                                QRData dbQRData = document.toObject(QRData.class);
-                                dbQRData.removeUser(qr.getUsername());
-                                qrColRef.document(qr.getIdHash()).set(dbQRData);
-                            } else {
-                                // qr not in db
-                                throw new IllegalArgumentException("QRCode does not exist in database");
-                            }
-                        } else {
-                            throw new IllegalArgumentException("Failed to get QRData");
-                        }
-                    }
-                }
-        );
-        PlayerProfile dbPlayer = new PlayerProfile();
-        dbPlayer.addListener(new fetchListener() {
-            @Override
-            public void onFetchComplete() {
-                dbPlayer.deleteQRCode(qr);
-                DBA.setPlayer(dbPlayer);
-            }
-            @Override
-            public void onFetchFailure() {
-                throw new IllegalArgumentException("Player does not exist in database");
-            }
-        });
-        playersColRef.document(qr.getUsername()).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   DocumentSnapshot document = task.getResult();
-                                                   if (document.exists()) {
-                                                       // qr in db
-                                                       PlayerProfile dbPlayer = document.toObject(PlayerProfile.class);
-                                                       dbPlayer.deleteQRCode(qr);
-                                                       playersColRef.document(qr.getIdHash()).set(dbPlayer);
-                                                   } else {
-                                                       // qr not in db
-                                                       throw new IllegalArgumentException("QRCode does not exist in database");
-                                                   }
-                                               } else {
-                                                   throw new IllegalArgumentException("Failed to get QRData");
-                                               }
-                                           }
-                                       }
-                );
+        deleteQR(qr.getIdHash(), qr.getUsername());
     }
 
     /**
@@ -325,27 +272,19 @@ public class DBA {
                                            }
                                        }
                 );
-        playersColRef.document(username).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                               if (task.isSuccessful()) {
-                                                   DocumentSnapshot document = task.getResult();
-                                                   if (document.exists()) {
-                                                       // qr in db
-                                                       PlayerProfile dbPlayer = document.toObject(PlayerProfile.class);
-                                                       dbPlayer.deleteQRCode(idHash);
-                                                       playersColRef.document(idHash).set(dbPlayer);
-                                                   } else {
-                                                       // qr not in db
-                                                       throw new IllegalArgumentException("QRCode does not exist in database");
-                                                   }
-                                               } else {
-                                                   throw new IllegalArgumentException("Failed to get QRData");
-                                               }
-                                           }
-                                       }
-                );
+        PlayerProfile dbPlayer = new PlayerProfile();
+        dbPlayer.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                dbPlayer.deleteQRCode(idHash);
+                DBA.setPlayer(dbPlayer);
+            }
+            @Override
+            public void onFetchFailure() {
+                throw new IllegalArgumentException("Player does not exist in database");
+            }
+        });
+        getPlayer(dbPlayer, username);
     }
     
     /**
