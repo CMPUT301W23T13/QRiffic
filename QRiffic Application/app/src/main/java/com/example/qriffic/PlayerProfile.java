@@ -52,7 +52,6 @@ public class PlayerProfile {
         this.highScore = -1;
         this.lowScore = 100000000;
         this.captured = captured;
-        this.captured = new HashMap<String, QRCode>();
         this.listeners = new ArrayList<fetchListener>();
 
         for (QRCode qr : captured.values()) {
@@ -86,7 +85,6 @@ public class PlayerProfile {
         this.phoneNum = phoneNum;
         this.highScore = -1;
         this.lowScore = 100000000;
-        this.captured = new HashMap<String, QRCode>();
         this.captured = new HashMap<String, QRCode>();
         this.listeners = new ArrayList<fetchListener>();
 

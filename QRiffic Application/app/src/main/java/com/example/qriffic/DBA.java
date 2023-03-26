@@ -197,41 +197,6 @@ public class DBA {
                 });
     }
 
-    //OLD METHOD. DO NOT USE. USE addQR() INSTEAD. Only retained here for reference
-    /**
-     * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
-     * @param player
-     * The username of the PlayerProfile object to be added to
-     * @param qr
-     * The QRCode object to be added
-     */
-    public static void addQROLD(String player, QRCode qr) {
-        playersColRef.document(player).update("captured", FieldValue.arrayUnion(qr));
-        Map<String, Object> QRPlayerData = new HashMap<>();
-        QRPlayerData.put("username", player);
-        QRPlayerData.put("comment", qr.getComment());
-        QRPlayerData.put("geoLocation", qr.getGeoLocation());
-        QRPlayerData.put("locationImage", qr.getLocationImage());
-        qrColRef.document(qr.getIdHash()).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (!documentSnapshot.exists()) {
-                            // the QRCode is not in the database
-                            Map<String, Object> data = new HashMap<>();
-                            data.put("idHash", qr.getIdHash());
-                            data.put("name", qr.getName());
-                            data.put("score", qr.getScore());
-                            qrColRef.document(qr.getIdHash()).set(data);
-                            qrColRef.document(qr.getIdHash()).collection("qr_assoc_players").document(player).set(QRPlayerData);
-                        } else {
-                            // the QRCode is in the database
-                            qrColRef.document(qr.getIdHash()).collection("qr_assoc_players").document(player).set(QRPlayerData);
-                        }
-                    }
-                });
-    }
-
     /**
      * This method removes a QRCode from a PlayerProfile object's captured list
      * and removes the user from the that QRCode's users in the QRs collection
