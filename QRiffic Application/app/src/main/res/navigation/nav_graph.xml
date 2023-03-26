@@ -88,6 +88,7 @@
             android:id="@+id/action_nav_capture_screen_to_nav_userProfile"
             app:destination="@id/nav_userProfile" />
     </fragment>
+    <fragment
         android:id="@+id/nav_ProfileUpdate"
         android:name="com.example.qriffic.FragmentProfileUpdate"
         android:label="FragmentProfileUpdate" >
