@@ -31,10 +31,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-
-
 
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
@@ -96,10 +94,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         }
         map.setMyLocationEnabled(true);
 
-        // get username from the bundle
-//        Bundle bundle = getArguments();
-////        assert bundle != null;
-//        String activeUsername = bundle.getString("username");
 
 
         //add marker and move camera
@@ -112,28 +106,24 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
         // Get the list of locations from the database
         dba = new DBAccessor();
-        QRCode qr = new QRCode();
-//        PlayerProfile player = new PlayerProfile();
-//
-//        player.addListener(new fetchListener() {
-//            @Override
-//            public void onFetchComplete() {
-//
-//            }
-//
-//            @Override
-//            public void onFetchFailure() {
-//
-//            }
-//        });
+        //initialize an array for storing qr
+        List<QRData> QRData = new ArrayList<QRData>();
+
+
 
 
 
         // Get the list of locations from the database
         //initialize an array for storing qr
-        List<QRCode> qrList = new ArrayList<QRCode>();
-        List<QRData> QRData = new ArrayList<QRData>();
+
         List<String> idHash = new ArrayList<String>();
+        QRCode qrCode = new QRCode();
+
+        HashMap<String,Object> data = new HashMap<>();
+
+
+
+
         db.collection("QRs")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -147,42 +137,63 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 //                                System.out.println(document.getData().get("idHash"));
 //                                idHash.add("Haash");
                                 String id = (String) document.getData().get("idHash");
-                                idHash.add((String) document.getData().get("idHash"));
-
+//                                String name = (String) document.getData().get("name");
+//                                Integer score = (Integer) document.getData().get("score");
+//                                HashMap<String,<>
 
                                 QRData qrData = new QRData();
 
-//                                dba.getQRData(qrData,id);
-//                                System.out.println(qrData);
+                                qrData.addListener(new fetchListener() {
+                                    @Override
+                                    public void onFetchComplete() {
+
+
+//                                        System.out.println("user="+qrData.getUsers());
+
+                                        //get the value from hashmap Users without knowing the key
+
+                                        for (String key : qrData.getUsers().keySet()) {
+//                                            System.out.println("key = " + key);
+//                                            System.out.println("value = " + qrData.getUsers().get(key));
+                                            HashMap<String,Object> user = (HashMap<String, Object>) qrData.getUsers().get(key);
+                                            System.out.println("user = " + user.get("geoLocation"));
+                                        }
 
 
 
-                                db.collection("QRs").document(id).collection("qr_assoc_players")
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @SuppressLint("RestrictedApi")
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        Log.d(TAG, document.getId() + " => " + document.getData());
-//                                                        System.out.println("username:"+document.getData().get("username"));
-
-                                                        GeoLocation geoLocation = new GeoLocation();
-                                                        System.out.println(document.getData().get("geoLocation"));
 
 
 
-                                                    }
-                                                } else {
-                                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                                }
-                                            }
-                                        });
+//                                        Integer lat = (Integer) qrData.getUsers().get("geolocation").get("latitude");
+//                                        Integer lon = (Integer) qrData.getUsers().get("geolocation").get("longitude");
+//                                        System.out.println("lat = "+lat);
+
+
+
+
+                                    }
+
+                                    @Override
+                                    public void onFetchFailure() {
+
+                                    }
+                                });
+                                dba.getQRData(qrData, id);
+
+//                                idHash.add((String) document.getData().get("idHash"));
+
+
+
+
+
+
+
+
+
 
 
                             }
-//                            System.out.println("idHash = "+idHash);
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
