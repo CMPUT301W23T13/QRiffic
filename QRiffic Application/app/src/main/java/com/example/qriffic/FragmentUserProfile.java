@@ -204,26 +204,27 @@ public class FragmentUserProfile extends Fragment {
         });
 
         //navigate to QR detail page by clicking on top, bot, or listview
-        ImageView imageTop = view.findViewById(R.id.imageTop);
-        ImageView imageBot = view.findViewById(R.id.imageBot);
-
-        imageTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("QRID", topQRName.getText().toString());
-                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
-            }
-        });
-
-        imageBot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("QRID", botQRName.getText().toString());
-                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
-            }
-        });
+        //todo: see if we want top/bot to be clickable
+//        ImageView imageTop = view.findViewById(R.id.imageTop);
+//        ImageView imageBot = view.findViewById(R.id.imageBot);
+//
+//        imageTop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("QRID", topQRName.getText().toString());
+//                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+//            }
+//        });
+//
+//        imageBot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("QRID", botQRName.getText().toString());
+//                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+//            }
+//        });
 
         profileListView = view.findViewById(R.id.profileList);
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -67,10 +67,11 @@
                 android:weightSum="1">
 
                 <ImageView
+                    android:id="@+id/qr_detail_location_icon"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:layout_weight="0.1"
                     android:layout_marginStart="3dp"
+                    android:layout_weight="0.1"
                     app:srcCompat="@drawable/location_icon" />
 
                 <TextView

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This fragment is used to display the details of a QR code.
@@ -29,8 +31,6 @@ import java.util.ArrayList;
 public class FragmentQRDetail extends Fragment {
 
     ListView qrDetailList;
-    QRDetailAdapter instanceAdapter;
-    private ArrayList<QRCode> instanceList;
 
     public FragmentQRDetail() {
         // Required empty public constructor
@@ -93,26 +93,32 @@ public class FragmentQRDetail extends Fragment {
 
     private void populateList(View view, QRData instance) {
         qrDetailList = view.findViewById(R.id.qr_detail_list);
-        instanceList = new ArrayList<>();
+        ArrayList<HashMap<String,Object>> instanceList = new ArrayList<>();
 
-        FirebaseApp.initializeApp(getContext());
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection("qr")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        instanceList.clear();
+        HashMap<String, HashMap<String, Object>> users = instance.getUsers();
+        users.forEach((key, value) -> {
+            instanceList.add(value);
+        });
 
-                        //Change this code to modify the data that is queried from the database
-                        for (QueryDocumentSnapshot doc : value) {
-                            QRCode qrCode = doc.toObject(QRCode.class);
-                            instanceList.add(qrCode);
-                        }
 
-                        instanceAdapter.notifyDataSetChanged();
-                    }
-                });
-        instanceAdapter = new QRDetailAdapter(getContext(), instanceList);
+//        FirebaseApp.initializeApp(getContext());
+//        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+//        firestore.collection("QRs").document(instance.getIdHash())
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        instanceList.clear();
+//
+//                        //Change this code to modify the data that is queried from the database
+//                        for (QueryDocumentSnapshot doc : value) {
+//                            QRCode qrCode = doc.toObject(QRCode.class);
+//                            instanceList.add(qrCode);
+//                        }
+//
+//                        instanceAdapter.notifyDataSetChanged();
+//                    }
+//                });
+        QRDetailAdapter instanceAdapter = new QRDetailAdapter(getContext(), instanceList);
         qrDetailList.setAdapter(instanceAdapter);
     }
 

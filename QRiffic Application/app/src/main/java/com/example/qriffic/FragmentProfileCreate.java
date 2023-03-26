@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -84,11 +85,11 @@ public class FragmentProfileCreate extends Fragment {
 
                         usernamePersistent.saveUsername(profile.getUsername());
 
-
-                        // this should be unnecessary now that we're using a persistent username
+                        //todo: this should be unnecessary now that we're using a persistent username
                         Bundle bundle = new Bundle();
                         bundle.putString("username", profile.getUsername());
                         //
+
 
                         requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
