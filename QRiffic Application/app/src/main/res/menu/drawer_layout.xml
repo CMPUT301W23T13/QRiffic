@@ -26,5 +26,11 @@
             android:id="@+id/nav_leaderboard"
             android:title="@string/leaderboard"
             />
+        <item
+            android:id="@+id/nav_ProfileUpdate"
+            android:title="Update Profile" />
+        <item
+            android:id="@+id/nav_tempAddQR"
+            android:title="tempAddQr" />
     </group>
 </menu>

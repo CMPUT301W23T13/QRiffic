@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
@@ -41,12 +42,9 @@ public class FragmentScanner extends Fragment {
                 barcodeView.pause();
                 barcodeView.getBarcodeView().pause();
                 barcodeView.getBarcodeView().stopDecoding();
-                Fragment fragment = new FragmentCaptureScreen();
                 Bundle bundle = new Bundle();
                 bundle.putString("barcode_data", result.getText());
-                bundle.putString("username", getArguments().getString("username"));
-                fragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, fragment).commit();
+                Navigation.findNavController(getView()).navigate(R.id.nav_capture_screen, bundle);
             }
         }
     };

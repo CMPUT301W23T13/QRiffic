@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,18 +40,20 @@ import com.bumptech.glide.Glide;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
-    private DBAccessor dba;
+    private UsernamePersistent usernamePersistent;
     private double currLongitude;
     private double currLatitude;
     private String currCity;
     private QRCode qrCode;
     private String username;
-    private TextView textView;
     private String rawString;
     private Button captureButton;
     private Switch trackLocationSwitch;
     private ImageView locationImageView;
     private EditText commentEditText;
+    private TextView nameScoreTextView;
+    private TextView geoLocationTextView;
+    private TextView congratsTextView;
     private Bitmap locationImage;
 
 
@@ -67,19 +70,22 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_capture_screen, container, false);
-        dba = new DBAccessor();
 
         initLocation();
         initViewsAndValues(view);
         createNewQRCode();
         generateIdenticon(view);
-        displayQRCodeText();
+        displayUpdatedText();
 
         // when the user clicks the capture button, upload the QRCode to the database
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadToDB();
+                // go back to the user profile screen
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                Navigation.findNavController(view).navigate(R.id.nav_userProfile, bundle);
             }
         });
 
@@ -112,9 +118,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 128) {
-                    commentEditText.setError("Comments cannot be longer than 128 characters");
-                }
             }
         });
 
@@ -135,13 +138,17 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
     private void initViewsAndValues(View view) {
         Bundle bundle = getArguments();
-        textView = view.findViewById(R.id.textview_qr_code);
+        //textView = view.findViewById(R.id.textview_qr_code);
         rawString = bundle.getString("barcode_data");
-        username = bundle.getString("username");
+        usernamePersistent = new UsernamePersistent(requireActivity());
+        username = usernamePersistent.fetchUsername();
+        congratsTextView = view.findViewById(R.id.textview_congrats);
         captureButton = view.findViewById(R.id.button_capture);
         trackLocationSwitch = view.findViewById(R.id.switch_track_location);
         locationImageView = view.findViewById(R.id.imageview_location_image);
+        nameScoreTextView = view.findViewById(R.id.textview_name_score);
         commentEditText = view.findViewById(R.id.edittext_comment);
+        geoLocationTextView = view.findViewById(R.id.textview_geolocation);
     }
 
     private void initLocation() {
@@ -162,8 +169,13 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     0, 0, FragmentCaptureScreen.this);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            currLongitude = location.getLongitude();
-            currLatitude = location.getLatitude();
+            if (location != null) {
+                currLongitude = location.getLongitude();
+                currLatitude = location.getLatitude();
+            }else {
+                currLongitude = 0;
+                currLatitude = 0;
+            }
         }
         // get the city name from longitude and latitude
         Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
@@ -175,7 +187,12 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         }
         if (addresses != null && addresses.size() > 0) {
             Address address = addresses.get(0);
-            currCity = address.getLocality();
+            if (address.getLocality() != null) {
+                currCity = address.getLocality();
+            }
+            else {
+                currCity = "N/A";
+            }
         }
     }
 
@@ -201,31 +218,27 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         //qrCode.setLocationImage(locationImage);
         //qrCode.setComment(commentEditText.getText().toString());
         //update QRCode collection in DB
-        //dba.setQR(qrCode.getIdHash(), qrCode);
+        //DBA.setQR(qrCode.getIdHash(), qrCode);
         // update player's captured list and QRs collection in DB
-        dba.addQR(username, qrCode);
-
-        // go back to the user profile screen
-        FragmentUserProfile fragmentUserProfile = new FragmentUserProfile();
-        Bundle bundle = new Bundle();
-        bundle.putString("username", username);
-        fragmentUserProfile.setArguments(bundle);
-
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainerView, fragmentUserProfile).commit();
+        DBA.addQR(username, qrCode);
     }
 
-    private void displayQRCodeText() {
-        // display QRCode info on screen
-        String hash = qrCode.getIdHash();
-        String last6 = hash.substring(hash.length() - 6);
-        String newText = "last6hex: " + last6 +
-                "\nname: " + qrCode.getName() +
-                "\nscore: " + qrCode.getScore() +
-                "\nlongitude: " + qrCode.getGeoLocation().getLongitude() +
-                "\nlatitude: " + qrCode.getGeoLocation().getLatitude() +
-                "\ncity: " + qrCode.getGeoLocation().getCity();
-        textView.setText(newText);
+    private void displayUpdatedText() {
+        String monsterName = qrCode.getName();
+        String monsterScore = String.valueOf(qrCode.getScore());
+        String monsterLat = String.valueOf(qrCode.getGeoLocation().getLatitude());
+        String monsterLong = String.valueOf(qrCode.getGeoLocation().getLongitude());
+        String monsterCity = qrCode.getGeoLocation().getCity();
+
+        String nameScoreText = monsterName + "\n" + monsterScore + " pts";
+        String congratsText = "Congrats! You found a new " + monsterName + "! " +
+                "What would you like to do?";
+        String geolocationText = " + Add geolocation\n Lat: " + monsterLat + "\n Long: " +
+                monsterLong + "\n City: " + monsterCity;
+
+        nameScoreTextView.setText(nameScoreText);
+        congratsTextView.setText(congratsText);
+        geoLocationTextView.setText(geolocationText);
     }
 
     @Override

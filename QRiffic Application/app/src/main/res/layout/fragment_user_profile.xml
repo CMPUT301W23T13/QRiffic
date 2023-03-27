@@ -256,9 +256,23 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/empty_qrmon_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
+            android:text="@string/empty_qrmon_label"
+            android:textAlignment="center"
+            android:textColor="@color/boxDarkGrey"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
         <ListView
             android:id="@+id/profileList"
             android:layout_marginHorizontal="10dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
             android:layout_width="match_parent"
             android:layout_height= "match_parent"/>
 

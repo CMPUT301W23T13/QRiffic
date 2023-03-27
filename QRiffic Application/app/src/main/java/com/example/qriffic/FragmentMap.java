@@ -41,7 +41,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
     GoogleMap map;
     MapView mapView;
-    DBAccessor dba;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -112,9 +111,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 
         // Get the list of locations from the database
+
         dba = new DBAccessor();
         //initialize an array for storing qr
         List<QRData> QRData = new ArrayList<QRData>();
+
 
 
 
@@ -127,6 +128,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         QRCode qrCode = new QRCode();
 
         HashMap<String,Object> data = new HashMap<>();
+
 
 
 

@@ -55,6 +55,7 @@
     <string name="label_best">Highest Score</string>
     <string name="label_bot">Lowest Score</string>
     <string name="all_qrmon_label">All QRMons</string>
+    <string name="empty_qrmon_label">You don\'t have any!</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

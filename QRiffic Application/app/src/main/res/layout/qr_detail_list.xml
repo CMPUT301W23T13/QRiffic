@@ -8,27 +8,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/boxGrey"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/boxDarkGrey"
+            android:background="@drawable/rounded_top_component"
+            android:backgroundTint="@color/boxDarkGrey"
             android:orientation="horizontal"
+            android:padding="7dp"
             android:weightSum="1">
 
             <ImageView
-                android:id="@+id/imageView5"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_weight="0.1"
-                app:srcCompat="@android:drawable/ic_menu_myplaces" />
+                app:srcCompat="@drawable/person_icon" />
 
             <TextView
                 android:id="@+id/qr_detail_PID_text"
@@ -36,52 +31,59 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="3dp"
                 android:layout_weight="0.9"
+                android:textColor="@color/black"
+                android:textSize="20sp"
                 android:gravity="center_vertical"
                 android:text="ash_ketchum" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/qr_detail_comment_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="3dp"
-            android:text="omg this is my fave thing ever!  Like look at how cute this thing is omg omg omg!" />
-
-        <ImageView
-            android:id="@+id/qr_detail_location_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.05"
-                android:paddingLeft="3dp"
-                app:srcCompat="@android:drawable/ic_menu_mylocation" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_bottom_component"
+            android:backgroundTint="@color/boxGrey"
+            android:padding="7dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/qr_detail_location_text"
-                android:layout_width="0dp"
+                android:id="@+id/qr_detail_comment_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginBottom="7dp"
+                android:text="omg this is my fave thing ever!  Like look at how cute this thing is omg omg omg!" />
+
+            <ImageView
+                android:id="@+id/qr_detail_location_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.95"
-                android:gravity="center_vertical"
-                android:paddingStart="3dp"
-                android:text="Pallet Town, 0x0"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="7dp"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/qr_detail_location_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_weight="0.1"
+                    app:srcCompat="@drawable/location_icon" />
+
+                <TextView
+                    android:id="@+id/qr_detail_location_text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    android:gravity="center_vertical"
+                    android:text="Pallet Town, 0x0"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>

@@ -1,17 +1,10 @@
 package com.example.qriffic;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +27,6 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class FragmentUserProfile extends Fragment {
-
-    DBAccessor dba = new DBAccessor();
 
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
@@ -92,6 +75,7 @@ public class FragmentUserProfile extends Fragment {
         TextView tvUsername = view.findViewById(R.id.user_name);
         TextView tvEmail = view.findViewById(R.id.profile_email);
         TextView tvPhoneNum = view.findViewById(R.id.profile_phone);
+        TextView tvEmptyQRMon = view.findViewById(R.id.empty_qrmon_label);
         TextView noScanned = view.findViewById(R.id.user_scanned);
         TextView totalScore = view.findViewById(R.id.user_score);
         TextView highScore = view.findViewById(R.id.topQRName2);
@@ -108,7 +92,7 @@ public class FragmentUserProfile extends Fragment {
         playerProfile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
-                qrList = (ArrayList<QRCode>) playerProfile.getCaptured();
+                qrList = new ArrayList<QRCode>(playerProfile.getCaptured().values());
 
                 ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
@@ -150,6 +134,7 @@ public class FragmentUserProfile extends Fragment {
                     lowScore.setText(String.valueOf(playerProfile.getLowScore()));
                     highScore.setText(String.valueOf(playerProfile.getHighScore()));
                     totalScore.setText(String.valueOf(totalScoreInt));
+                    tvEmptyQRMon.setVisibility(View.GONE);
 
                     //set images for highest and lowest score
                     String highurl = "https://www.gravatar.com/avatar/" + playerProfile.getHighScore() + "?s=55&d=identicon&r=PG%22";
@@ -166,6 +151,7 @@ public class FragmentUserProfile extends Fragment {
                         .error(R.drawable.ic_launcher_background)
                         .into((ImageView) view.findViewById(R.id.imageBot));
                 } else {
+                    tvEmptyQRMon.setVisibility(View.VISIBLE);
                     playerProfile.setLowScore(-1);
                     playerProfile.setHighScore(-1);
                     lowScore.setText("N/A");
@@ -200,39 +186,39 @@ public class FragmentUserProfile extends Fragment {
         });
 
         //navigate to QR detail page by clicking on top, bot, or listview
-        ImageView imageTop = view.findViewById(R.id.imageTop);
-        ImageView imageBot = view.findViewById(R.id.imageBot);
-
-        imageTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("QRID", topQRName.getText().toString());
-                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
-            }
-        });
-
-        imageBot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("QRID", botQRName.getText().toString());
-                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
-            }
-        });
+        //todo: see if we want top/bot to be clickable
+//        ImageView imageTop = view.findViewById(R.id.imageTop);
+//        ImageView imageBot = view.findViewById(R.id.imageBot);
+//
+//        imageTop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("QRID", topQRName.getText().toString());
+//                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+//            }
+//        });
+//
+//        imageBot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("QRID", botQRName.getText().toString());
+//                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+//            }
+//        });
 
         profileListView = view.findViewById(R.id.profileList);
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                QRCode qrCode = (QRCode) parent.getItemAtPosition(position);
-                String QRID = qrCode.getIdHash();
-                bundle.putString("QRID", QRID);
+                QRCode qrCode = qrList.get(position);
+                bundle.putString("QRID", qrCode.getIdHash());
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
-        dba.getPlayer(playerProfile, username);
+        DBA.getPlayer(playerProfile, username);
 
         return view;
     }

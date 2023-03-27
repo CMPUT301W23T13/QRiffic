@@ -89,11 +89,11 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         View view = inflater.inflate(R.layout.fragment_temp_add_qr, container, false);
 
         // get username from the bundle
-        Bundle bundle = getArguments();
-        assert bundle != null;
-        String activeUsername = bundle.getString("username");
 
-        DBAccessor dba = new DBAccessor();
+        UsernamePersistent usernamePersistent = new UsernamePersistent(getActivity().getApplicationContext());
+        String activeUsername = usernamePersistent.fetchUsername();
+
+
 
         // get reference to the button, EditText, and TextView
         Button addQR = view.findViewById(R.id.button_add_qr);
@@ -167,7 +167,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                             "\ncity: " + tempQR.getGeoLocation().getCity();
                     temp.setText(newText);
                     // update current player's captured QRCode collection in database
-                    dba.addQR(activeUsername, tempQR);
+                    DBA.addQR(activeUsername, tempQR);
 
                     // generate QR code image
                     String url = "https://www.gravatar.com/avatar/" + tempQR.getScore() + "?s=55&d=identicon&r=PG%22";

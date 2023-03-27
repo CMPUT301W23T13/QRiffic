@@ -40,7 +40,13 @@ public class MainActivity extends AppCompatActivity {
         // to the navigation menu and it will still navigate
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_scanner,R.id.nav_map,R.id.nav_userProfile,R.id.nav_searchUser,R.id.nav_leaderboard)
+                R.id.nav_scanner,
+                R.id.nav_map,
+                R.id.nav_userProfile,
+                R.id.nav_searchUser,
+                R.id.nav_leaderboard,
+                R.id.nav_ProfileUpdate,
+                R.id.nav_tempAddQR)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
