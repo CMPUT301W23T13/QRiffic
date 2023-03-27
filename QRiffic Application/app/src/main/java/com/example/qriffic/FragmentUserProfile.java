@@ -110,7 +110,7 @@ public class FragmentUserProfile extends Fragment {
 
                 }
 
-                totalScore.setText(String.valueOf(playerProfile.getTotalScore()));
+                totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
 
                 dataList = new ArrayList<QRCode>();
                 qrAdapter = new QRCodeAdapter(getContext(), dataList);
@@ -129,7 +129,7 @@ public class FragmentUserProfile extends Fragment {
                 if (qrList.size() > 0) {
                     lowScore.setText(String.valueOf(playerProfile.getLowScore()) + "pts");
                     highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
-                    totalScore.setText(String.valueOf(playerProfile.getTotalScore()));
+                    totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
 
                     //set images for highest and lowest score
