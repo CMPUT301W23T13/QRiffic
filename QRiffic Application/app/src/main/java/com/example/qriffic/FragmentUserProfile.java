@@ -168,9 +168,9 @@ public class FragmentUserProfile extends Fragment {
                 tvEmail.setText(playerProfile.getEmail());
                 tvPhoneNum.setText(playerProfile.getPhoneNum());
 
-                //find number of QR codes in the list
-                Integer numQRCodes = qrList.size();
                 noScanned.setText(String.valueOf(playerProfile.getTotalScanned()));
+                String test = String.valueOf(playerProfile.getTotalScanned());
+                test = String.valueOf(playerProfile.getTotalScore());
             }
 
             @Override

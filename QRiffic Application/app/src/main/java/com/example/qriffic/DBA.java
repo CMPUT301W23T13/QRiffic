@@ -49,6 +49,8 @@ public class DBA {
         data.put("phoneNum", player.getPhoneNum());
         data.put("highScore", player.getHighScore());
         data.put("lowScore", player.getLowScore());
+        data.put("totalScore", player.getTotalScore());
+        data.put("totalScanned", player.getTotalScanned());
         data.put("captured", player.getCaptured());
         playersColRef.document(player.getUsername()).set(data);
     }
@@ -165,6 +167,8 @@ public class DBA {
                 data.put("phoneNum", dbPlayer.getPhoneNum());
                 data.put("highScore", dbPlayer.getHighScore());
                 data.put("lowScore", dbPlayer.getLowScore());
+                data.put("totalScore", dbPlayer.getTotalScore());
+                data.put("totalScanned", dbPlayer.getTotalScanned());
                 data.put("captured", dbPlayer.getCaptured());
                 playersColRef.document(dbPlayer.getUsername()).set(data);
             }
@@ -242,6 +246,7 @@ public class DBA {
             @Override
             public void onFetchComplete() {
                 dbPlayer.deleteQRCode(idHash);
+                // TODO: You will need to update the lowScore/highScore/totalScanned/totalScore fields in the database but I don't want to break anything here
                 DBA.setPlayer(dbPlayer);
             }
             @Override

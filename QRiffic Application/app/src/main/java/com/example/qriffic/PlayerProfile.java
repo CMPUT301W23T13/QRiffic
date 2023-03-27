@@ -313,11 +313,26 @@ public class PlayerProfile {
         this.totalScore -= qrCode.getScore();
         this.captured.remove(delQrCode.getIdHash());
 
+        if (this.totalScanned == 0) {
+            this.highScore = -1;
+            this.lowScore = -1;
+            return;
+        }
+
         if (this.lowScore == qrCode.getScore()) {
             this.lowScore = -1;
             for (QRCode qr : this.captured.values()) {
                 if (this.lowScore == -1 || this.lowScore > qr.getScore()) {
                     this.lowScore = qr.getScore();
+                }
+            }
+        }
+
+        if (this.highScore == qrCode.getScore()) {
+            this.highScore = -1;
+            for (QRCode qr : this.captured.values()) {
+                if (this.highScore == -1 || this.highScore < qr.getScore()) {
+                    this.highScore = qr.getScore();
                 }
             }
         }
@@ -342,11 +357,26 @@ public class PlayerProfile {
         this.totalScore -= qrCode.getScore();
         this.captured.remove(idHash);
 
+        if (this.totalScanned == 0) {
+            this.highScore = -1;
+            this.lowScore = -1;
+            return;
+        }
+
         if (this.lowScore == qrCode.getScore()) {
             this.lowScore = -1;
             for (QRCode qr : this.captured.values()) {
                 if (this.lowScore == -1 || this.lowScore > qr.getScore()) {
                     this.lowScore = qr.getScore();
+                }
+            }
+        }
+
+        if (this.highScore == qrCode.getScore()) {
+            this.highScore = -1;
+            for (QRCode qr : this.captured.values()) {
+                if (this.highScore == -1 || this.highScore < qr.getScore()) {
+                    this.highScore = qr.getScore();
                 }
             }
         }
@@ -367,6 +397,9 @@ public class PlayerProfile {
      * The score to be compared to the current low score
      */
     public void updateLowScore(int score) {
+        if (this.lowScore == -1) {
+            this.lowScore = score;
+        }
         this.lowScore = Math.min(lowScore, score);
     }
 }
