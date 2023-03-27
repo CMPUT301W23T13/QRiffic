@@ -5,6 +5,7 @@ import static androidx.fragment.app.FragmentManager.TAG;
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,10 +32,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-
-
 
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
@@ -94,33 +93,46 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
             return;
         }
         map.setMyLocationEnabled(true);
+        map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+                // Remove the listener to prevent position updates continuously
+                map.setOnMyLocationChangeListener(null);
+            }
+        });
 
-        // get username from the bundle
-        Bundle bundle = getArguments();
-        assert bundle != null;
-        String activeUsername = bundle.getString("username");
 
 
-        //add marker and move camera
-        // Create a list of LatLng objects for the markers
-        List<LatLng> markerLatLngList = new ArrayList<>();
-//        markerLatLngList.add(new LatLng(37.7749, -122.4194)); // San Francisco
-//        markerLatLngList.add(new LatLng(40.7128, -74.0060)); // New York City
-//        markerLatLngList.add(new LatLng(51.5074, -0.1278)); // London
-//        markerLatLngList.add(new LatLng(35.6895, 139.6917)); // Tokyo
+
+
+
+
 
         // Get the list of locations from the database
-        PlayerProfile player = new PlayerProfile();
 
-        //list of document names
-        List<String> documentNames = new ArrayList<>();
-
-        DBA.getPlayer(player,activeUsername);
-//        System.out.println("document names: " + documentNames);
+        //initialize an array for storing qr
+        List<QRData> QRData = new ArrayList<QRData>();
 
 
-        // get the document name of all documents from the QR collection in firebase
-        db.collection("QR")
+
+
+
+
+        // Get the list of locations from the database
+        //initialize an array for storing qr
+
+        List<String> idHash = new ArrayList<String>();
+        QRCode qrCode = new QRCode();
+
+        HashMap<String,Object> data = new HashMap<>();
+
+
+
+
+
+        db.collection("QRs")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @SuppressLint("RestrictedApi")
@@ -129,38 +141,77 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                //add the document name to the list
-                                System.out.println("document name: " + document.getId());
-                                documentNames.add(document.getId());
 
+//
+                                String id = (String) document.getData().get("idHash");
+//
+
+                                QRData qrData = new QRData();
+                                //make a list for lat and lon
+                                List<Double> lat = new ArrayList<Double>();
+                                List<Double> lon = new ArrayList<Double>();
+
+                                qrData.addListener(new fetchListener() {
+                                    @Override
+                                    public void onFetchComplete() {
+
+
+                                        //get the value from hashmap Users without knowing the key
+
+                                        for (String key : qrData.getUsers().keySet()) {
+//
+                                            HashMap<String,Object> user = (HashMap<String, Object>) qrData.getUsers().get(key);
+//
+                                            //get the lat and lon
+                                            HashMap<String,Object> geoLocation = (HashMap<String, Object>) user.get("geoLocation");
+
+//
+
+                                            //convert all the value to double
+                                            Double latitude = (Double) geoLocation.get("latitude");
+                                            Double longitude = (Double) geoLocation.get("longitude");
+
+
+                                           //add the lat and lon to the markerLatLngList
+                                            List<LatLng> markerLatLngList = new ArrayList<>();
+
+                                            //if lat long != 9999.0
+                                            if(latitude != 9999.0 && longitude != 9999.0){
+                                                markerLatLngList.add(new LatLng(longitude,latitude));
+                                            }
+                                            // Add a marker for each LatLng using a loop
+                                            for (LatLng latLng : markerLatLngList) {
+                                                map.addMarker(new MarkerOptions().position(latLng));
+                                            }
+
+                                            //move the camera to the first marker
+                                            CameraUpdateFactory.newLatLng(new LatLng((Double) geoLocation.get("longitude"), (Double) geoLocation.get("latitude")));
+                                            CameraUpdateFactory.zoomTo(15);
+
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFetchFailure() {
+
+                                    }
+                                });
+                                DBA.getQRData(qrData, id);
 
 
                             }
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        System.out.println("document names: " + documentNames);
 
 
 
 
-
-
-
-
-
-
-
-
-        // Add a marker for each LatLng using a loop
-        for (LatLng latLng : markerLatLngList) {
-            map.addMarker(new MarkerOptions().position(latLng));
-        }
-        CameraUpdateFactory.newLatLng(new LatLng(0, 0));
-        CameraUpdateFactory.zoomTo(15);
     }
 
 
