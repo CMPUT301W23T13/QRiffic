@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,54 +19,60 @@ import android.view.ViewGroup;
  */
 public class FragmentLeaderboard extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    String[] courses = { "C", "Data structures",
-            "Interview prep", "Algorithms",
-            "DSA with java", "OS" };
+    private ArrayList<LeaderboardEntry> dataList;
+    private LeaderboardAdapter leaderboardAdapter;
 
     public FragmentLeaderboard() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Leaderboard.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentLeaderboard newInstance(String param1, String param2) {
+    public static FragmentLeaderboard newInstance() {
         FragmentLeaderboard fragment = new FragmentLeaderboard();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_leaderboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
+
+        //Bundle bundle = getArguments();
+        //String username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
+
+        TextView leaderboardTitle = view.findViewById(R.id.leaderboard_title);
+        TextView leaderboardPlayerTitle = view.findViewById(R.id.leaderboard_player_title);
+        TextView myPoints = view.findViewById(R.id.my_points);
+        TextView myRankNumber = view.findViewById(R.id.my_rank_number);
+        TextView leaderboardType = view.findViewById(R.id.leaderboard_type);
+        ListView leaderboardList = view.findViewById(R.id.leaderboard_list);
+
+        LeaderboardData data = new LeaderboardData();
+        data.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                //leaderboardPlayerTitle.setText(username);
+
+                dataList = data.getTopPlayerPoints();
+                leaderboardAdapter = new LeaderboardAdapter(getContext(), dataList);
+                leaderboardList.setAdapter(leaderboardAdapter);
+                leaderboardAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFetchFailure() {
+            }
+        });
+
+        DBA.getTopPlayerPoints(data);
+
+        return view;
     }
 }

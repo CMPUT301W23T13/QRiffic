@@ -96,9 +96,6 @@ public class FragmentUserProfile extends Fragment {
 
                 ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
 
-                //find total score
-                long totalScoreInt = 0;
-
                 //create array for lowest score
                 long[] lowScoreArray = new long[qrList.size()];
                 String[] NameArray = new String[qrList.size()];
@@ -108,13 +105,12 @@ public class FragmentUserProfile extends Fragment {
 
                 for (int i = 0; i < qrList.size(); i++) {
                     NameMap.put(qrList.get(i).getName(), qrList.get(i).getScore());
-                    totalScoreInt += qrList.get(i).getScore();
                     lowScoreArray[i] = qrList.get(i).getScore();
                     NameArray[i] = qrList.get(i).getName();
 
                 }
 
-                totalScore.setText(String.valueOf(totalScoreInt));
+                totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
 
                 dataList = new ArrayList<QRCode>();
                 qrAdapter = new QRCodeAdapter(getContext(), dataList);
@@ -131,9 +127,9 @@ public class FragmentUserProfile extends Fragment {
                 profileListView.setAdapter(qrAdapter);
 
                 if (qrList.size() > 0) {
-                    lowScore.setText(String.valueOf(playerProfile.getLowScore()));
-                    highScore.setText(String.valueOf(playerProfile.getHighScore()));
-                    totalScore.setText(String.valueOf(totalScoreInt));
+                    lowScore.setText(String.valueOf(playerProfile.getLowScore()) + "pts");
+                    highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
+                    totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
 
                     //set images for highest and lowest score
@@ -152,8 +148,6 @@ public class FragmentUserProfile extends Fragment {
                         .into((ImageView) view.findViewById(R.id.imageBot));
                 } else {
                     tvEmptyQRMon.setVisibility(View.VISIBLE);
-                    playerProfile.setLowScore(-1);
-                    playerProfile.setHighScore(-1);
                     lowScore.setText("N/A");
                     highScore.setText("N/A");
                 }
@@ -174,9 +168,7 @@ public class FragmentUserProfile extends Fragment {
                 tvEmail.setText(playerProfile.getEmail());
                 tvPhoneNum.setText(playerProfile.getPhoneNum());
 
-                //find number of QR codes in the list
-                Integer numQRCodes = qrList.size();
-                noScanned.setText(numQRCodes.toString());
+                noScanned.setText(String.valueOf(playerProfile.getTotalScanned()));
             }
 
             @Override
