@@ -38,6 +38,6 @@
             android:text="9999pts"
             android:textAlignment="center"
             android:textColor="@color/purple_500"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>

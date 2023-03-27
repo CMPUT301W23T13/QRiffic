@@ -45,6 +45,13 @@
     <string name="leaderboard_player_title">My Score</string>
     <string name="leaderboard_type">Top in Canada</string>
 
+    <string-array name="leaderboard_spinner">
+        <item>Top Player Scores</item>
+        <item>Most QRMons Scanned</item>
+        <item>Top QRMons</item>
+        <item>Top QRMons in REGION NAME</item>
+    </string-array>
+
     <!-- Leaderboard Item -->
     <string name="leaderboard_rank_text">Rank</string>
     <string name="leaderboard_username_text">Username</string>
