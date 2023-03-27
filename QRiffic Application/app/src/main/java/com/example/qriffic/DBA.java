@@ -54,7 +54,18 @@ public class DBA {
         data.put("totalScore", player.getTotalScore());
         data.put("totalScanned", player.getTotalScanned());
         data.put("captured", player.getCaptured());
-        playersColRef.document(player.getUsername()).set(data);
+        playersColRef.document(player.getUsername()).set(data)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("TESTPRINT", "Player added to database");
+                            player.fetchComplete();
+                        } else {
+                            Log.d("TESTPRINT", "Player not added to database");
+                        }
+                    }
+                });
     }
 
     /**
@@ -206,23 +217,12 @@ public class DBA {
     /**
      * This method removes a QRCode from a PlayerProfile object's captured list
      * and removes the user from the that QRCode's users in the QRs collection
+     * The input QRCode object is only used to get the username and idHash and attach the listener
      * @param qr
-     * The QRCode object to be removed
+     * The QRCode object to be removed (Only the listeners, idHash, and username fields are used)
      */
     public static void deleteQR(QRCode qr) {
-        deleteQR(qr.getIdHash(), qr.getUsername());
-    }
-
-    /**
-     * This method removes a QRCode from a PlayerProfile object's captured list
-     * and removes the user from the that QRCode's users in the QRs collection
-     * @param idHash
-     * The idHash of the QRCode to be removed
-     * @param username
-     * The username of the user to be removed from
-     */
-    public static void deleteQR(String idHash, String username) {
-        qrColRef.document(idHash).get()
+        qrColRef.document(qr.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                            @Override
                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -231,8 +231,8 @@ public class DBA {
                                                    if (document.exists()) {
                                                        // qr in db
                                                        QRData dbQRData = document.toObject(QRData.class);
-                                                       dbQRData.removeUser(username);
-                                                       qrColRef.document(idHash).set(dbQRData);
+                                                       dbQRData.removeUser(qr.getUsername());
+                                                       qrColRef.document(qr.getIdHash()).set(dbQRData);
                                                    } else {
                                                        // qr not in db
                                                        throw new IllegalArgumentException("QRCode does not exist in database");
@@ -247,8 +247,19 @@ public class DBA {
         dbPlayer.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
-                dbPlayer.deleteQRCode(idHash);
+                dbPlayer.removeListener(this);
+                dbPlayer.deleteQRCode(qr.getIdHash());
                 // TODO: You will need to update the lowScore/highScore/totalScanned/totalScore fields in the database but I don't want to break anything here
+                dbPlayer.addListener(new fetchListener() {
+                    @Override
+                    public void onFetchComplete() {
+                        qr.fetchComplete();
+                    }
+                    @Override
+                    public void onFetchFailure() {
+                        throw new IllegalArgumentException("Player does not exist in database");
+                    }
+                });
                 DBA.setPlayer(dbPlayer);
             }
             @Override
@@ -256,7 +267,7 @@ public class DBA {
                 throw new IllegalArgumentException("Player does not exist in database");
             }
         });
-        getPlayer(dbPlayer, username);
+        getPlayer(dbPlayer, qr.getUsername());
     }
     
     /**
