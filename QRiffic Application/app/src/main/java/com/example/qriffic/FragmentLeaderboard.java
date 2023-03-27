@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +18,8 @@ import com.google.firebase.firestore.Query;
  * create an instance of this fragment.
  */
 public class FragmentLeaderboard extends Fragment {
+
+    private ArrayList<LeaderboardEntry> dataList;
 
     public FragmentLeaderboard() {
         // Required empty public constructor
@@ -51,6 +51,24 @@ public class FragmentLeaderboard extends Fragment {
         TextView myRankNumber = view.findViewById(R.id.my_rank_number);
         TextView leaderboardType = view.findViewById(R.id.leaderboard_type);
         ListView leaderboardList = view.findViewById(R.id.leaderboard_list);
+
+        LeaderboardData data = new LeaderboardData();
+        data.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                dataList = data.getTopPlayerPoints();
+
+            }
+
+            @Override
+            public void onFetchFailure() {
+
+            }
+        });
+
+        DBA.getTopPlayerPoints(data);
+        DBA.getTopPlayerScans(data);
+        DBA.getTopQRPoints(data);
 
         return view;
     }

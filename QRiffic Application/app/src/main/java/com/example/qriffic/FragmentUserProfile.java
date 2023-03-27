@@ -169,8 +169,6 @@ public class FragmentUserProfile extends Fragment {
                 tvPhoneNum.setText(playerProfile.getPhoneNum());
 
                 noScanned.setText(String.valueOf(playerProfile.getTotalScanned()));
-                String test = String.valueOf(playerProfile.getTotalScanned());
-                test = String.valueOf(playerProfile.getTotalScore());
             }
 
             @Override

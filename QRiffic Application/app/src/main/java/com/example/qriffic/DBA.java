@@ -11,8 +11,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -291,6 +293,64 @@ public class DBA {
                 });
     }
 
+    public static void getTopPlayerPoints(LeaderboardData data) {
+        playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String username = document.get("username").toString();
+                                String score = document.get("totalScore").toString();
+                                data.addPlayerPoint(username, score);
+                            }
+                        } else {
+                            Log.d("topPlayerPoints", "Error getting documents");
+                            data.fetchFailed();
+                        }
+                    }
+                });
+        data.fetchComplete();
+    }
 
+    public static void getTopPlayerScans(LeaderboardData data) {
+        playersColRef.whereGreaterThan("totalScanned", 0).orderBy("totalScanned", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String username = document.get("username").toString();
+                                String scanned = document.get("totalScanned").toString();
+                                data.addPlayerScan(username, scanned);
+                            }
+                        } else {
+                            Log.d("topPlayerScans", "Error getting documents");
+                            data.fetchFailed();
+                        }
+                    }
+                });
+        data.fetchComplete();
+    }
+
+    public static void getTopQRPoints(LeaderboardData data) {
+        qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String idHash = document.get("idHash").toString();
+                                String score = document.get("score").toString();
+                                data.addPlayerPoint(idHash, score);
+                            }
+                        } else {
+                            Log.d("topQRrPoints", "Error getting documents");
+                            data.fetchFailed();
+                        }
+                    }
+                });
+        data.fetchComplete();
+    }
 
 }
