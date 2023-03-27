@@ -32,7 +32,7 @@ public class PlayerProfile {
         // Initial values
         // They will be overwritten when the first QR Code is scanned
         this.highScore = -1;
-        this.lowScore = 100000000;
+        this.lowScore = -1;
         this.totalScore = 0;
         this.totalScanned = 0;
     }
@@ -57,7 +57,7 @@ public class PlayerProfile {
         this.email = email;
         this.phoneNum = phoneNum;
         this.highScore = -1;
-        this.lowScore = 100000000;
+        this.lowScore = -1;
         this.totalScore = 0;
         this.totalScanned = 0;
         this.captured = captured;
@@ -93,7 +93,7 @@ public class PlayerProfile {
         this.email = email;
         this.phoneNum = phoneNum;
         this.highScore = -1;
-        this.lowScore = 100000000;
+        this.lowScore = -1;
         this.totalScore = 0;
         this.totalScanned = 0;
         this.captured = new HashMap<String, QRCode>();
