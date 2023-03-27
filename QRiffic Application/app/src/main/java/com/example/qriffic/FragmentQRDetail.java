@@ -63,12 +63,7 @@ public class FragmentQRDetail extends Fragment {
                 UsernamePersistent usernamePersistent = new UsernamePersistent(getContext());
                 qrCode.setIdHash(QRID);
                 qrCode.setUsername(usernamePersistent.fetchUsername());
-
-
-                //Ritwik add listener here
-
-
-                .addListener(new fetchListener() {
+                qrCode.addListener(new fetchListener() {
                     @Override
                     public void onFetchComplete() {
                         Navigation.findNavController(view).popBackStack();
