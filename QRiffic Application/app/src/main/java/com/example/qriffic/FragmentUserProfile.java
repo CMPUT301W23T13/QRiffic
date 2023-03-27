@@ -36,10 +36,6 @@ public class FragmentUserProfile extends Fragment {
 
     ArrayList<QRCode> qrList;
 
-    //initialize variables
-    private String username;
-
-
     public FragmentUserProfile() {
         // Required empty public constructor
     }
@@ -85,8 +81,6 @@ public class FragmentUserProfile extends Fragment {
 
         //initialize an array list of QR codes
         qrList = new ArrayList<>();
-
-        username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
 
         PlayerProfile playerProfile = new PlayerProfile();
         playerProfile.addListener(new fetchListener() {
@@ -210,7 +204,7 @@ public class FragmentUserProfile extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
-        DBA.getPlayer(playerProfile, username);
+        DBA.getPlayer(playerProfile, new UsernamePersistent(getContext()).fetchUsername());
 
         return view;
     }
