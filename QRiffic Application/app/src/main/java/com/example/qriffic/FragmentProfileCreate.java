@@ -1,6 +1,9 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +58,31 @@ public class FragmentProfileCreate extends Fragment {
                     return;
                 }
 
+                if (editTextEmail.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please enter an email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                /*
+                This block references the following stackoverflow post:
+                Link: https://stackoverflow.com/questions/1391970/how-to-convert-a-string-to-charsequence
+                Author: Ruthwik
+                Date: 27/03/2023
+                 */
+                if (!Patterns.EMAIL_ADDRESS.matcher(editTextEmail.getText().toString()).matches()) {
+                    Toast.makeText(getContext(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (editTextPhone.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please enter a phone number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!Patterns.PHONE.matcher(editTextPhone.getText().toString()).matches()) {
+                    Toast.makeText(getContext(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 PlayerProfile profile = new PlayerProfile();
                 profile.addListener(new fetchListener() {
