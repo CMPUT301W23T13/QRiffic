@@ -69,36 +69,36 @@ public class FragmentProfileUpdate extends Fragment {
                     return;
                 }
 
-                if (editTextEmail.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please enter an email", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 /*
                 This block references the following stackoverflow post:
                 Link: https://stackoverflow.com/questions/1391970/how-to-convert-a-string-to-charsequence
                 Author: Ruthwik
                 Date: 27/03/2023
                  */
-                if (!Patterns.EMAIL_ADDRESS.matcher(editTextEmail.getText().toString()).matches()) {
+                if (editTextEmail.getText().length() > 0
+                        && !Patterns.EMAIL_ADDRESS.matcher(editTextEmail.getText().toString()).matches()) {
                     Toast.makeText(getContext(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (editTextPhone.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please enter a phone number", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (!Patterns.PHONE.matcher(editTextPhone.getText().toString()).matches()) {
+                if (editTextPhone.getText().length() > 0
+                        && !Patterns.PHONE.matcher(editTextPhone.getText().toString()).matches()) {
                     Toast.makeText(getContext(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                String email = editTextEmail.getText().toString();
+                if (email.equals("")) {
+                    email = null;
+                }
+                String phone = editTextPhone.getText().toString();
+                if (phone.equals("")) {
+                    phone = null;
+                }
 
                 profile.setUsername(editTextUsername.getText().toString());
-                profile.setEmail(editTextEmail.getText().toString());
-                profile.setPhoneNum(editTextPhone.getText().toString());
+                profile.setEmail(email);
+                profile.setPhoneNum(phone);
                 DBA.updateContactInfo(profile);
 
                 Navigation.findNavController(view).popBackStack();
