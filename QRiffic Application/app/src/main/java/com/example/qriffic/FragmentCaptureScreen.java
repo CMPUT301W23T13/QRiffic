@@ -187,7 +187,12 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         }
         if (addresses != null && addresses.size() > 0) {
             Address address = addresses.get(0);
-            currCity = address.getLocality();
+            if (address.getLocality() != null) {
+                currCity = address.getLocality();
+            }
+            else {
+                currCity = "N/A";
+            }
         }
     }
 
