@@ -10,67 +10,137 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
-        <TextView
-            android:id="@+id/textview_qr_code"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:text="QR CODE INFO"
-            android:textAlignment="center"
-            android:textColor="@color/purple_500"
-            android:textSize="20sp"
+        <ImageView
+            android:id="@+id/imageview_qr_code"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/eg_identicon"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageview_qr_code"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_launcher_foreground"
+        <TextView
+            android:id="@+id/textview_name_score"
+            android:layout_width="200dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="192dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#7670B4"
+            android:text="Really Long Monster Name Here Hi\n10000000 pts"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.924"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_qr_code" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageview_location_image"
-            android:layout_width="240dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_launcher_background"
+        <TextView
+            android:id="@+id/textview_congrats"
+            android:layout_width="380dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="68dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#D5D9FE"
+            android:text="Congrats! You found a new Monster Name! What would you like to do?"
+            android:textAlignment="center"
+            android:textColor="#2F3FCC"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.483"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageview_qr_code" />
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="380dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#E4E4E8"
+            android:text=" + Add photo"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.483"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="380dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#E4E4E8"
+            android:text=" + Add comment"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_congrats" />
+
+
+        <TextView
+            android:id="@+id/textview_geolocation"
+            android:layout_width="380dp"
+            android:layout_height="75dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="#E4E4E8"
+            android:text=" + Add geolocation\n lat: 5\n long: 5\n city: Edmonton"
+            android:textColor="#000000"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_capture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <ImageView
+            android:id="@+id/imageview_location_image"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="@+id/textView8"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toTopOf="@+id/textView8" />
+
         <EditText
             android:id="@+id/edittext_comment"
-            android:layout_width="match_parent"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
-            android:hint="enter comment here"
-            app:layout_constraintBottom_toTopOf="@+id/button_capture"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_location_image" />
+            android:hint="Start typing here..."
+            app:layout_constraintBottom_toBottomOf="@+id/textView7"
+            app:layout_constraintEnd_toEndOf="@+id/textView7"
+            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintStart_toStartOf="@+id/textView7"
+            app:layout_constraintTop_toTopOf="@+id/textView7"
+            app:layout_constraintVertical_bias="0.137" />
 
         <Button
             android:id="@+id/button_capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="194dp"
             android:layout_marginBottom="16dp"
             android:text="Capture"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_location_image" />
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Switch
             android:id="@+id/switch_track_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location"
-            app:layout_constraintBottom_toBottomOf="@+id/button_capture"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button_capture"
-            app:layout_constraintTop_toTopOf="@+id/button_capture" />
+            android:text="Store Geolocation?"
+            app:layout_constraintBottom_toBottomOf="@+id/textview_geolocation"
+            app:layout_constraintEnd_toEndOf="@+id/textview_geolocation"
+            app:layout_constraintHorizontal_bias="0.96"
+            app:layout_constraintStart_toStartOf="@+id/textview_geolocation"
+            app:layout_constraintTop_toTopOf="@+id/textview_geolocation"
+            app:layout_constraintVertical_bias="0.437" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
