@@ -340,9 +340,9 @@ public class DBA {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String idHash = document.get("idHash").toString();
+                                String name = document.get("name").toString();
                                 String score = document.get("score").toString();
-                                data.addPlayerPoint(idHash, score);
+                                data.addPlayerPoint(name, score);
                             }
                             data.fetchComplete();
                         } else {

@@ -52,7 +52,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode>{
 
             nameTextView.setText(qrCode.getName());
             System.out.println(qrCode.getName());
-            scoreTextView.setText(String.valueOf(qrCode.getScore()));
+            scoreTextView.setText(String.valueOf(qrCode.getScore()) + "pts");
 
             // generate QR code image and load
             String hash = qrCode.getIdHash();

@@ -127,8 +127,8 @@ public class FragmentUserProfile extends Fragment {
                 profileListView.setAdapter(qrAdapter);
 
                 if (qrList.size() > 0) {
-                    lowScore.setText(String.valueOf(playerProfile.getLowScore()));
-                    highScore.setText(String.valueOf(playerProfile.getHighScore()));
+                    lowScore.setText(String.valueOf(playerProfile.getLowScore()) + "pts");
+                    highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
                     totalScore.setText(String.valueOf(playerProfile.getTotalScore()));
                     tvEmptyQRMon.setVisibility(View.GONE);
 

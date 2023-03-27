@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class FragmentLeaderboard extends Fragment {
 
     private ArrayList<LeaderboardEntry> dataList;
+    private LeaderboardAdapter leaderboardAdapter;
 
     public FragmentLeaderboard() {
         // Required empty public constructor
@@ -43,7 +44,8 @@ public class FragmentLeaderboard extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
-        Bundle bundle = getArguments();
+        //Bundle bundle = getArguments();
+        //String username = bundle.getString("username").replaceAll("[^a-zA-Z0-9!]", "");
 
         TextView leaderboardTitle = view.findViewById(R.id.leaderboard_title);
         TextView leaderboardPlayerTitle = view.findViewById(R.id.leaderboard_player_title);
@@ -56,7 +58,12 @@ public class FragmentLeaderboard extends Fragment {
         data.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
+                //leaderboardPlayerTitle.setText(username);
+
                 dataList = data.getTopPlayerPoints();
+                leaderboardAdapter = new LeaderboardAdapter(getContext(), dataList);
+                leaderboardList.setAdapter(leaderboardAdapter);
+                leaderboardAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -65,8 +72,6 @@ public class FragmentLeaderboard extends Fragment {
         });
 
         DBA.getTopPlayerPoints(data);
-        DBA.getTopPlayerScans(data);
-        DBA.getTopQRPoints(data);
 
         return view;
     }

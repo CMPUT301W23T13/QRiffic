@@ -29,7 +29,7 @@
             android:text="QRMon Name"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/pListScore"
@@ -38,6 +38,6 @@
             android:text="9999pts"
             android:textAlignment="center"
             android:textColor="@color/purple_500"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 </LinearLayout>
