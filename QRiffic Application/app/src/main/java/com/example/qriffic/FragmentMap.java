@@ -112,7 +112,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
         // Get the list of locations from the database
 
-        dba = new DBAccessor();
         //initialize an array for storing qr
         List<QRData> QRData = new ArrayList<QRData>();
 
@@ -198,7 +197,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
                                     }
                                 });
-                                dba.getQRData(qrData, id);
+                                DBA.getQRData(qrData, id);
 
 
                             }
