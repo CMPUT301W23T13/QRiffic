@@ -57,12 +57,10 @@ public class FragmentLeaderboard extends Fragment {
             @Override
             public void onFetchComplete() {
                 dataList = data.getTopPlayerPoints();
-
             }
 
             @Override
             public void onFetchFailure() {
-
             }
         });
 

@@ -304,13 +304,13 @@ public class DBA {
                                 String score = document.get("totalScore").toString();
                                 data.addPlayerPoint(username, score);
                             }
+                            data.fetchComplete();
                         } else {
                             Log.d("topPlayerPoints", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
-        data.fetchComplete();
     }
 
     public static void getTopPlayerScans(LeaderboardData data) {
@@ -324,13 +324,13 @@ public class DBA {
                                 String scanned = document.get("totalScanned").toString();
                                 data.addPlayerScan(username, scanned);
                             }
+                            data.fetchComplete();
                         } else {
                             Log.d("topPlayerScans", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
-        data.fetchComplete();
     }
 
     public static void getTopQRPoints(LeaderboardData data) {
@@ -344,13 +344,12 @@ public class DBA {
                                 String score = document.get("score").toString();
                                 data.addPlayerPoint(idHash, score);
                             }
+                            data.fetchComplete();
                         } else {
                             Log.d("topQRrPoints", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
-        data.fetchComplete();
     }
-
 }
