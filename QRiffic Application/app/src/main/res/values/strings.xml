@@ -11,6 +11,7 @@
     <string name="map_label">Map</string>
     <string name="scanner_label">Scanner</string>
     <string name="searched_profile_label">Profile</string>
+    <string name="edit_profile_label">Update Profile</string>
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>

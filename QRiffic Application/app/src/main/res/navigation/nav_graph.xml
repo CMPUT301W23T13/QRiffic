@@ -91,7 +91,7 @@
     <fragment
         android:id="@+id/nav_ProfileUpdate"
         android:name="com.example.qriffic.FragmentProfileUpdate"
-        android:label="FragmentProfileUpdate" >
+        android:label="@string/edit_profile_label" >
         <action
             android:id="@+id/action_fragmentProfileUpdate_to_nav_userProfile"
             app:destination="@id/nav_userProfile" />
