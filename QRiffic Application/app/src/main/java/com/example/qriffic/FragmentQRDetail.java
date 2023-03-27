@@ -67,11 +67,8 @@ public class FragmentQRDetail extends Fragment {
             @Override
             public void onClick(View v) {
                 DBAccessor dba = new DBAccessor();
-                QRCode qrCode = new QRCode();
-                qrCode.setIdHash(QRID);
                 UsernamePersistent usernamePersistent = new UsernamePersistent(getContext());
-                qrCode.setUsername(usernamePersistent.fetchUsername());
-                dba.deleteQR(qrCode);
+                dba.deleteQR(QRID,usernamePersistent.fetchUsername());
                 getActivity().onBackPressed();
             }
         });
