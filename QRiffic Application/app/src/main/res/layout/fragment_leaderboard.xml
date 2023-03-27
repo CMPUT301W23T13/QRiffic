@@ -12,7 +12,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -41,7 +40,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -76,7 +74,6 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/my_rank_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/leaderboard_rank_text"
@@ -107,7 +104,6 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/my_username_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/leaderboard_username_text"
@@ -148,7 +144,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/leaderboard_list">
-
             </ListView>
         </LinearLayout>
     </LinearLayout>
