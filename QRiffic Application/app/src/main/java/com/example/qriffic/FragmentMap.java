@@ -5,6 +5,7 @@ import static androidx.fragment.app.FragmentManager.TAG;
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -93,16 +94,22 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
             return;
         }
         map.setMyLocationEnabled(true);
+        map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+                // Remove the listener to prevent position updates continuously
+                map.setOnMyLocationChangeListener(null);
+            }
+        });
 
 
 
-        //add marker and move camera
-        // Create a list of LatLng objects for the markers
-//        List<LatLng> markerLatLngList = new ArrayList<>();
-//        markerLatLngList.add(new LatLng(37.7749, -122.4194)); // San Francisco
-//        markerLatLngList.add(new LatLng(40.7128, -74.0060)); // New York City
-//        markerLatLngList.add(new LatLng(51.5074, -0.1278)); // London
-//        markerLatLngList.add(new LatLng(35.6895, 139.6917)); // Tokyo
+
+
+
+
 
         // Get the list of locations from the database
         dba = new DBAccessor();
@@ -134,12 +141,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
-//                                System.out.println(document.getData().get("idHash"));
-//                                idHash.add("Haash");
+//
                                 String id = (String) document.getData().get("idHash");
-//                                String name = (String) document.getData().get("name");
-//                                Integer score = (Integer) document.getData().get("score");
-//                                HashMap<String,<>
+//
 
                                 QRData qrData = new QRData();
                                 //make a list for lat and lon
@@ -151,24 +155,16 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                     public void onFetchComplete() {
 
 
-//                                        System.out.println("user="+qrData.getUsers());
-
-
-
-
                                         //get the value from hashmap Users without knowing the key
 
                                         for (String key : qrData.getUsers().keySet()) {
-//                                            System.out.println("key = " + key);
-//                                            System.out.println("value = " + qrData.getUsers().get(key));
+//
                                             HashMap<String,Object> user = (HashMap<String, Object>) qrData.getUsers().get(key);
-//                                            System.out.println("user = " + user.get("geoLocation"));
+//
                                             //get the lat and lon
                                             HashMap<String,Object> geoLocation = (HashMap<String, Object>) user.get("geoLocation");
 
-//                                            System.out.println("lat = " + geoLocation.get("latitude"));
-//                                            System.out.println("lon = " + geoLocation.get("longitude"));
-
+//
 
                                             //convert all the value to double
                                             Double latitude = (Double) geoLocation.get("latitude");
@@ -203,14 +199,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                 dba.getQRData(qrData, id);
 
 
-
-
-
-
-
-
-
-
                             }
 
                         } else {
@@ -223,27 +211,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        // Add a marker for each LatLng using a loop
-//        for (LatLng latLng : markerLatLngList) {
-//            map.addMarker(new MarkerOptions().position(latLng));
-//        }
-//        CameraUpdateFactory.newLatLng(new LatLng(0, 0));
-//        CameraUpdateFactory.zoomTo(15);
     }
 
 
