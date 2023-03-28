@@ -126,6 +126,15 @@ public class PlayerProfile {
     }
 
     /**
+     * This methods removes a fetchListener from the PlayerProfile object
+     * @param toRemove
+     * The fetchListener to remove
+     */
+    public void removeListener(fetchListener toRemove) {
+        listeners.remove(toRemove);
+    }
+
+    /**
      * This method calls all onFetchComplete() listeners
      *
      * This block references the following web page:
@@ -346,6 +355,7 @@ public class PlayerProfile {
      */
     public void deleteQRCode(String idHash) {
         QRCode qrCode = this.captured.get(idHash);
+        Log.d("TESTPRINT", "idHash: " + idHash + " qrCode: " + qrCode + " captured: " + this.captured);
 
         // If QR code does not exist in captured
         if (qrCode == null) {
