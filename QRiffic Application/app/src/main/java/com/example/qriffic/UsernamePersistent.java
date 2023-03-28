@@ -28,10 +28,10 @@ public class UsernamePersistent {
             // Try to read the username from file
             //FileInputStream secretIDInputStream = requireActivity().getApplicationContext().openFileInput("username");
             FileInputStream secretIDInputStream = context.openFileInput("username");
-            byte[] uniqueIDBytes = new byte[36];
+            byte[] uniqueIDBytes = new byte[16];
             secretIDInputStream.read(uniqueIDBytes);
             username = "";
-            for (int i = 0; i < 36; i++) {
+            for (int i = 0; i < 16; i++) {
                 if (uniqueIDBytes[i] == 0) {
                     break;
                 }

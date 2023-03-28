@@ -58,6 +58,11 @@ public class FragmentProfileCreate extends Fragment {
                     return;
                 }
 
+                if (editTextUsername.getText().toString().length() > 16) {
+                    Toast.makeText(getContext(), "Username must be less than 16 characters", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 /*
                 This block references the following stackoverflow post:
                 Link: https://stackoverflow.com/questions/1391970/how-to-convert-a-string-to-charsequence
