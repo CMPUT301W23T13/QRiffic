@@ -33,7 +33,10 @@ public class FragmentQRDetail extends Fragment {
     }
 
     /**
-     * This method creates the view of the fragment
+     * This method creates the view of the fragment.  It includes the ability to
+     * delete the QR code if the user is the main user and clicks the delete button,
+     * as well as setting the QR code image and the feed of users who have scanned
+     *
      * @param inflater the inflator of the fragment
      * @param container the container of the fragment
      * @param savedInstanceState the saved instance state of the fragment
@@ -75,10 +78,6 @@ public class FragmentQRDetail extends Fragment {
                     }
                 });
                 dba.deleteQR(qrCode);
-
-
-//                dba.deleteQR(QRID, usernamePersistent.fetchUsername());
-//                Navigation.findNavController(view).popBackStack();
             }
         });
 
