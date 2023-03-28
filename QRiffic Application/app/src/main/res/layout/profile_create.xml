@@ -43,10 +43,12 @@
                 android:background="@drawable/rounded_corner"
                 android:backgroundTint="@color/boxGrey"
 
+                android:digits='"QWERTYUIOPLKJHGFDSAZXCVBNMabcdefghijklmnopqrstuvwxyz1234567890"'
                 android:hint="@string/create_username_hint"
                 android:importantForAutofill="no"
                 android:inputType="text"
-                android:paddingHorizontal="10dp" />
+                android:paddingHorizontal="10dp"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/username_warning"

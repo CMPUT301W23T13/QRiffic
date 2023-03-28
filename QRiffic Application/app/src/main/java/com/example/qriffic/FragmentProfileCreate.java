@@ -1,6 +1,9 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +58,23 @@ public class FragmentProfileCreate extends Fragment {
                     return;
                 }
 
+                /*
+                This block references the following stackoverflow post:
+                Link: https://stackoverflow.com/questions/1391970/how-to-convert-a-string-to-charsequence
+                Author: Ruthwik
+                Date: 27/03/2023
+                 */
+                if (editTextEmail.getText().length() > 0
+                        && !Patterns.EMAIL_ADDRESS.matcher(editTextEmail.getText().toString()).matches()) {
+                    Toast.makeText(getContext(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (editTextPhone.getText().length() > 0
+                        && !Patterns.PHONE.matcher(editTextPhone.getText().toString()).matches()) {
+                    Toast.makeText(getContext(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 PlayerProfile profile = new PlayerProfile();
                 profile.addListener(new fetchListener() {
@@ -70,11 +90,21 @@ public class FragmentProfileCreate extends Fragment {
                     public void onFetchFailure() {
                         // the query was unable to fetch a PlayerProfile,
                         // so the username is available
+
+                        String email = editTextEmail.getText().toString();
+                        if (email.equals("")) {
+                            email = null;
+                        }
+                        String phone = editTextPhone.getText().toString();
+                        if (phone.equals("")) {
+                            phone = null;
+                        }
+
                         PlayerProfile profile = new PlayerProfile(
                             editTextUsername.getText().toString(),
                             null,
-                            editTextEmail.getText().toString(),
-                            editTextPhone.getText().toString(),
+                            email,
+                            phone,
                             new HashMap<String, QRCode>());
                         DBA.setPlayer(profile);
 
