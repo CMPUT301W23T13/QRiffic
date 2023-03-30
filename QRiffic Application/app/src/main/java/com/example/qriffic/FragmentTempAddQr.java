@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +100,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
         Button addQR = view.findViewById(R.id.button_add_qr);
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
         TextView temp = view.findViewById(R.id.textView_temp);
-        Switch storeQrGeoLocation = view.findViewById(R.id.switch_store_qr_geolocation);
+        //Switch storeQrGeoLocation = view.findViewById(R.id.switch_store_qr_geolocation);
 
         // get reference to the LocationManager
         locationManager = (LocationManager) requireActivity().getSystemService(getActivity().LOCATION_SERVICE);
@@ -120,65 +121,11 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                 if (qrCode.getText().toString().isEmpty()) {
                     temp.setText("Please enter a QR code");
                 }
-                // otherwise, QRCode object info on screen
-                else {
-                    QRCode tempQR;
-                    // if the switch is on, store the QRCode's geolocation
-                    if (storeQrGeoLocation.isChecked()) {
-
-                        // get the current location (check for location permissions first)
-                        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, FragmentTempAddQr.this);
-                            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            currLongitude = location.getLongitude();
-                            currLatitude = location.getLatitude();
-                        }
-
-                        // get the city name from longitude and latitude
-                        Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
-                        List<Address> addresses;
-                        try {
-                            addresses = geocoder.getFromLocation(currLatitude, currLongitude, 1);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        if (addresses != null && addresses.size() > 0) {
-                            Address address = addresses.get(0);
-                            currCity = address.getLocality();
-                        }
-
-                        // when switch is set to on, store the QRCode's geolocation
-                        GeoLocation geoLocation = new GeoLocation(currLatitude, currLongitude, currCity);
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername, null, null);
-                    } else {
-                        // when switch is set to off, store as N/A
-                        GeoLocation geoLocation = new GeoLocation(9999, 9999, "N/A");
-                        tempQR = new QRCode(qrCode.getText().toString(), geoLocation, activeUsername, null, null);
-                    }
-
-                    // display QRCode info on screen
-                    String hash = tempQR.getIdHash();
-                    String last6 = hash.substring(hash.length() - 6);
-                    String newText = "last6hex: " + last6 +
-                            "\nname: " + tempQR.getName() +
-                            "\nscore: " + Integer.toString(tempQR.getScore()) +
-                            "\nlongitude: " + tempQR.getGeoLocation().getLongitude() +
-                            "\nlatitude: " + tempQR.getGeoLocation().getLatitude() +
-                            "\ncity: " + tempQR.getGeoLocation().getCity();
-                    temp.setText(newText);
-                    // update current player's captured QRCode collection in database
-                    DBA.addQR(activeUsername, tempQR);
-
-                    // generate QR code image
-                    String url = "https://www.gravatar.com/avatar/" + tempQR.getScore() + "?s=55&d=identicon&r=PG%22";
-                    Glide.with(getContext())
-                            .load(url)
-                            .centerCrop()
-                            .error(R.drawable.ic_launcher_background)
-                            .into((ImageView) view.findViewById(R.id.image_identicon));
+                Bundle bundle = new Bundle();
+                bundle.putString("barcode_data", qrCode.getText().toString());
+                Navigation.findNavController(getView()).navigate(R.id.nav_capture_screen, bundle);
                 }
-            }
-        });
+            });
 
         return view;
     }
