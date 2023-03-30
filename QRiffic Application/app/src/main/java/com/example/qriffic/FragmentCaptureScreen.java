@@ -155,7 +155,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
     private void initViewsAndValues(View view) {
         Bundle bundle = getArguments();
-        //textView = view.findViewById(R.id.textview_qr_code);
         rawString = bundle.getString("barcode_data");
         usernamePersistent = new UsernamePersistent(requireActivity());
         username = usernamePersistent.fetchUsername();
@@ -233,9 +232,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             qrCode.setGeoLocation(new GeoLocation(9999, 9999, "N/A"));
         }
         //qrCode.setLocationImage(locationImage);
-        //qrCode.setComment(commentEditText.getText().toString());
-        //update QRCode collection in DB
-        //DBA.setQR(qrCode.getIdHash(), qrCode);
+        qrCode.setComment(commentEditText.getText().toString());
         // update player's captured list and QRs collection in DB
         DBA.addQR(username, qrCode);
     }
