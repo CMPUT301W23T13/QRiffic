@@ -9,14 +9,14 @@ import java.security.MessageDigest;
  * This class defines the hash of some input
  */
 public class Hash {
-    private String hash;
-
     /**
-     * This is the constructor for a Hash object
+     * This method returns the hash of a string
      * @param preHash
      * The input string to be hashed
+     * @return
+     * The hash value as a string
      */
-    public Hash(String preHash) {
+    public static String getHash(String preHash) {
 
         // REFERENCE:
         // https://www.geeksforgeeks.org/sha-256-hash-in-java/
@@ -43,16 +43,6 @@ public class Hash {
         while (hexString.length() < 64) {
             hexString.insert(0, '0');
         }
-        hash = hexString.toString();
-
-    }
-
-    /**
-     * This method returns the hash of a Hash object
-     * @return
-     * The hash value as a string
-     */
-    public String getHash(){
-        return hash;
+        return hexString.toString();
     }
 }
