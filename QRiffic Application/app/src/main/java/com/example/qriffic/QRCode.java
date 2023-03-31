@@ -3,6 +3,9 @@ package com.example.qriffic;
 
 import android.graphics.Bitmap;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +47,7 @@ public class QRCode implements Comparable {
     public QRCode(String rawString, GeoLocation geoLocation, String username, Bitmap locationImage,
                   String comment) {
 
-        this.idHash = new Hash(rawString).getHash();
+        this.idHash = getHash(rawString);
         this.locationImage = locationImage;
         this.geoLocation = geoLocation;
         this.username = username;
@@ -242,5 +245,44 @@ public class QRCode implements Comparable {
     public String getComment() {
         return comment;
     }
+
+    /**
+     * This method returns the hash of a string
+     * @param preHash
+     * The input string to be hashed
+     * @return
+     * The hash value as a string
+     */
+    public static String getHash(String preHash) {
+
+        // REFERENCE:
+        // https://www.geeksforgeeks.org/sha-256-hash-in-java/
+        // Article Contributed By: bilal-hungund
+
+        // Create message digest
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Calculate message digest of preHash
+        byte[] byteArray = md.digest(preHash.getBytes(StandardCharsets.UTF_8));
+
+        // Convert byte array into signum representation
+        BigInteger number = new BigInteger(1, byteArray);
+
+        // Convert message digest into hex value
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+
+        // Pad with leading zeros
+        while (hexString.length() < 64) {
+            hexString.insert(0, '0');
+        }
+        return hexString.toString();
+    }
 }
+
+
 
