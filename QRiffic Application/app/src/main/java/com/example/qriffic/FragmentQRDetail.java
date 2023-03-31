@@ -1,9 +1,6 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 
@@ -43,6 +42,8 @@ public class FragmentQRDetail extends Fragment {
 
         //fetch the QR data from the database
         String QRID = getArguments().getString("QRID");
+
+        System.out.println("QRID: " + QRID);
         QRData qrData = new QRData();
         qrData.addListener(new fetchListener() {
             @Override

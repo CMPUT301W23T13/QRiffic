@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,12 +38,14 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
+public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMyLocationClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     GoogleMap map;
     MapView mapView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    Marker marker;
 
 
     @Nullable
@@ -175,18 +179,56 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                            //add the lat and lon to the markerLatLngList
                                             List<LatLng> markerLatLngList = new ArrayList<>();
 
-                                            //if lat long != 9999.0
-                                            if(latitude != 9999.0 && longitude != 9999.0){
+                                            //if lat long != 9999.0 and !=0
+
+                                            if((latitude != 9999.0 && longitude != 9999.0)){
                                                 markerLatLngList.add(new LatLng(longitude,latitude));
                                             }
                                             // Add a marker for each LatLng using a loop
                                             for (LatLng latLng : markerLatLngList) {
-                                                map.addMarker(new MarkerOptions().position(latLng));
+                                                marker = map.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                                                marker.setTag(id);
+
+                                                //marker click listener
+                                                map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                                    @Override
+                                                    public boolean onMarkerClick(@NonNull Marker marker) {
+                                                        System.out.println("marker id"+marker.getTag());
+
+                                                        //make bundle for id
+                                                        Bundle bundle = new Bundle();
+                                                        bundle.putString("QRID",marker.getTag().toString());
+                                                        System.out.println("bundle id"+bundle.getString("QRID"));
+                                                        //navigate to qr detail fragment
+                                                        View view = getView();
+
+                                                        Navigation.findNavController(view).navigate(R.id.action_nav_map_to_nav_QRDetail,bundle);
+//
+//                                                        Toast.makeText(getContext(), "Marker clicked", Toast.LENGTH_SHORT).show();
+                                                        return false;
+                                                    }
+                                                });
+
+//                                                map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//                                                    @Override
+//                                                    public void onInfoWindowClick(@NonNull Marker marker) {
+//
+//                                                        Toast.makeText(getContext(), "Info window clicked"+marker.getTitle().toString(), Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                });
+
+
+
+
+                                                System.out.println("marker id"+marker.getTag());
                                             }
 
                                             //move the camera to the first marker
                                             CameraUpdateFactory.newLatLng(new LatLng((Double) geoLocation.get("longitude"), (Double) geoLocation.get("latitude")));
                                             CameraUpdateFactory.zoomTo(15);
+
+//                                            // Set a listener for marker click.
+//                                            map.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) requireActivity());
 
                                         }
 
@@ -209,20 +251,31 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                 });
 
 
-
-
-
     }
+
+
+
+//    public void onMarkerClickListener(@NonNull Marker marker) {
+//        Toast.makeText(getContext(), "Marker clicked", Toast.LENGTH_SHORT).show();
+//    }
+
 
 
     @Override
     public void onMyLocationClick(@NonNull android.location.Location location) {
         Toast.makeText(getContext(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
 
+
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
+        return false;
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        Toast.makeText(getContext(), "Marker clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
 }
