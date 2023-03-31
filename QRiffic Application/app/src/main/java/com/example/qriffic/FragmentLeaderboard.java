@@ -104,7 +104,7 @@ public class FragmentLeaderboard extends Fragment {
                         myRankNumber.setText("N/A");
                     }
 
-                    leaderboardType.setText("Top Globally");
+                    leaderboardType.setText("Top Points Globally");
 
                     ArrayList<LeaderboardEntry> adapterList = new ArrayList<>();
                     leaderboardAdapter = new LeaderboardAdapter(getContext(), adapterList);
@@ -198,7 +198,7 @@ public class FragmentLeaderboard extends Fragment {
                         leaderboardAdapter.addAll(data.getTopQRPoints());
                         leaderboardAdapter.notifyDataSetChanged();
                     } else if (Objects.equals(choice, "Top QRMons Regionally")) {
-                        Log.d("spinner", "top qrmons regionally");
+                        leaderboardType.setText("Top QRMons in ...");
                     }
                 }
             }

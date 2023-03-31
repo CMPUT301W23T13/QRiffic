@@ -9,46 +9,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/leaderboard_spinner"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/leaderboard_type"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/purple_200"
+            android:layout_marginVertical="10dp"
+            android:padding="7dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/leaderboard_spinner"
-            android:layout_marginHorizontal="10dp"
-            />
+            android:text="Leaderboard"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_margin="20dp">
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
 
-
-
-            <TextView
-                android:id="@+id/leaderboard_title"
-                android:layout_width="0dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="#9D5AFD"
-                android:padding="5dp"
-                android:text="@string/leaderboard_main_title"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="34sp" />
-
-            <Button
-                android:id="@+id/leaderboard_switch_button"
-                android:layout_width="145dp"
-                android:layout_height="70dp"
-                android:text="@string/leaderboard_switch" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -141,15 +118,14 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/leaderboard_type"
+            <Spinner
+                android:id="@+id/leaderboard_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Top"
-
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:drawSelectorOnTop="true"
+                android:entries="@array/leaderboard_spinner"
+                android:layout_marginHorizontal="10dp"
+                />
 
             <ListView
                 android:layout_width="match_parent"
