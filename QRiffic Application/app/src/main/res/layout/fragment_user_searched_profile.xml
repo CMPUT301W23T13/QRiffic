@@ -100,7 +100,7 @@
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,7 +127,7 @@
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -140,13 +140,14 @@
             android:text="@string/label_best"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/top_score_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="3dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="#A5ECE4"
 
@@ -185,7 +186,7 @@
                     android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -198,13 +199,14 @@
             android:text="@string/label_bot"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/bot_score_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="3dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="#FDBBBB"
             android:gravity="center"
@@ -241,7 +243,7 @@
                     android:text="@string/profile_na"
                     android:textAlignment="center"
                     android:textColor="@color/purple_500"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -254,7 +256,7 @@
             android:text="@string/all_qrmon_label"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/empty_qrmon_label"
@@ -262,7 +264,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
 
-            android:text="@string/searched_empty_qrmon_label"
+            android:text="@string/empty_qrmon_label"
             android:textAlignment="center"
             android:textColor="@color/boxDarkGrey"
             android:textSize="20sp"
@@ -271,6 +273,9 @@
         <ListView
             android:id="@+id/profileList"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="3dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
             android:layout_width="match_parent"
             android:layout_height= "match_parent"/>
 
