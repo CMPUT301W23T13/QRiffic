@@ -196,7 +196,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 Bundle bundle = new Bundle();
                 QRCode qrCode = qrList.get(position);
                 bundle.putString("QRID", qrCode.getIdHash());
-                bundle.putBoolean("isUser", true);
+                bundle.putBoolean("isUser", false);
                 Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail,bundle);
             }
         });
