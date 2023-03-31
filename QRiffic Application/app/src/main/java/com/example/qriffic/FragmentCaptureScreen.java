@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import java.io.ByteArrayOutputStream;
@@ -87,9 +88,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             public void onClick(View v) {
                 uploadToDB();
                 // go back to the user profile screen
-                Bundle bundle = new Bundle();
-                bundle.putString("username", username);
-                Navigation.findNavController(view).navigate(R.id.nav_userProfile, bundle);
+                NavController controller = Navigation.findNavController(v);
+                controller.popBackStack();
+                controller.popBackStack();
             }
         });
 
