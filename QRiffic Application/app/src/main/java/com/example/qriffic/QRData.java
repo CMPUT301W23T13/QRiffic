@@ -90,7 +90,7 @@ public class QRData {
      * location image, and geolocation for that QR code.
      * @param qr
      */
-    public void addUser(String username, String comment, Bitmap locationImage, GeoLocation geoLocation) {
+    public void addUser(String username, String comment, String locationImage, GeoLocation geoLocation) {
         this.users.put(username, new HashMap<String, Object>() {{
             put("comment", comment);
             put("locationImage", locationImage);

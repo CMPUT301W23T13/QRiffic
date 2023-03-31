@@ -20,7 +20,7 @@ public class QRCode implements Comparable {
     private String idHash;
     private String name;
     private String username;
-    private Bitmap locationImage;
+    private String locationImage;
     private String comment;
     private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
 
@@ -43,8 +43,10 @@ public class QRCode implements Comparable {
      * The location of the QR code as a Location object
      * @param username
      * The username of the player who scanned the QR code
+     * @param locationImage
+     * The image of the location of the QR code as a Base64 String
      */
-    public QRCode(String rawString, GeoLocation geoLocation, String username, Bitmap locationImage,
+    public QRCode(String rawString, GeoLocation geoLocation, String username, String locationImage,
                   String comment) {
 
         this.idHash = getHash(rawString);
@@ -129,7 +131,7 @@ public class QRCode implements Comparable {
      * @param locationImage
      * The location image of the QR code
      */
-    public void setLocationImage(Bitmap locationImage) {
+    public void setLocationImage(String locationImage) {
         this.locationImage = locationImage;
     }
 
@@ -233,7 +235,7 @@ public class QRCode implements Comparable {
      * @return
      * The location image as a Bitmap
      */
-    public Bitmap getLocationImage() {
+    public String getLocationImage() {
         return locationImage;
     }
 

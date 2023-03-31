@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,7 +156,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
     private void initViewsAndValues(View view) {
         Bundle bundle = getArguments();
-        //textView = view.findViewById(R.id.textview_qr_code);
         rawString = bundle.getString("barcode_data");
         usernamePersistent = new UsernamePersistent(requireActivity());
         username = usernamePersistent.fetchUsername();
@@ -232,10 +232,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         if (!trackLocationSwitch.isChecked()) {
             qrCode.setGeoLocation(new GeoLocation(9999, 9999, "N/A"));
         }
-        //qrCode.setLocationImage(locationImage);
-        //qrCode.setComment(commentEditText.getText().toString());
-        //update QRCode collection in DB
-        //DBA.setQR(qrCode.getIdHash(), qrCode);
+        String locationImageBase64 = bitmapToBase64(locationImage);
+        qrCode.setLocationImage(locationImageBase64);
+        qrCode.setComment(commentEditText.getText().toString());
         // update player's captured list and QRs collection in DB
         DBA.addQR(username, qrCode);
     }
@@ -256,6 +255,16 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         nameScoreTextView.setText(nameScoreText);
         congratsTextView.setText(congratsText);
         geoLocationTextView.setText(geolocationText);
+    }
+
+    public String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     @Override
