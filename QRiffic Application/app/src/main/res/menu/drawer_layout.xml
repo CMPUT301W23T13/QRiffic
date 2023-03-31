@@ -9,26 +9,30 @@
         <item
             android:id="@+id/nav_scanner"
             android:title="Snap a QR"
-            android:icon="@drawable/ic_menu_camera" />
+            android:icon="@drawable/camera_icon" />
         <item
             android:id="@+id/nav_map"
             android:title="QRs Nearby"
-            android:icon="@drawable/ic_menu_gallery"/>
+            android:icon="@drawable/location_icon"/>
         <item
             android:id="@+id/nav_userProfile"
             android:title="My Profile"
+            android:icon="@drawable/person_icon"
             />
         <item
             android:id="@+id/nav_searchUser"
             android:title="Search Profiles"
+            android:icon="@drawable/search_icon"
             />
         <item
             android:id="@+id/nav_leaderboard"
             android:title="@string/leaderboard"
+            android:icon="@drawable/leaderboard_icon"
             />
         <item
             android:id="@+id/nav_ProfileUpdate"
-            android:title="Update Profile" />
+            android:title="Update Profile"
+            android:icon="@drawable/update_icon"/>
         <item
             android:id="@+id/nav_tempAddQR"
             android:title="tempAddQr" />
