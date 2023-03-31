@@ -37,7 +37,7 @@ public class LeaderboardAdapter extends ArrayAdapter<LeaderboardEntry> {
 
             rankNumberView.setText(String.valueOf(position + 1));
             usernameView.setText(entry.getId());
-            pointsView.setText(entry.getValue() + "pts");
+            pointsView.setText(entry.getValue() );
         }
 
         return view;

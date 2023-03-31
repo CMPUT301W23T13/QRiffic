@@ -97,7 +97,7 @@
                         android:id="@+id/my_rank_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="n/a"
+                        android:text="N/A"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -115,6 +115,7 @@
                     android:padding="10dp">
 
                     <TextView
+                        android:id="@+id/my_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/leaderboard_username_text"
@@ -126,7 +127,7 @@
                         android:id="@+id/my_points"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="n/a"
+                        android:text="N/A"
                         android:textAlignment="center"
                         android:textColor="@color/purple_500"
                         android:textSize="20sp" />
@@ -144,7 +145,7 @@
                 android:id="@+id/leaderboard_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/leaderboard_type"
+                android:text="Top"
 
                 android:textAlignment="center"
                 android:textColor="@color/black"
@@ -159,12 +160,5 @@
                 android:id="@+id/leaderboard_list">
             </ListView>
         </LinearLayout>
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
-
-
 </FrameLayout>

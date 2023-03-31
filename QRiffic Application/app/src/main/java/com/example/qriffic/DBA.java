@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -304,8 +306,8 @@ public class DBA {
                 });
     }
 
-    public static void getTopPlayerPoints(LeaderboardData data) {
-        playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
+    public static void getLeaderboard(LeaderboardData data, PlayerProfile profile) {
+        Task playerPointQuery = playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -315,17 +317,14 @@ public class DBA {
                                 String score = document.get("totalScore").toString();
                                 data.addPlayerPoint(username, score);
                             }
-                            data.fetchComplete();
                         } else {
                             Log.d("topPlayerPoints", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
-    }
 
-    public static void getTopPlayerScans(LeaderboardData data) {
-        playersColRef.whereGreaterThan("totalScanned", 0).orderBy("totalScanned", Query.Direction.DESCENDING).get()
+        Task playerScanQuery = playersColRef.whereGreaterThan("totalScanned", 0).orderBy("totalScanned", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -335,17 +334,14 @@ public class DBA {
                                 String scanned = document.get("totalScanned").toString();
                                 data.addPlayerScan(username, scanned);
                             }
-                            data.fetchComplete();
                         } else {
                             Log.d("topPlayerScans", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
-    }
 
-    public static void getTopQRPoints(LeaderboardData data) {
-        qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
+        Task qrPointQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -353,14 +349,21 @@ public class DBA {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String name = document.get("name").toString();
                                 String score = document.get("score").toString();
-                                data.addPlayerPoint(name, score);
+                                data.addQRPoint(name, score);
                             }
-                            data.fetchComplete();
+
                         } else {
                             Log.d("topQRrPoints", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
+
+        Tasks.whenAllComplete(playerPointQuery, playerScanQuery, qrPointQuery).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+            @Override
+            public void onSuccess(List<Task<?>> tasks) {
+                data.fetchComplete();
+            }
+        });
     }
 }
