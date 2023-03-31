@@ -48,9 +48,10 @@ public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
         Object comment = instance.get("comment");
         Object locationImage = instance.get("locationImage");
         Object geoLocation = instance.get("geoLocation");
-        System.out.println(locationImage.toString());
-        Bitmap bitmap = base64ToBitmap(locationImage.toString());
-
+        Bitmap bitmap = null;
+        if (locationImage != null) {
+            bitmap = base64ToBitmap(locationImage.toString());
+        }
         if (PID != null) {
             qrDetailListPID.setText(PID.toString());
         } else {
