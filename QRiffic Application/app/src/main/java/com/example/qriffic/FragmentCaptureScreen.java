@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +32,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Locale;
 
@@ -83,9 +88,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             public void onClick(View v) {
                 uploadToDB();
                 // go back to the user profile screen
-                Bundle bundle = new Bundle();
-                bundle.putString("username", username);
-                Navigation.findNavController(view).navigate(R.id.nav_userProfile, bundle);
+                NavController controller = Navigation.findNavController(v);
+                controller.popBackStack();
+                controller.popBackStack();
             }
         });
 
@@ -130,15 +135,28 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Bundle bundle = result.getData().getExtras();
-                    Bitmap bitmap = (Bitmap) bundle.get("data");
-                    locationImage = bitmap;
-                    locationImageView.setImageBitmap(bitmap);
+                    locationImage = (Bitmap) bundle.get("data");
+
+                    // convert the locationImage to a jpeg
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    locationImage.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    locationImage = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+                    // print the size of the locationImage in kilobytes
+                    System.out.println("locationImage size: " + byteArray.length / 1024 + " kb");
+
+                    // print the width and height of the locationImage in pixels
+                    System.out.println("locationImage width: " + locationImage.getWidth());
+                    System.out.println("locationImage height: " + locationImage.getHeight());
+
+                    // display the locationImage in locationImageView
+                    locationImageView.setImageBitmap(locationImage);
                 }
             });
 
     private void initViewsAndValues(View view) {
         Bundle bundle = getArguments();
-        //textView = view.findViewById(R.id.textview_qr_code);
         rawString = bundle.getString("barcode_data");
         usernamePersistent = new UsernamePersistent(requireActivity());
         username = usernamePersistent.fetchUsername();
@@ -215,10 +233,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         if (!trackLocationSwitch.isChecked()) {
             qrCode.setGeoLocation(new GeoLocation(9999, 9999, "N/A"));
         }
-        //qrCode.setLocationImage(locationImage);
-        //qrCode.setComment(commentEditText.getText().toString());
-        //update QRCode collection in DB
-        //DBA.setQR(qrCode.getIdHash(), qrCode);
+        String locationImageBase64 = bitmapToBase64(locationImage);
+        qrCode.setLocationImage(locationImageBase64);
+        qrCode.setComment(commentEditText.getText().toString());
         // update player's captured list and QRs collection in DB
         DBA.addQR(username, qrCode);
     }
@@ -239,6 +256,16 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         nameScoreTextView.setText(nameScoreText);
         congratsTextView.setText(congratsText);
         geoLocationTextView.setText(geolocationText);
+    }
+
+    public String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     @Override

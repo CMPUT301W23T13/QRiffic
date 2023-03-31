@@ -11,8 +11,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,8 +51,21 @@ public class DBA {
         data.put("phoneNum", player.getPhoneNum());
         data.put("highScore", player.getHighScore());
         data.put("lowScore", player.getLowScore());
+        data.put("totalScore", player.getTotalScore());
+        data.put("totalScanned", player.getTotalScanned());
         data.put("captured", player.getCaptured());
-        playersColRef.document(player.getUsername()).set(data);
+        playersColRef.document(player.getUsername()).set(data)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("TESTPRINT", "Player added to database");
+                            player.fetchComplete();
+                        } else {
+                            Log.d("TESTPRINT", "Player not added to database");
+                        }
+                    }
+                });
     }
 
     /**
@@ -165,6 +180,8 @@ public class DBA {
                 data.put("phoneNum", dbPlayer.getPhoneNum());
                 data.put("highScore", dbPlayer.getHighScore());
                 data.put("lowScore", dbPlayer.getLowScore());
+                data.put("totalScore", dbPlayer.getTotalScore());
+                data.put("totalScanned", dbPlayer.getTotalScanned());
                 data.put("captured", dbPlayer.getCaptured());
                 playersColRef.document(dbPlayer.getUsername()).set(data);
             }
@@ -200,23 +217,12 @@ public class DBA {
     /**
      * This method removes a QRCode from a PlayerProfile object's captured list
      * and removes the user from the that QRCode's users in the QRs collection
+     * The input QRCode object is only used to get the username and idHash and attach the listener
      * @param qr
-     * The QRCode object to be removed
+     * The QRCode object to be removed (Only the listeners, idHash, and username fields are used)
      */
     public static void deleteQR(QRCode qr) {
-        deleteQR(qr.getIdHash(), qr.getUsername());
-    }
-
-    /**
-     * This method removes a QRCode from a PlayerProfile object's captured list
-     * and removes the user from the that QRCode's users in the QRs collection
-     * @param idHash
-     * The idHash of the QRCode to be removed
-     * @param username
-     * The username of the user to be removed from
-     */
-    public static void deleteQR(String idHash, String username) {
-        qrColRef.document(idHash).get()
+        qrColRef.document(qr.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                            @Override
                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -225,8 +231,8 @@ public class DBA {
                                                    if (document.exists()) {
                                                        // qr in db
                                                        QRData dbQRData = document.toObject(QRData.class);
-                                                       dbQRData.removeUser(username);
-                                                       qrColRef.document(idHash).set(dbQRData);
+                                                       dbQRData.removeUser(qr.getUsername());
+                                                       qrColRef.document(qr.getIdHash()).set(dbQRData);
                                                    } else {
                                                        // qr not in db
                                                        throw new IllegalArgumentException("QRCode does not exist in database");
@@ -241,7 +247,19 @@ public class DBA {
         dbPlayer.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
-                dbPlayer.deleteQRCode(idHash);
+                dbPlayer.removeListener(this);
+                dbPlayer.deleteQRCode(qr.getIdHash());
+                // TODO: You will need to update the lowScore/highScore/totalScanned/totalScore fields in the database but I don't want to break anything here
+                dbPlayer.addListener(new fetchListener() {
+                    @Override
+                    public void onFetchComplete() {
+                        qr.fetchComplete();
+                    }
+                    @Override
+                    public void onFetchFailure() {
+                        throw new IllegalArgumentException("Player does not exist in database");
+                    }
+                });
                 DBA.setPlayer(dbPlayer);
             }
             @Override
@@ -249,7 +267,7 @@ public class DBA {
                 throw new IllegalArgumentException("Player does not exist in database");
             }
         });
-        getPlayer(dbPlayer, username);
+        getPlayer(dbPlayer, qr.getUsername());
     }
     
     /**
@@ -286,6 +304,63 @@ public class DBA {
                 });
     }
 
+    public static void getTopPlayerPoints(LeaderboardData data) {
+        playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String username = document.get("username").toString();
+                                String score = document.get("totalScore").toString();
+                                data.addPlayerPoint(username, score);
+                            }
+                            data.fetchComplete();
+                        } else {
+                            Log.d("topPlayerPoints", "Error getting documents");
+                            data.fetchFailed();
+                        }
+                    }
+                });
+    }
 
+    public static void getTopPlayerScans(LeaderboardData data) {
+        playersColRef.whereGreaterThan("totalScanned", 0).orderBy("totalScanned", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String username = document.get("username").toString();
+                                String scanned = document.get("totalScanned").toString();
+                                data.addPlayerScan(username, scanned);
+                            }
+                            data.fetchComplete();
+                        } else {
+                            Log.d("topPlayerScans", "Error getting documents");
+                            data.fetchFailed();
+                        }
+                    }
+                });
+    }
 
+    public static void getTopQRPoints(LeaderboardData data) {
+        qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String name = document.get("name").toString();
+                                String score = document.get("score").toString();
+                                data.addPlayerPoint(name, score);
+                            }
+                            data.fetchComplete();
+                        } else {
+                            Log.d("topQRrPoints", "Error getting documents");
+                            data.fetchFailed();
+                        }
+                    }
+                });
+    }
 }

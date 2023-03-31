@@ -1,6 +1,9 @@
 package com.example.qriffic;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +48,10 @@ public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
         Object comment = instance.get("comment");
         Object locationImage = instance.get("locationImage");
         Object geoLocation = instance.get("geoLocation");
-
+        Bitmap bitmap = null;
+        if (locationImage != null) {
+            bitmap = base64ToBitmap(locationImage.toString());
+        }
         if (PID != null) {
             qrDetailListPID.setText(PID.toString());
         } else {
@@ -59,8 +65,8 @@ public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
         }
 
         if (locationImage != null) {
-            // TODO: 2023-03-25 replace with actual image
-            qrDetailLocationImage.setImageResource(R.drawable.ic_launcher_background);
+            qrDetailLocationImage.setImageBitmap(bitmap);
+            System.out.println("location image set");
         } else {
             // TODO: 2023-03-25 replace with setting view visibility to gone
             qrDetailLocationImage.setImageResource(R.drawable.ic_launcher_background);
@@ -77,8 +83,14 @@ public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
             qrDetailLocationText.setText("NULL LOCATION");
         }
 
-        qrDetailLocationImage.setImageResource(R.drawable.ic_launcher_background);
-
         return view;
+    }
+
+    public Bitmap base64ToBitmap(String base64String) {
+        if (base64String == null) {
+            return null;
+        }
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }
