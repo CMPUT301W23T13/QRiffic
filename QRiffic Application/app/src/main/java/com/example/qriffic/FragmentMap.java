@@ -181,7 +181,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
                                             //if lat long != 9999.0 and !=0
 
-                                            if((latitude != 9999.0 && longitude != 9999.0)){
+
+
+                                            if((latitude != 9999.0 && longitude != 9999.0) && (latitude != 0.0 && longitude != 0.0)){
                                                 markerLatLngList.add(new LatLng(longitude,latitude));
                                             }
                                             // Add a marker for each LatLng using a loop
@@ -203,19 +205,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                                         View view = getView();
 
                                                         Navigation.findNavController(view).navigate(R.id.action_nav_map_to_nav_QRDetail,bundle);
-//
-//                                                        Toast.makeText(getContext(), "Marker clicked", Toast.LENGTH_SHORT).show();
+
+
                                                         return false;
                                                     }
                                                 });
 
-//                                                map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-//                                                    @Override
-//                                                    public void onInfoWindowClick(@NonNull Marker marker) {
-//
-//                                                        Toast.makeText(getContext(), "Info window clicked"+marker.getTitle().toString(), Toast.LENGTH_SHORT).show();
-//                                                    }
-//                                                });
 
 
 
@@ -227,8 +222,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                             CameraUpdateFactory.newLatLng(new LatLng((Double) geoLocation.get("longitude"), (Double) geoLocation.get("latitude")));
                                             CameraUpdateFactory.zoomTo(15);
 
-//                                            // Set a listener for marker click.
-//                                            map.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) requireActivity());
+
 
                                         }
 
@@ -255,9 +249,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 
 
-//    public void onMarkerClickListener(@NonNull Marker marker) {
-//        Toast.makeText(getContext(), "Marker clicked", Toast.LENGTH_SHORT).show();
-//    }
+
 
 
 
