@@ -35,13 +35,13 @@ public class FragmentProfileCreate extends Fragment {
         binding = ProfileCreateBinding.inflate(inflater, container, false);
         usernamePersistent = new UsernamePersistent(getActivity().getApplicationContext());
 
+        ((MainActivity)getActivity()).hideToolbar();
+
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         editTextUsername = view.findViewById(R.id.edit_username);
         editTextEmail = view.findViewById(R.id.edit_email);
@@ -136,6 +136,7 @@ public class FragmentProfileCreate extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        ((MainActivity)getActivity()).showToolbar();
     }
 
 

@@ -55,6 +55,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Hide the toolbar
+     */
+    public void hideToolbar() {
+        getSupportActionBar().hide();
+    }
+
+    /**
+     * Show the toolbar
+     */
+    public void showToolbar() {
+        getSupportActionBar().show();
+    }
+
     @Override
     public void onBackPressed() {}
 
