@@ -19,10 +19,9 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -37,11 +36,11 @@ import androidx.navigation.Navigation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Locale;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
@@ -52,14 +51,17 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     private QRCode qrCode;
     private String username;
     private String rawString;
-    private Button captureButton;
-    private Switch trackLocationSwitch;
+    private FloatingActionButton captureButton;
+    private LinearLayout locationImageLayout;
     private ImageView locationImageView;
     private EditText commentEditText;
-    private TextView nameScoreTextView;
+    private TextView nameTextView;
+    private TextView scoreTextView;
+    private LinearLayout geoLocationLayout;
     private TextView geoLocationTextView;
     private TextView congratsTextView;
     private Bitmap locationImage;
+    private Boolean locationFlag = false;
 
 
     public FragmentCaptureScreen() {
@@ -74,7 +76,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_capture_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_qrmon, container, false);
 
         initLocation();
         initViewsAndValues(view);
@@ -97,11 +99,26 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         // when the user clicks the location photo, open the camera
         // and save the photo as the locationImage Bitmap
         // display the photo in locationImageView
-        locationImageView.setOnClickListener(new View.OnClickListener() {
+        locationImageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 activityResultLauncher.launch(intent);
+            }
+        });
+
+        geoLocationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String monsterLat = String.format("%.2f", qrCode.getGeoLocation().getLatitude());
+                String monsterLong = String.format("%.2f", qrCode.getGeoLocation().getLongitude());
+                String monsterCity = qrCode.getGeoLocation().getCity();
+                String geolocationText = "Latitude: " + monsterLat + "\nLongitude: " +
+                        monsterLong + "\nCity: " + monsterCity;
+                geoLocationTextView.setText(geolocationText);
+                geoLocationLayout.setVisibility(View.GONE);
+                geoLocationTextView.setVisibility(View.VISIBLE);
+                locationFlag = true;
             }
         });
 
@@ -152,6 +169,8 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
                     // display the locationImage in locationImageView
                     locationImageView.setImageBitmap(locationImage);
+                    locationImageLayout.setVisibility(View.GONE);
+                    locationImageView.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -160,13 +179,15 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         rawString = bundle.getString("barcode_data");
         usernamePersistent = new UsernamePersistent(requireActivity());
         username = usernamePersistent.fetchUsername();
-        congratsTextView = view.findViewById(R.id.textview_congrats);
-        captureButton = view.findViewById(R.id.button_capture);
-        trackLocationSwitch = view.findViewById(R.id.switch_track_location);
-        locationImageView = view.findViewById(R.id.imageview_location_image);
-        nameScoreTextView = view.findViewById(R.id.textview_name_score);
-        commentEditText = view.findViewById(R.id.edittext_comment);
-        geoLocationTextView = view.findViewById(R.id.textview_geolocation);
+        congratsTextView = view.findViewById(R.id.qr_add_congrats);
+        captureButton = view.findViewById(R.id.confirm_fab);
+        locationImageLayout = view.findViewById(R.id.qr_add_image_button);
+        locationImageView = view.findViewById(R.id.qr_add_location_image);
+        nameTextView = view.findViewById(R.id.qr_add_name);
+        scoreTextView = view.findViewById(R.id.qr_add_score);
+        commentEditText = view.findViewById(R.id.qr_add_comment_text);
+        geoLocationLayout = view.findViewById(R.id.qr_add_geolocation);
+        geoLocationTextView = view.findViewById(R.id.qr_add_geo_text);
     }
 
     private void initLocation() {
@@ -226,11 +247,11 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 .load(url)
                 .centerCrop()
                 .error(R.drawable.ic_launcher_background)
-                .into((ImageView) view.findViewById(R.id.imageview_qr_code));
+                .into((ImageView) view.findViewById(R.id.qr_add_location_image));
     }
 
     private void uploadToDB() {
-        if (!trackLocationSwitch.isChecked()) {
+        if (!locationFlag) {
             qrCode.setGeoLocation(new GeoLocation(9999, 9999, "N/A"));
         }
         String locationImageBase64 = bitmapToBase64(locationImage);
@@ -243,19 +264,13 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     private void displayUpdatedText() {
         String monsterName = qrCode.getName();
         String monsterScore = String.valueOf(qrCode.getScore());
-        String monsterLat = String.valueOf(qrCode.getGeoLocation().getLatitude());
-        String monsterLong = String.valueOf(qrCode.getGeoLocation().getLongitude());
-        String monsterCity = qrCode.getGeoLocation().getCity();
 
-        String nameScoreText = monsterName + "\n" + monsterScore + " pts";
         String congratsText = "Congrats! You found a new " + monsterName + "! " +
                 "What would you like to do?";
-        String geolocationText = " + Add geolocation\n Lat: " + monsterLat + "\n Long: " +
-                monsterLong + "\n City: " + monsterCity;
 
-        nameScoreTextView.setText(nameScoreText);
+        nameTextView.setText(monsterName);
+        scoreTextView.setText(monsterScore);
         congratsTextView.setText(congratsText);
-        geoLocationTextView.setText(geolocationText);
     }
 
     public String bitmapToBase64(Bitmap bitmap) {

@@ -79,7 +79,7 @@
         android:id="@+id/nav_capture_screen"
         android:name="com.example.qriffic.FragmentCaptureScreen"
         android:label="FragmentCaptureScreen"
-        tools:layout="@layout/fragment_capture_screen"/>
+        tools:layout="@layout/fragment_new_qrmon"/>
     <fragment
         android:id="@+id/nav_ProfileUpdate"
         android:name="com.example.qriffic.FragmentProfileUpdate"

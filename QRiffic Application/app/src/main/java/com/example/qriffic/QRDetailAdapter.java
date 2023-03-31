@@ -3,6 +3,7 @@ package com.example.qriffic;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -51,7 +51,11 @@ public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
         Bitmap bitmap = null;
         if (locationImage != null) {
             bitmap = base64ToBitmap(locationImage.toString());
+            qrDetailLocationImage.setImageBitmap(bitmap);
+        } else {
+            qrDetailLocationImage.setVisibility(View.GONE);
         }
+
         if (PID != null) {
             qrDetailListPID.setText(PID.toString());
         } else {
@@ -59,24 +63,22 @@ public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
         }
 
         if (comment != null) {
-            qrDetailComment.setText(comment.toString());
+            if (comment != "") {
+                qrDetailComment.setText(comment.toString());
+            } else {
+                qrDetailComment.setText("This user captured this QRMon!");
+                qrDetailComment.setTextColor(Color.parseColor("#707070"));
+            }
         } else {
-            qrDetailComment.setText("");
-        }
-
-        if (locationImage != null) {
-            qrDetailLocationImage.setImageBitmap(bitmap);
-            System.out.println("location image set");
-        } else {
-            // TODO: 2023-03-25 replace with setting view visibility to gone
-            qrDetailLocationImage.setImageResource(R.drawable.ic_launcher_background);
+            qrDetailComment.setText("This user captured this QRMon!");
+            qrDetailComment.setTextColor(Color.parseColor("#b5b5b5"));
         }
 
         if (geoLocation != null) {
             HashMap<String, Object> location = (HashMap<String, Object>) geoLocation;
             String locString = location.get("city").toString();
             if (locString.equals("N/A")) {
-                view.findViewById(R.id.qr_detail_location_icon).setVisibility(View.GONE);
+                view.findViewById(R.id.qr_detail_location_info).setVisibility(View.GONE);
                 qrDetailLocationText.setVisibility(View.GONE);
             } else { qrDetailLocationText.setText(locString);}
         } else {
