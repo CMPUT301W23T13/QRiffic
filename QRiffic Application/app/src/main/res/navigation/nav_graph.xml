@@ -61,7 +61,11 @@
         android:id="@+id/nav_map"
         android:name="com.example.qriffic.FragmentMap"
         android:label="@string/map_label"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_nav_map_to_nav_QRDetail"
+            app:destination="@id/nav_QRDetail" />
+    </fragment>
     <fragment
         android:id="@+id/nav_scanner"
         android:name="com.example.qriffic.FragmentScanner"
