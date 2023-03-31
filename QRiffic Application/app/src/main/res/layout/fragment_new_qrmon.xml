@@ -269,6 +269,17 @@
                     android:orientation="vertical"
                     android:gravity="center">
 
+                    <TextView
+                        android:id="@+id/qr_add_geo_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_marginStart="3dp"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:visibility="gone"
+                        android:text="Geolocation goes here"/>
+
                     <LinearLayout
                         android:id="@+id/qr_add_geolocation"
                         android:layout_width="match_parent"
