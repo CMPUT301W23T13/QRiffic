@@ -412,4 +412,13 @@ public class PlayerProfile {
         }
         this.lowScore = Math.min(lowScore, score);
     }
+
+    public QRCode getBestQR() {
+        for (QRCode qr : captured.values()) {
+            if (qr.getScore() == this.highScore) {
+                return qr;
+            }
+        }
+        return null;
+    }
 }
