@@ -253,7 +253,7 @@ public class QRCode implements Comparable {
      * @return
      * The hash value as a string
      */
-    public static String getHash(String preHash) {
+    private static String getHash(String preHash) {
 
         // REFERENCE:
         // https://www.geeksforgeeks.org/sha-256-hash-in-java/
