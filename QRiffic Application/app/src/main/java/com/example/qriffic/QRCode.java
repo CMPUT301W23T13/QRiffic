@@ -44,7 +44,7 @@ public class QRCode implements Comparable {
     public QRCode(String rawString, GeoLocation geoLocation, String username, Bitmap locationImage,
                   String comment) {
 
-        this.idHash = new Hash(rawString).getHash();
+        this.idHash = Hash.getHash(rawString);
         this.locationImage = locationImage;
         this.geoLocation = geoLocation;
         this.username = username;
