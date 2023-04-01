@@ -115,7 +115,7 @@ public class FragmentQRDetail extends Fragment {
      * @param instance the QR code data
      */
     private void setMainImage(View view, QRData instance) {
-        String highurl = "https://www.gravatar.com/avatar/" + instance.getScore() + "?s=55&d=identicon&r=PG%22";
+        String highurl = "https://www.gravatar.com/avatar/" + instance.getIdHash() + "?s=55&d=identicon&r=PG%22";
         Glide.with(getContext())
                 .load(highurl)
                 .centerCrop()

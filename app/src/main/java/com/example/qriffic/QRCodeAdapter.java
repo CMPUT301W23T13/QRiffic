@@ -56,7 +56,8 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode>{
 
             // generate QR code image and load
             String hash = qrCode.getIdHash();
-            String url = "https://www.gravatar.com/avatar/" + qrCode.getScore() + "?s=55&d=identicon&r=PG%22";
+            System.out.println("QRCodeAdapter hash: "+hash);
+            String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
             Glide.with(getContext())
                     .load(url)
                     .centerCrop()

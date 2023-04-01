@@ -30,9 +30,10 @@ public class QRCode implements Comparable {
      */
     public QRCode() {}
 
-    public QRCode(String name, long score) {
+    public QRCode(String name, long score, String idHash) {
         this.name = name;
         this.score = (int) score;
+        this.idHash = idHash;
     }
 
     /**
@@ -89,7 +90,8 @@ public class QRCode implements Comparable {
         }
 
         // score generator
-        this.score = Integer.parseInt(last6, 16);
+        //this.score = Integer.parseInt(last6, 16);
+        this.score = (int) (Math.pow(3, (Integer.parseInt(last6, 16) + 4800000)/3355443) + 100);
     }
 
     /**

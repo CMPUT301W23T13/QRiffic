@@ -241,7 +241,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     }
 
     private void generateIdenticon(View view) {
-        String url = "https://www.gravatar.com/avatar/" + qrCode.getScore() +
+        String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() +
                 "?s=55&d=identicon&r=PG%22";
         Glide.with(getContext())
                 .load(url)
