@@ -86,6 +86,12 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_qrmon, container, false);
 
+        // check if the app has permission to access the device's location for QRCode generation
+        if (ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // if not, request permission
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
         initLocation();
         initViewsAndValues(view);
         createNewQRCode();
