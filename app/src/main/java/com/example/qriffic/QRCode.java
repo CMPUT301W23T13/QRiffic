@@ -90,7 +90,8 @@ public class QRCode implements Comparable {
         }
 
         // score generator
-        this.score = Integer.parseInt(last6, 16);
+        //this.score = Integer.parseInt(last6, 16);
+        this.score = (int) (Math.pow(3, (Integer.parseInt(last6, 16) + 4800000)/3355443) + 100);
     }
 
     /**
