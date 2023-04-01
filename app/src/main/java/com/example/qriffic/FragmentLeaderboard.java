@@ -250,7 +250,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                             leaderboardAdapter.notifyDataSetChanged();
                             leaderboardType.setText("Top QRMons in Region");
                         } else {
-                            leaderboardPlayerTitle.setText("My Best QRMon");
+                            leaderboardPlayerTitle.setText("My Best QRMon from " + city);
 
                             QRCode qr = profile.getBestQR();
                             if (qr == null) {
@@ -269,7 +269,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                                 }
                                 myRankNumber.setText(Integer.toString(myRank + 1));
                             }
-                            leaderboardType.setText("Top QRMons in Region");
+                            leaderboardType.setText("Top QRMons in " + city);
 
                             noRegionText.setVisibility(View.GONE);
                             leaderboardAdapter.clear();
