@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -258,16 +259,29 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                                 myPoints.setText("N/A");
                                 myRankNumber.setText("N/A");
                             } else {
-                                myName.setText(qr.getName());
-                                myPoints.setText(Integer.toString(qr.getScore()));
                                 int myRank = 0;
+                                boolean hasFlag = false;
                                 while (myRank < dataList.size()) {
-                                    if (Objects.equals(dataList.get(myRank).getId(), qr.getName())) {
+                                    for (QRCode checkQR : profile.getCaptured().values()) {
+                                        if (checkQR.getName().equals(dataList.get(myRank).getId())) {
+                                            hasFlag = true;
+                                            myName.setText(checkQR.getName());
+                                            myPoints.setText(Integer.toString(checkQR.getScore()));
+                                            myRankNumber.setText(Integer.toString(myRank + 1));
+                                            break;
+                                        }
+                                    }
+                                    if (hasFlag) {
                                         break;
                                     }
                                     myRank += 1;
                                 }
-                                myRankNumber.setText(Integer.toString(myRank + 1));
+
+                                if (!hasFlag) {
+                                    myName.setText("N/A");
+                                    myPoints.setText("N/A");
+                                    myRankNumber.setText("N/A");
+                                }
                             }
                             leaderboardType.setText("Top QRMons in " + city);
 

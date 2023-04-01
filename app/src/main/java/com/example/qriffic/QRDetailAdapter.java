@@ -67,7 +67,6 @@ public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
                 qrDetailComment.setText(comment.toString());
             } else {
                 qrDetailComment.setText("This user captured this QRMon!");
-                qrDetailComment.setTextColor(Color.parseColor("#707070"));
             }
         } else {
             qrDetailComment.setText("This user captured this QRMon!");
