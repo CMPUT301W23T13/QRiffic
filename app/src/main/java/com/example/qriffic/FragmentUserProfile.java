@@ -93,6 +93,7 @@ public class FragmentUserProfile extends Fragment {
                 //create array for lowest score
                 long[] lowScoreArray = new long[qrList.size()];
                 String[] NameArray = new String[qrList.size()];
+                String[] HashArray = new String[qrList.size()];
 
                 //make a dictionary for the scores and names
                 HashMap<String, Integer> NameMap = new HashMap<>();
@@ -101,7 +102,7 @@ public class FragmentUserProfile extends Fragment {
                     NameMap.put(qrList.get(i).getName(), qrList.get(i).getScore());
                     lowScoreArray[i] = qrList.get(i).getScore();
                     NameArray[i] = qrList.get(i).getName();
-
+                    HashArray[i] = qrList.get(i).getIdHash();
                 }
 
                 totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
@@ -110,7 +111,7 @@ public class FragmentUserProfile extends Fragment {
                 qrAdapter = new QRCodeAdapter(getContext(), dataList);
 
                 for (int i = 0; i < qrList.size(); i++) {
-                    dataList.add(new QRCode(NameArray[i], lowScoreArray[i]));
+                    dataList.add(new QRCode(NameArray[i], lowScoreArray[i], HashArray[i]));
                 }
 
                 qrAdapter.notifyDataSetChanged();
@@ -125,21 +126,6 @@ public class FragmentUserProfile extends Fragment {
                     highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
                     totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
-
-                    //set images for highest and lowest score
-                    String highurl = "https://www.gravatar.com/avatar/" + playerProfile.getHighScore() + "?s=55&d=identicon&r=PG%22";
-                    Glide.with(getContext())
-                        .load(highurl)
-                        .centerCrop()
-                        .error(R.drawable.ic_launcher_background)
-                        .into((ImageView) view.findViewById(R.id.imageTop));
-
-                    String lowurl = "https://www.gravatar.com/avatar/" + playerProfile.getLowScore() + "?s=55&d=identicon&r=PG%22";
-                    Glide.with(getContext())
-                        .load(lowurl)
-                        .centerCrop()
-                        .error(R.drawable.ic_launcher_background)
-                        .into((ImageView) view.findViewById(R.id.imageBot));
                 } else {
                     tvEmptyQRMon.setVisibility(View.VISIBLE);
                     lowScore.setText("N/A");
@@ -150,10 +136,27 @@ public class FragmentUserProfile extends Fragment {
                 for (QRCode qrCode : qrList) {
                     if (qrCode.getScore() == playerProfile.getHighScore()) {
                         topQRName.setText(qrCode.getName());
+
+                        //set image for highest score
+                        String highurl = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                        Glide.with(getContext())
+                            .load(highurl)
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_background)
+                            .into((ImageView) view.findViewById(R.id.imageTop));
+
                     }
 
                     if (qrCode.getScore() == playerProfile.getLowScore()) {
                         botQRName.setText(qrCode.getName());
+
+                        //set image for lowest score
+                        String lowurl = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                        Glide.with(getContext())
+                            .load(lowurl)
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_background)
+                            .into((ImageView) view.findViewById(R.id.imageBot));
                     }
                 }
 

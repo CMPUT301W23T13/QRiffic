@@ -30,9 +30,10 @@ public class QRCode implements Comparable {
      */
     public QRCode() {}
 
-    public QRCode(String name, long score) {
+    public QRCode(String name, long score, String idHash) {
         this.name = name;
         this.score = (int) score;
+        this.idHash = idHash;
     }
 
     /**
