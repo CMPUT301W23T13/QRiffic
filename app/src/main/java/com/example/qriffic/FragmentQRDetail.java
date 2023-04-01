@@ -133,7 +133,7 @@ public class FragmentQRDetail extends Fragment {
         TextView name = view.findViewById(R.id.qr_detail_name);
         TextView score = view.findViewById(R.id.qr_detail_score);
         name.setText(instance.getName());
-        score.setText(String.format("%d", instance.getScore()));
+        score.setText(String.format("%d", instance.getScore()) + "pts");
     }
 
     private void populateList(View view, QRData instance) {

@@ -19,6 +19,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,6 +62,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     private TextView geoLocationTextView;
     private TextView congratsTextView;
     private Bitmap locationImage;
+    private Button commentDel;
+    private Button imageDel;
+    private Button locationDel;
     private Boolean locationFlag = false;
 
 
@@ -122,6 +126,30 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             }
         });
 
+        commentDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentEditText.setText("");
+            }
+        });
+
+        imageDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationImageLayout.setVisibility(View.VISIBLE);
+                locationImageView.setVisibility(View.GONE);
+                locationImage = null;
+            }
+        });
+
+        locationDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                geoLocationLayout.setVisibility(View.VISIBLE);
+                geoLocationTextView.setVisibility(View.GONE);
+                locationFlag = false;
+            }
+        });
 
         // comments cannot be longer than 128 characters
         commentEditText.addTextChangedListener(new TextWatcher() {
@@ -145,7 +173,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
         return view;
     }
-
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -188,6 +215,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         commentEditText = view.findViewById(R.id.qr_add_comment_text);
         geoLocationLayout = view.findViewById(R.id.qr_add_geolocation);
         geoLocationTextView = view.findViewById(R.id.qr_add_geo_text);
+        commentDel = view.findViewById(R.id.qr_add_comment_del);
+        imageDel = view.findViewById(R.id.qr_add_photo_del);
+        locationDel = view.findViewById(R.id.qr_add_geo_del);
     }
 
     private void initLocation() {
@@ -269,7 +299,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 "What would you like to do?";
 
         nameTextView.setText(monsterName);
-        scoreTextView.setText(monsterScore);
+        scoreTextView.setText(monsterScore + "pts");
         congratsTextView.setText(congratsText);
     }
 
