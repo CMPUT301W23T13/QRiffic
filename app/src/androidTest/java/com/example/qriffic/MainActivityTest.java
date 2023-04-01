@@ -8,6 +8,7 @@ import static java.lang.Thread.sleep;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.widget.FrameLayout;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -94,6 +95,63 @@ public class MainActivityTest {
 //        solo.clickOnView(solo.getView(R.id.map));
 //        fragment = fragmentManager.findFragmentById(R.id.fragment_map);
 //        assertTrue(fragment != null && fragment.isVisible());
+    }
+
+
+
+    /**
+     * Test to see if the navigation menu takes us to the correct fragment
+     */
+    @Test
+    public void checkNavigationMenu() throws Exception {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        //open nav drawer
+        solo.clickOnActionBarHomeButton();
+
+        Activity currentActivity = solo.getCurrentActivity();
+        FragmentManager fragmentManager = currentActivity.getFragmentManager();
+        Fragment fragment;
+
+        //check if map fragment is visible
+        solo.clickOnText("QRs Nearby");
+        // Wait for MapFragment to become visible
+        solo.waitForFragmentById(R.id.fragment_map, 5000);
+        // Verify that MapFragment is visible
+        FrameLayout mapLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_map);
+        assertNotNull(mapLayout);
+        assertTrue(mapLayout.isShown());
+
+
+
+        //click on nav drawer button
+        solo.clickOnActionBarHomeButton();
+        //check if search fragment is visible
+//        solo.clickOnView(solo.getView(R.id.nav_searchUser));
+        solo.clickOnText("Search Profiles");
+        // Wait for SearchFragment to become visible
+        solo.waitForFragmentById(R.id.fragment_search_user, 5000);
+        // Verify that SearchFragment is visible
+        FrameLayout searchLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_search_user);
+        assertNotNull(searchLayout);
+        assertTrue(searchLayout.isShown());
+
+
+        //click on nav drawer button
+        solo.clickOnActionBarHomeButton();
+        //check if leaderboard fragment is visible
+        solo.clickOnText("Leaderboard");
+        // Wait for LeaderboardFragment to become visible
+        solo.waitForFragmentById(R.id.fragment_leaderboard, 5000);
+        // Verify that LeaderboardFragment is visible
+        FrameLayout leaderboardLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_leaderboard);
+        assertNotNull(leaderboardLayout);
+        assertTrue(leaderboardLayout.isShown());
+
+
+
+
+
+
     }
 
 
