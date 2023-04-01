@@ -7,12 +7,14 @@ public class LeaderboardData {
     private ArrayList<LeaderboardEntry> topPlayerPoints;
     private ArrayList<LeaderboardEntry> topPlayerScans;
     private ArrayList<LeaderboardEntry> topQRPoints;
+    private ArrayList<LeaderboardEntry> topRegionQRPoints;
     private ArrayList<fetchListener> listeners;
 
     public LeaderboardData() {
         this.topPlayerPoints = new ArrayList<>();
         this.topPlayerScans = new ArrayList<>();
         this.topQRPoints = new ArrayList<>();
+        this.topRegionQRPoints = new ArrayList<>();
         this.listeners = new ArrayList<>();
     }
 
@@ -42,6 +44,10 @@ public class LeaderboardData {
         topQRPoints.add(new LeaderboardEntry(idHash, score));
     }
 
+    public void addRegionQRPoint(String idHash, String score) {
+        topRegionQRPoints.add(new LeaderboardEntry(idHash, score));
+    }
+
     public ArrayList<LeaderboardEntry> getTopPlayerPoints() {
         return topPlayerPoints;
     }
@@ -52,5 +58,8 @@ public class LeaderboardData {
 
     public ArrayList<LeaderboardEntry> getTopQRPoints() {
         return topQRPoints;
+    }
+    public ArrayList<LeaderboardEntry> getTopRegionQRPoints() {
+        return topRegionQRPoints;
     }
 }
