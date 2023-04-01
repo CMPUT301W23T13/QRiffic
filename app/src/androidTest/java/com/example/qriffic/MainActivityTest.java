@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -49,53 +50,8 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
     }
 
-    /**
-     * Test to see if the navigation menu takes us to the correct fragment
-     */
-    @Test
-    public void checkFragment() throws InterruptedException { //Remove the throws InterruptedException if you don't want to use sleep()
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        FragmentManager fragmentManager = rule.getActivity().getFragmentManager();
-        // check all fragments in fragment manager
 
 
-//        // check if qr dex fragment is visible
-//        solo.clickOnActionBarItem(R.id.toolbar);
-//        sleep(5000);
-//        solo.clickOnView(solo.getView(R.id.QRDex));
-//        fragment = fragmentManager.findFragmentById(R.id.fragment_qrdex);
-//        assertTrue(fragment != null && fragment.isVisible());
-//
-//        // check if user profile fragment is visible
-//        solo.clickOnActionBarItem(R.id.toolbar);
-//        solo.clickOnView(solo.getView(R.id.action_profile));
-//        fragment = fragmentManager.findFragmentById(R.id.fragment_user_profile);
-//        assertTrue(fragment != null && fragment.isVisible());
-//
-//        // check if leaderboard fragment is visible
-//        solo.clickOnActionBarItem(R.id.toolbar);
-//        solo.clickOnView(solo.getView(R.id.leaderboard));
-//        fragment = fragmentManager.findFragmentById(R.id.fragment_leaderboard);
-//        assertTrue(fragment != null && fragment.isVisible());
-//
-//        // check if search users fragment is visible
-//        solo.clickOnActionBarItem(R.id.toolbar);
-//        solo.clickOnView(solo.getView(R.id.search_users));
-//        fragment = fragmentManager.findFragmentById(R.id.fragment_search_user);
-//        assertTrue(fragment != null && fragment.isVisible());
-//
-//        // check if scan qr fragment is visible
-//        solo.clickOnActionBarItem(R.id.toolbar);
-//        solo.clickOnView(solo.getView(R.id.scan_QR));
-//        fragment = fragmentManager.findFragmentById(R.id.fragment_temp_add_qr);
-//        assertTrue(fragment != null && fragment.isVisible());
-//
-//        // check if map fragment is visible
-//        solo.clickOnActionBarItem(R.id.toolbar);
-//        solo.clickOnView(solo.getView(R.id.map));
-//        fragment = fragmentManager.findFragmentById(R.id.fragment_map);
-//        assertTrue(fragment != null && fragment.isVisible());
-    }
 
 
 
@@ -161,18 +117,18 @@ public class MainActivityTest {
         assertNotNull(profileLayout);
         assertTrue(profileLayout.isShown());
 
-//        //click on nav drawer button
-//        solo.clickOnImageButton(0);
-//
-//        //check if scan fragment is visible
-////        solo.clickOnView(solo.getView(R.id.nav_scan));
-//        solo.clickOnText("Snap a QR");
-//        // Wait for ScanFragment to become visible
-//        solo.waitForFragmentById(R.id.capture_layout, 5000);
-//        // Verify that ScanFragment is visible
-//        FrameLayout scanLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_temp_add_qr);
-//        assertNotNull(scanLayout);
-//        assertTrue(scanLayout.isShown());
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+
+        //check if scan fragment is visible
+//        solo.clickOnView(solo.getView(R.id.nav_scan));
+        solo.clickOnText("Snap a QR");
+        // Wait for ScanFragment to become visible
+        solo.waitForFragmentById(R.id.capture_layout, 5000);
+        // Verify that ScanFragment is visible
+        FrameLayout scanLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.capture_layout);
+        assertNotNull(scanLayout);
+        assertTrue(scanLayout.isShown());
 
         //click on nav drawer button
         solo.clickOnImageButton(0);
@@ -186,20 +142,42 @@ public class MainActivityTest {
         assertNotNull(updateLayout);
         assertTrue(updateLayout.isShown());
 
-        //click on nav drawer button
+
+
+    }
+
+    /**
+     * Test to search for a user
+     */
+    @Test
+    public void checkSearchUser() throws Exception {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        //open nav drawer
         solo.clickOnImageButton(0);
-        //check if qr dex fragment is visible
+        //click on search user
+        solo.clickOnText("Search Profiles");
+        // Wait for SearchFragment to become visible
+        solo.waitForFragmentById(R.id.fragment_search_user, 5000);
+        // Verify that SearchFragment is visible
+        FrameLayout searchLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_search_user);
+        assertNotNull(searchLayout);
+        assertTrue(searchLayout.isShown());
 
+        //search for a user
+        solo.enterText(0, "Luke007");
+        solo.clickOnView(solo.getView(R.id.search_button));
+        //wait for the search to complete
+        sleep(5000);
+        //check if the user is displayed
+        solo.waitForFragmentById(R.id.fragment_user_profile, 5000);
+        FrameLayout profileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
+        assertNotNull(profileLayout);
+        assertTrue(profileLayout.isShown());
 
-
-
-
-
-
-
-
-
-
+        //check if the user is displayed
+        //check if the textview has the correct text
+        TextView username = (TextView) solo.getView(R.id.user_name);
+        assertEquals("Luke007", username.getText().toString());
 
 
     }
