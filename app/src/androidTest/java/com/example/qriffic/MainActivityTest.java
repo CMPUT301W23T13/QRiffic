@@ -113,7 +113,7 @@ public class MainActivityTest {
         Fragment fragment;
 
         //click on item in the nav drawer
-        solo.clickOnView(solo.getView(R.id.nav_map));
+        solo.clickOnText("QRs Nearby");
         // Wait for MapFragment to become visible
         solo.waitForFragmentById(R.id.fragment_map, 5000);
         // Verify that MapFragment is visible
@@ -126,8 +126,8 @@ public class MainActivityTest {
         //click on nav drawer button
         solo.clickOnImageButton(0);
         //check if search fragment is visible
-        solo.clickOnView(solo.getView(R.id.nav_searchUser));
-        //solo.clickOnText("Search Profiles");
+//        solo.clickOnView(solo.getView(R.id.nav_searchUser));
+        solo.clickOnText("Search Profiles");
         // Wait for SearchFragment to become visible
         solo.waitForFragmentById(R.id.fragment_search_user, 5000);
         // Verify that SearchFragment is visible
@@ -139,14 +139,63 @@ public class MainActivityTest {
         //click on nav drawer button
         solo.clickOnImageButton(0);
         //check if leaderboard fragment is visible
-        solo.clickOnView(solo.getView(R.id.nav_leaderboard));
-        //solo.clickOnText("Leaderboard");
+//        solo.clickOnView(solo.getView(R.id.nav_leaderboard));
+        solo.clickOnText("Leaderboard");
         // Wait for LeaderboardFragment to become visible
         solo.waitForFragmentById(R.id.fragment_leaderboard, 5000);
         // Verify that LeaderboardFragment is visible
         FrameLayout leaderboardLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_leaderboard);
         assertNotNull(leaderboardLayout);
         assertTrue(leaderboardLayout.isShown());
+
+
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        //check if profile fragment is visible
+//        solo.clickOnView(solo.getView(R.id.nav_profile));
+        solo.clickOnText("My Profile");
+        // Wait for ProfileFragment to become visible
+        solo.waitForFragmentById(R.id.fragment_user_profile, 5000);
+        // Verify that ProfileFragment is visible
+        FrameLayout profileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
+        assertNotNull(profileLayout);
+        assertTrue(profileLayout.isShown());
+
+//        //click on nav drawer button
+//        solo.clickOnImageButton(0);
+//
+//        //check if scan fragment is visible
+////        solo.clickOnView(solo.getView(R.id.nav_scan));
+//        solo.clickOnText("Snap a QR");
+//        // Wait for ScanFragment to become visible
+//        solo.waitForFragmentById(R.id.capture_layout, 5000);
+//        // Verify that ScanFragment is visible
+//        FrameLayout scanLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_temp_add_qr);
+//        assertNotNull(scanLayout);
+//        assertTrue(scanLayout.isShown());
+
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        //check if update fragment is visible
+//        solo.clickOnView(solo.getView(R.id.nav_update));
+        solo.clickOnText("Update Profile");
+        // Wait for UpdateFragment to become visible
+        solo.waitForFragmentById(R.id.profile_crt, 5000);
+        // Verify that UpdateFragment is visible
+        FrameLayout updateLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.profile_crt);
+        assertNotNull(updateLayout);
+        assertTrue(updateLayout.isShown());
+
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        //check if qr dex fragment is visible
+
+
+
+
+
+
+
 
 
 
