@@ -1,7 +1,17 @@
 package com.example.qriffic;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -14,7 +24,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -22,7 +35,7 @@ import java.util.Objects;
  * Use the {@link FragmentLeaderboard#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentLeaderboard extends Fragment {
+public class FragmentLeaderboard extends Fragment implements LocationListener {
 
     private ArrayList<LeaderboardEntry> dataList;
     private LeaderboardAdapter leaderboardAdapter;
@@ -55,6 +68,8 @@ public class FragmentLeaderboard extends Fragment {
         TextView myRankNumber = view.findViewById(R.id.my_rank_number);
         TextView leaderboardType = view.findViewById(R.id.leaderboard_type);
         ListView leaderboardList = view.findViewById(R.id.leaderboard_list);
+
+        System.out.println(getCurrCity());
 
         Spinner spinner = (Spinner)view.findViewById(R.id.leaderboard_spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.leaderboard_spinner, android.R.layout.simple_spinner_item);
@@ -209,5 +224,75 @@ public class FragmentLeaderboard extends Fragment {
         });
 
         return view;
+    }
+
+    private String getCurrCity() {
+        // get reference to the LocationManager
+        LocationManager locationManager = (LocationManager) requireActivity()
+                .getSystemService(getActivity().LOCATION_SERVICE);
+        // check if the app has permission to access the device's location
+        if (ContextCompat.checkSelfPermission(requireActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            // if not, request permission
+            ActivityCompat.requestPermissions(requireActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        // get the current location (required to check for permissions again)
+        double currLongitude = 0;
+        double currLatitude = 0;
+        if (ContextCompat.checkSelfPermission(requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    0L, (float) 0, (LocationListener) FragmentLeaderboard.this);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                currLongitude = location.getLongitude();
+                currLatitude = location.getLatitude();
+            }else {
+                currLongitude = 0;
+                currLatitude = 0;
+            }
+        }
+        // get the city name from longitude and latitude
+        Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(currLatitude, currLongitude, 1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (addresses != null && addresses.size() > 0) {
+            Address address = addresses.get(0);
+            if (address.getLocality() != null) {
+                return address.getLocality();
+            }
+        }
+        return "Zimbabwe";
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+        LocationListener.super.onFlushComplete(requestCode);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
     }
 }
