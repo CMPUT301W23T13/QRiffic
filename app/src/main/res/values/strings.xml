@@ -1,0 +1,83 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">QRiffic</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">My Profile</string>
+    <string name="second_fragment_label">Create a Profile</string>
+    <string name="leaderboard_label">Leaderboard</string>
+    <string name="search_user_label">Search User</string>
+    <string name="user_profile_label">My Profile</string>
+    <string name="qr_detail_label">QR Detail</string>
+    <string name="map_label">Map</string>
+    <string name="scanner_label">Scanner</string>
+    <string name="searched_profile_label">Profile</string>
+    <string name="edit_profile_label">Update Profile</string>
+
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="user_profile">User Profile</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="search_users">Search Users</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="map">Map</string>
+
+    <!-- Create Profile Screen -->
+    <string name="create_username_title">Username</string>
+    <string name="create_username_hint">Enter username</string>
+    <string name="create_email_title">Email</string>
+    <string name="create_email_hint">Enter email</string>
+    <string name="create_phone_title">Phone</string>
+    <string name="create_phone_hint">Enter phone number</string>
+    <string name="create_button">Create</string>
+    <string name="create_username_warning">That username is already in use</string>
+    <string name="create_warning">Warning: You cannot change your profile information once it has been created</string>
+
+    <!-- Search Screen -->
+    <string name="search_title">Search by Username</string>
+    <string name="search_hint">Enter username</string>
+
+    <!-- Leaderboard Screen -->
+    <string name="leaderboard_main_title">Top Players</string>
+    <string name="leaderboard_qrmon_title">Top QRMons</string>
+    <string name="leaderboard_switch">Switch Leaderboard</string>
+    <string name="leaderboard_player_title">My Score</string>
+    <string name="leaderboard_type">Top in Canada</string>
+
+    <string-array name="leaderboard_spinner">
+        <item>Top Player Scores</item>
+        <item>Most QRMons Scanned</item>
+        <item>Top QRMons Globally</item>
+        <item>Top QRMons Regionally</item>
+    </string-array>
+
+    <!-- Leaderboard Item -->
+    <string name="leaderboard_rank_text">Rank</string>
+    <string name="leaderboard_username_text">Username</string>
+
+    <!-- Profile Screen -->
+    <string name="user_score_text">Total Score</string>
+    <string name="user_scanned_text">Total Scanned</string>
+    <string name="label_best">Highest Score</string>
+    <string name="label_bot">Lowest Score</string>
+    <string name="all_qrmon_label">All QRMons</string>
+    <string name="empty_qrmon_label">You don\'t have any!</string>
+    <string name="searched_empty_qrmon_label">They don\'t have any!</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="profile_na">N/A</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
