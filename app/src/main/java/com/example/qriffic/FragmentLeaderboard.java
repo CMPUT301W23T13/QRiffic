@@ -2,8 +2,11 @@ package com.example.qriffic;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewGroupCompat;
 import androidx.fragment.app.Fragment;
 
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +44,15 @@ public class FragmentLeaderboard extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        postponeEnterTransition();
     }
 
     @Override
@@ -60,6 +72,9 @@ public class FragmentLeaderboard extends Fragment {
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.leaderboard_spinner, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
+
+        ViewGroupCompat.setTransitionGroup(leaderboardList, true);
+        ViewGroupCompat.setTransitionGroup(spinner, true);
 
         LeaderboardData data = new LeaderboardData();
         PlayerProfile profile = new PlayerProfile();
@@ -111,6 +126,7 @@ public class FragmentLeaderboard extends Fragment {
                     leaderboardAdapter.addAll(data.getTopPlayerPoints());
                     leaderboardList.setAdapter(leaderboardAdapter);
                     leaderboardAdapter.notifyDataSetChanged();
+                    startPostponedEnterTransition();
             }
 
             @Override
