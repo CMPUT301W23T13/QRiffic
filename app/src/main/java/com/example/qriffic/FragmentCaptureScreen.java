@@ -247,7 +247,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 .load(url)
                 .centerCrop()
                 .error(R.drawable.ic_launcher_background)
-                .into((ImageView) view.findViewById(R.id.qr_add_location_image));
+                .into((ImageView) view.findViewById(R.id.qr_add_image));
     }
 
     private void uploadToDB() {
