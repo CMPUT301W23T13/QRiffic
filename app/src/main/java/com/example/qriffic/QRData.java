@@ -100,19 +100,16 @@ public class QRData {
     }
 
     /**
-     * Removes a user from the QRData object given a QRCode object from that user.
-     * @param qr
-     */
-    public void removeUser (QRCode qr) {
-        this.removeUser(qr.getUsername());
-    }
-
-    /**
      * Removes a user from the QRData object given the user's username.
      * @param username
      */
-    public void removeUser(String username) {
+    public boolean removeUser(String username) {
         this.users.remove(username);
+        if (this.users.size() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

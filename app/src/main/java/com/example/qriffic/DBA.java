@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -234,8 +235,24 @@ public class DBA {
                                                    if (document.exists()) {
                                                        // qr in db
                                                        QRData dbQRData = document.toObject(QRData.class);
-                                                       dbQRData.removeUser(qr.getUsername());
-                                                       qrColRef.document(qr.getIdHash()).set(dbQRData);
+                                                       boolean removeFlag = dbQRData.removeUser(qr.getUsername());
+                                                       if (removeFlag) {
+                                                           qrColRef.document(qr.getIdHash()).delete()
+                                                                   .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                       @Override
+                                                                       public void onSuccess(Void aVoid) {
+                                                                           Log.d("deleteQR", "QR successfully deleted!");
+                                                                       }
+                                                                   })
+                                                                   .addOnFailureListener(new OnFailureListener() {
+                                                                       @Override
+                                                                       public void onFailure(@NonNull Exception e) {
+                                                                           Log.w("deleteQR", "Error deleting document", e);
+                                                                       }
+                                                                   });
+                                                       } else {
+                                                           qrColRef.document(qr.getIdHash()).set(dbQRData);
+                                                       }
                                                    } else {
                                                        // qr not in db
                                                        throw new IllegalArgumentException("QRCode does not exist in database");
