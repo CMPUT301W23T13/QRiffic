@@ -55,9 +55,9 @@ public class MainActivityTest {
     @Test
     public void checkFragment() throws InterruptedException { //Remove the throws InterruptedException if you don't want to use sleep()
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        Activity currentActivity = solo.getCurrentActivity();
-        FragmentManager fragmentManager = currentActivity.getFragmentManager();
-        Fragment fragment;
+        FragmentManager fragmentManager = rule.getActivity().getFragmentManager();
+        // check all fragments in fragment manager
+
 
 //        // check if qr dex fragment is visible
 //        solo.clickOnActionBarItem(R.id.toolbar);
@@ -106,14 +106,14 @@ public class MainActivityTest {
     public void checkNavigationMenu() throws Exception {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         //open nav drawer
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnImageButton(0);
 
         Activity currentActivity = solo.getCurrentActivity();
         FragmentManager fragmentManager = currentActivity.getFragmentManager();
         Fragment fragment;
 
-        //check if map fragment is visible
-        solo.clickOnText("QRs Nearby");
+        //click on item in the nav drawer
+        solo.clickOnView(solo.getView(R.id.nav_map));
         // Wait for MapFragment to become visible
         solo.waitForFragmentById(R.id.fragment_map, 5000);
         // Verify that MapFragment is visible
@@ -124,10 +124,10 @@ public class MainActivityTest {
 
 
         //click on nav drawer button
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnImageButton(0);
         //check if search fragment is visible
-//        solo.clickOnView(solo.getView(R.id.nav_searchUser));
-        solo.clickOnText("Search Profiles");
+        solo.clickOnView(solo.getView(R.id.nav_searchUser));
+        //solo.clickOnText("Search Profiles");
         // Wait for SearchFragment to become visible
         solo.waitForFragmentById(R.id.fragment_search_user, 5000);
         // Verify that SearchFragment is visible
@@ -137,9 +137,10 @@ public class MainActivityTest {
 
 
         //click on nav drawer button
-        solo.clickOnActionBarHomeButton();
+        solo.clickOnImageButton(0);
         //check if leaderboard fragment is visible
-        solo.clickOnText("Leaderboard");
+        solo.clickOnView(solo.getView(R.id.nav_leaderboard));
+        //solo.clickOnText("Leaderboard");
         // Wait for LeaderboardFragment to become visible
         solo.waitForFragmentById(R.id.fragment_leaderboard, 5000);
         // Verify that LeaderboardFragment is visible
