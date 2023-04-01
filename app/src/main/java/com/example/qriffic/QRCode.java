@@ -96,7 +96,7 @@ public class QRCode implements Comparable {
         // add uniform random [-25, 25] to score
         Random rand = new Random();
         rand.setSeed(Integer.parseInt(last6, 16));
-        this.score = this.score + rand.nextInt(50)-25;
+        this.score = this.score + rand.nextInt(51)-25;
     }
 
     /**
