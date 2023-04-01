@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("username", username);
         fr.setArguments(bundle);
 
-        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         transaction1.add(R.id.fragmentContainerView, fr);
 
         transaction1.commit();

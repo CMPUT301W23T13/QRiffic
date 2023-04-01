@@ -107,6 +107,7 @@ public class FragmentProfileCreate extends Fragment {
 
                         PlayerProfile profile = new PlayerProfile(
                             editTextUsername.getText().toString(),
+                            null,
                             email,
                             phone,
                             new HashMap<String, QRCode>());
