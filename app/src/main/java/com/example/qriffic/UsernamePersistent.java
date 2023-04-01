@@ -38,7 +38,7 @@ public class UsernamePersistent {
                 username += (char) uniqueIDBytes[i];
             }
         } catch (Exception FileNotFoundException) {
-            // No uniqueID file found
+            // No username file found
             return null;
         }
         return username;
