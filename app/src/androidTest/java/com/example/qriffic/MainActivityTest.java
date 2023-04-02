@@ -8,7 +8,10 @@ import static java.lang.Thread.sleep;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -179,6 +182,79 @@ public class MainActivityTest {
         TextView username = (TextView) solo.getView(R.id.user_name);
         assertEquals("Luke007", username.getText().toString());
 
+
+    }
+
+    /**
+     * Test to check if you can see QR details
+     */
+    @Test
+    public void checkQRDetails() throws Exception{
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        TextView qrName = (TextView) solo.getView(R.id.pListName);
+
+        //click on list view item
+        solo.clickInList(0);
+        //wait for the details to load
+        solo.waitForFragmentById(R.id.fragment_qr_detail, 5000);
+        //check if the details are displayed
+        RelativeLayout detailLayout = (RelativeLayout) solo.getCurrentActivity().findViewById(R.id.fragment_qr_detail);
+        assertNotNull(detailLayout);
+        assertTrue(detailLayout.isShown());
+
+        //check if the details are displayed
+        //check if the textview has the correct text
+
+        TextView qrNameDetail = (TextView) solo.getView(R.id.qr_detail_name);
+
+
+        //check if the textview has the correct text
+        assertEquals(qrName.getText().toString(), qrNameDetail.getText().toString());
+
+    }
+
+
+    /**
+     * Test to check if you can delete a QR
+     */
+    @Test
+    public void checkDeleteQR() throws Exception{
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        TextView qrName = (TextView) solo.getView(R.id.pListName);
+
+        ListView listView = (ListView) solo.getView(R.id.profileList);
+        //get adapter
+        QRCodeAdapter adapter = (QRCodeAdapter) listView.getAdapter();
+
+        //get the number of items in the list
+        int count = adapter.getCount();
+
+
+
+        //click on list view item
+        solo.clickInList(0);
+        //wait for the details to load
+        solo.waitForFragmentById(R.id.fragment_qr_detail, 5000);
+        //check if the details are displayed
+        RelativeLayout detailLayout = (RelativeLayout) solo.getCurrentActivity().findViewById(R.id.fragment_qr_detail);
+        assertNotNull(detailLayout);
+        assertTrue(detailLayout.isShown());
+
+        //click on delete button
+        solo.clickOnView(solo.getView(R.id.fab_delete_qr));
+
+        solo.waitForFragmentById(R.id.fragment_user_profile, 5000);
+
+        //check if the list has been updated
+        ListView listView2 = (ListView) solo.getView(R.id.profileList);
+        //get adapter
+        QRCodeAdapter adapter2 = (QRCodeAdapter) listView.getAdapter();
+
+        //get the number of items in the list
+        int count2 = adapter2.getCount();
+
+        //check if the list has been updated
+        assertEquals(count-1, count2-1);
 
     }
 
