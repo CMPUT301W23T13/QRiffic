@@ -21,8 +21,12 @@ public class LeaderboardDataTest {
         assertEquals(beforeSize+1, mockLeaderboardData.getTopPlayerScans().size());
 
         beforeSize = mockLeaderboardData.getTopQRPoints().size();
-        mockLeaderboardData.addQRPoint("1234", "score");
+        mockLeaderboardData.addQRPoint("1234", "score", "name");
         assertEquals(beforeSize+1, mockLeaderboardData.getTopQRPoints().size());
+
+        beforeSize = mockLeaderboardData.getTopRegionQRPoints().size();
+        mockLeaderboardData.addRegionQRPoint("1234", "score", "name");
+        assertEquals(beforeSize+1, mockLeaderboardData.getTopRegionQRPoints().size());
     }
 
     @Test
@@ -64,7 +68,8 @@ public class LeaderboardDataTest {
         LeaderboardData mockLeaderboardData = new LeaderboardData();
         mockLeaderboardData.addPlayerPoint("username", "score");
         mockLeaderboardData.addPlayerScan("username", "scans");
-        mockLeaderboardData.addQRPoint("1234", "score");
+        mockLeaderboardData.addQRPoint("1234", "score", "name");
+        mockLeaderboardData.addRegionQRPoint("1234", "score", "name");
 
         assertEquals(mockLeaderboardData.getTopPlayerPoints().get(0).getId(), "username");
         assertEquals(mockLeaderboardData.getTopPlayerPoints().get(0).getValue(), "score");
@@ -74,6 +79,9 @@ public class LeaderboardDataTest {
 
         assertEquals(mockLeaderboardData.getTopQRPoints().get(0).getId(), "1234");
         assertEquals(mockLeaderboardData.getTopQRPoints().get(0).getValue(), "score");
+
+        assertEquals(mockLeaderboardData.getTopRegionQRPoints().get(0).getId(), "1234");
+        assertEquals(mockLeaderboardData.getTopRegionQRPoints().get(0).getValue(), "score");
     }
 
 }
