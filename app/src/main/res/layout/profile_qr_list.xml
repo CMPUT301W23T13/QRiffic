@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
@@ -13,20 +14,22 @@
         android:id="@+id/pListImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/eg_identicon" />
+        android:src="@drawable/eg_identicon"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="InefficientWeight">
 
         <TextView
             android:id="@+id/pListName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="QRMon Name"
+            android:text="@string/new_qrmon_default_name"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -35,7 +38,7 @@
             android:id="@+id/pListScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="9999pts"
+            android:text="@string/new_qrmon_default_score"
             android:textAlignment="center"
             android:textColor="@color/purple_500"
             android:textSize="20sp" />

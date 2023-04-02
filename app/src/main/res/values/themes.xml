@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.QRiffic" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
@@ -23,6 +23,5 @@
 
     <style name="Theme.QRiffic.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <color name="boxGrey">#E1E3E5</color>
-    <color name="boxDarkGrey">#C5C7C9</color>
+
 </resources>
