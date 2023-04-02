@@ -17,6 +17,14 @@ import android.widget.TextView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.robotium.solo.Solo;
 
 import org.junit.*;
@@ -255,6 +263,98 @@ public class MainActivityTest {
 
         //check if the list has been updated
         assertEquals(count-1, count2-1);
+
+    }
+
+
+    //check if leaderboards are displayed
+    @Test
+public void checkLeaderboards() throws Exception {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        //check if leaderboard fragment is visible
+//        solo.clickOnView(solo.getView(R.id.nav_leaderboard));
+        solo.clickOnText("Leaderboard");
+        // Wait for LeaderboardFragment to become visible
+        solo.waitForFragmentById(R.id.fragment_leaderboard, 5000);
+        // Verify that LeaderboardFragment is visible
+        FrameLayout leaderboardLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_leaderboard);
+        assertNotNull(leaderboardLayout);
+        assertTrue(leaderboardLayout.isShown());
+
+        solo.clickOnView(solo.getView(R.id.leaderboard_spinner));
+        solo.clickOnText("Top Player Scores");
+        sleep(2000);
+        TextView title = (TextView) solo.getView(R.id.leaderboard_type);
+        assertEquals("Top Points Globally", title.getText().toString());
+
+        solo.clickOnView(solo.getView(R.id.leaderboard_spinner));
+        solo.clickOnText("Most QRMons Scanned");
+        sleep(2000);
+        TextView title2 = (TextView) solo.getView(R.id.leaderboard_type);
+        assertEquals("Most Scans Globally", title2.getText().toString());
+
+        solo.clickOnView(solo.getView(R.id.leaderboard_spinner));
+        solo.clickOnText("Top QRMons Globally");
+        sleep(2000);
+        TextView title3 = (TextView) solo.getView(R.id.leaderboard_type);
+        assertEquals("Top QRMons Globally", title3.getText().toString());
+
+
+    }
+
+    /**
+     * Test to check if you can click on markers and see qr code details
+     */
+
+    @Test
+    public void checkMarkerClick() throws Exception{
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        //click on map
+        solo.clickOnText("QRs Nearby");
+        //wait for map to load
+        solo.waitForFragmentById(R.id.fragment_map, 5000);
+        //check if map fragment is visible
+        FrameLayout mapLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_map);
+        assertNotNull(mapLayout);
+        assertTrue(mapLayout.isShown());
+
+        // Get a reference to the GoogleMap object
+        MapFragment mapFragment = (MapFragment) solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
+        mapFragment.getMapAsync(
+                new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
+                        // Get a reference to the GoogleMap object
+                        GoogleMap map = googleMap;
+
+                        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker) {
+
+                                // Get the marker position
+                                Marker markerOptions = map.addMarker(new MarkerOptions().position(marker.getPosition()));
+                                LatLng markerPosition = markerOptions.getPosition();
+
+                                // Click on the marker position
+                                solo.clickOnScreen((int) markerPosition.longitude, (int) markerPosition.latitude);
+
+
+
+
+                                return false;
+                            }
+                        });
+
+
+                    }
+                }
+        );
+
+
 
     }
 
