@@ -103,11 +103,19 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                qrCode.addListener(new fetchListener() {
+                    @Override
+                    public void onFetchComplete() {
+                        // go back to the user profile screen
+                        NavController controller = Navigation.findNavController(v);
+                        controller.popBackStack();
+                        controller.popBackStack();
+                    }
+                    @Override
+                    public void onFetchFailure() {
+                    }
+                });
                 uploadToDB();
-                // go back to the user profile screen
-                NavController controller = Navigation.findNavController(v);
-                controller.popBackStack();
-                controller.popBackStack();
             }
         });
 
@@ -330,15 +338,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         });
         DBA.getPlayer(player, username);
 
-        qrCode.addListener(new fetchListener() {
-            @Override
-            public void onFetchComplete() {
-                return;
-            }
-            @Override
-            public void onFetchFailure() {
-            }
-        });
+
     }
 
     private void displayUpdatedText() {
