@@ -27,8 +27,9 @@ public class DBATest {
     @Test
     void testAddQR() {
         FirebaseApp.initializeApp(Context.getApplicationContext());
-        DBA.setPlayer(mockPlayerProfile());
-        DBA.addQR(mockPlayerProfile().getUsername(), mockQRCode());
+        PlayerProfile mockProfile = mockPlayerProfile();
+        DBA.setPlayer(mockProfile);
+        DBA.addQR(mockProfile, mockQRCode());
     }
 
 }

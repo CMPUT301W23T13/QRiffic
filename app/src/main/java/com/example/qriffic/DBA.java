@@ -159,7 +159,6 @@ public class DBA {
                             + player.getPhoneNum() + " " + player.getHighScore() + " "
                             + player.getLowScore() + " " + player.getCaptured().size());
 //                     */
-                    return;
                 }
         });
     }
@@ -171,32 +170,22 @@ public class DBA {
      * @param qr
      * The QRCode object to be added
      */
-    public static void addQR(String player, QRCode qr) {
-        PlayerProfile dbPlayer = new PlayerProfile();
-        dbPlayer.addListener(new fetchListener() {
-            @Override
-            public void onFetchComplete() {
-                dbPlayer.addQRCode(qr);
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("username", dbPlayer.getUsername());
-                data.put("uniqueID", dbPlayer.getUniqueID());
-                data.put("email", dbPlayer.getEmail());
-                data.put("phoneNum", dbPlayer.getPhoneNum());
-                data.put("highScore", dbPlayer.getHighScore());
-                data.put("lowScore", dbPlayer.getLowScore());
-                data.put("totalScore", dbPlayer.getTotalScore());
-                data.put("totalScanned", dbPlayer.getTotalScanned());
-                data.put("captured", dbPlayer.getCaptured());
-                playersColRef.document(dbPlayer.getUsername()).set(data);
-            }
-            @Override
-            public void onFetchFailure() {
-                throw new IllegalArgumentException("Player does not exist in database");
-            }
-        });
-        getPlayer(dbPlayer, player);
+    public static void addQR(PlayerProfile player, QRCode qr) {
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", player.getUsername());
+        data.put("uniqueID", player.getUniqueID());
+        data.put("email", player.getEmail());
+        data.put("phoneNum", player.getPhoneNum());
+        data.put("highScore", player.getHighScore());
+        data.put("lowScore", player.getLowScore());
+        data.put("totalScore", player.getTotalScore());
+        data.put("totalScanned", player.getTotalScanned());
+        data.put("captured", player.getCaptured());
+        Task updatePlayer = playersColRef.document(player.getUsername()).set(data);
+
         QRData qrData = new QRData(qr);
-        qrColRef.document(qrData.getIdHash()).get()
+        Task updateQRCode = qrColRef.document(qrData.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -216,6 +205,13 @@ public class DBA {
                         }
                     }
                 });
+
+        Tasks.whenAllComplete(updatePlayer,updateQRCode).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+            @Override
+            public void onSuccess(List<Task<?>> tasks) {
+                qr.fetchComplete();
+            }
+        });
     }
 
     /**
