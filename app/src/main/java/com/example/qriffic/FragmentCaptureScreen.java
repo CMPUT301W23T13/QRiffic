@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -40,6 +41,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,9 +49,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
     private UsernamePersistent usernamePersistent;
-    private double currLongitude;
-    private double currLatitude;
-    private String currCity;
+    private double currLongitude = 0.0;
+    private double currLatitude = 0.0;
+    private String currCity = null;
     private QRCode qrCode;
     private String username;
     private String rawString;
@@ -110,23 +112,37 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         locationImageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                activityResultLauncher.launch(intent);
+                // if permission is not granted, request permission, if denied, display a toast
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(),
+                            new String[]{Manifest.permission.CAMERA}, 1);
+                    Toast.makeText(requireContext(), "Please grant camera permission to use this feature",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    activityResultLauncher.launch(intent);
+                }
             }
         });
 
         geoLocationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String monsterLat = String.format("%.2f", qrCode.getGeoLocation().getLatitude());
-                String monsterLong = String.format("%.2f", qrCode.getGeoLocation().getLongitude());
-                String monsterCity = qrCode.getGeoLocation().getCity();
-                String geolocationText = "Latitude: " + monsterLat + "\nLongitude: " +
-                        monsterLong + "\nCity: " + monsterCity;
-                geoLocationTextView.setText(geolocationText);
-                geoLocationLayout.setVisibility(View.GONE);
-                geoLocationTextView.setVisibility(View.VISIBLE);
-                locationFlag = true;
+                if (currCity != null) {
+                    String monsterLat = String.format("%.2f", qrCode.getGeoLocation().getLatitude());
+                    String monsterLong = String.format("%.2f", qrCode.getGeoLocation().getLongitude());
+                    String monsterCity = qrCode.getGeoLocation().getCity();
+                    String geolocationText = "Latitude: " + monsterLat + "\nLongitude: " +
+                            monsterLong + "\nCity: " + monsterCity;
+                    geoLocationTextView.setText(geolocationText);
+                    geoLocationLayout.setVisibility(View.GONE);
+                    geoLocationTextView.setVisibility(View.VISIBLE);
+                    locationFlag = true;
+                } else {
+                    Toast.makeText(requireContext(), "Please enable location services and re-scan the QR code to use this feature",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -192,11 +208,11 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     locationImage = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
                     // print the size of the locationImage in kilobytes
-                    System.out.println("locationImage size: " + byteArray.length / 1024 + " kb");
+//                    System.out.println("locationImage size: " + byteArray.length / 1024 + " kb");
 
                     // print the width and height of the locationImage in pixels
-                    System.out.println("locationImage width: " + locationImage.getWidth());
-                    System.out.println("locationImage height: " + locationImage.getHeight());
+//                    System.out.println("locationImage width: " + locationImage.getWidth());
+//                    System.out.println("locationImage height: " + locationImage.getHeight());
 
                     // display the locationImage in locationImageView
                     locationImageView.setImageBitmap(locationImage);
