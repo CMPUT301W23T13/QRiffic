@@ -3,16 +3,21 @@ package com.example.qriffic;
 
 import static junit.framework.TestCase.*;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotEquals;
 import static java.lang.Thread.sleep;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.drawable.Drawable;
 import android.graphics.Point;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.EditText;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,7 +42,7 @@ import org.junit.*;
 /**
  * Test class for MainActivity. All the UI tests are written here.
  * Robotium test framework is used
- * Assumes that the app is freshly installed on the device and the robot's username is not in the database
+ * Assumes that there are no QR codes in a pre existing test account
  */
 public class MainActivityTest {
 
@@ -309,65 +314,59 @@ public void checkLeaderboards() throws Exception {
 
     }
 
-//    /**
-//     * Test to check if you can click on markers and see qr code details
-//     */
-//
-//    @Test
-//    public void checkMarkerClick() throws Exception{
-//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//        //click on nav drawer button
-//        solo.clickOnImageButton(0);
-//        //click on map
-//        solo.clickOnText("QRs Nearby");
-//        //wait for map to load
-//        solo.waitForFragmentById(R.id.fragment_map, 5000);
-//        //check if map fragment is visible
-//        FrameLayout mapLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_map);
-//        assertNotNull(mapLayout);
-//        assertTrue(mapLayout.isShown());
-//
-//        sleep(7000);
-//
-//        MapFragment mapFragment = (MapFragment) solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
-//        solo.waitForFragmentById(R.id.fragment_map, 5000);
-//        mapFragment.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(GoogleMap googleMap) {
-//                // Get a reference to the GoogleMap object
-//                GoogleMap map = googleMap;
-//
-//                // Set a marker click listener
-//                map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                    @Override
-//                    public boolean onMarkerClick(Marker marker) {
-//                        Projection projection = map.getProjection();
-//                        LatLng markerLocation = marker.getPosition();
-//                        Point screenPosition = projection.toScreenLocation(markerLocation);
-//                        long downTime = SystemClock.uptimeMillis();
-//                        long eventTime = SystemClock.uptimeMillis() + 100;
-//                        MotionEvent motionEvent = MotionEvent.obtain(
-//                                downTime,
-//                                eventTime,
-//                                MotionEvent.ACTION_UP,
-//                                screenPosition.x,
-//                                screenPosition.y,
-//                                0
-//                        );
-////                        mapView.dispatchTouchEvent(motionEvent);
-//                        return true;
-//                    }
-//                });
-//            }
-//        });
+    /**
+     * Test to check if you can click on markers and see qr code details
+     */
+
+    @Test
+    public void checkMarkerClick() throws Exception{
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        //click on map
+        solo.clickOnText("QRs Nearby");
+        //wait for map to load
+        solo.waitForFragmentById(R.id.fragment_map, 5000);
+        //check if map fragment is visible
+        FrameLayout mapLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_map);
+        assertNotNull(mapLayout);
+        assertTrue(mapLayout.isShown());
+
+        // Get a reference to the GoogleMap object
+        MapFragment mapFragment = (MapFragment) solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
+        mapFragment.getMapAsync(
+                new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
+                        // Get a reference to the GoogleMap object
+                        GoogleMap map = googleMap;
+
+                        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker) {
+
+                                // Get the marker position
+                                Marker markerOptions = map.addMarker(new MarkerOptions().position(marker.getPosition()));
+                                LatLng markerPosition = markerOptions.getPosition();
+
+                                // Click on the marker position
+                                solo.clickOnScreen((int) markerPosition.longitude, (int) markerPosition.latitude);
 
 
 
 
+                                return false;
+                            }
+                        });
+
+
+                    }
+                }
+        );
 
 
 
-//    }
+    }
 
     /**
      * Test to check if qr code is scanned, if capture screen is functioning,
@@ -393,8 +392,97 @@ public void checkLeaderboards() throws Exception {
         assertNotNull(captureLayout);
         assertTrue(captureLayout.isShown());
 
+        // ensure that an identicon is displayed (not the default image)
+        ImageView identicon = (ImageView) solo.getView(R.id.qr_add_image);
+        Drawable defaultIdenticon = solo.getCurrentActivity().getResources().getDrawable(R.drawable.eg_identicon, null);
+        Drawable newIdenticon = identicon.getDrawable();
+        assertNotEquals(defaultIdenticon, newIdenticon);
 
+        // ensure that the monster name is "Minuscule Flying Luke's Folonit"
+        String monsterName = ((TextView) solo.getView(R.id.qr_add_name)).getText().toString();
+        assertEquals("Minuscule Flying Luke's Folonit", monsterName);
 
+        // ensure that points are "81pts"
+        String points = ((TextView) solo.getView(R.id.qr_add_score)).getText().toString();
+        assertEquals("81pts", points);
+
+        // make sure the congrats message is correct
+        String congrats = ((TextView) solo.getView(R.id.qr_add_congrats)).getText().toString();
+        assertEquals("Congrats! You found a new Minuscule Flying Luke's Folonit! What would you like to do?", congrats);
+
+        // add 129 chars to comment field
+        solo.enterText((EditText) solo.getView(R.id.qr_add_comment_text),
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        // look for pop up message
+        solo.searchText("Comments cannot be longer than 128 characters");
+        // ensure that the comment field is limited to 128 chars
+        String comment = ((EditText) solo.getView(R.id.qr_add_comment_text)).getText().toString();
+        assertEquals(128, comment.length());
+        // press clear, ensure edittext is empty
+        solo.clickOnView(solo.getView(R.id.qr_add_comment_del));
+        // add a comment
+        solo.enterText((EditText) solo.getView(R.id.qr_add_comment_text), "Robotium was here!");
+
+        // click take a photo, ensure the photo is displayed in imageview
+        solo.clickOnView(solo.getView(R.id.qr_add_image_button));
+        // wait for tester to take a photo (7 seconds)
+        sleep(7000);
+
+        // ensure that the locationImageView is on the screen
+        ImageView locationImageView = (ImageView) solo.getView(R.id.qr_add_location_image);
+        assertNotNull(locationImageView);
+        assertTrue(locationImageView.isShown());
+
+        // press clear, ensure imageview is empty
+        solo.clickOnView(solo.getView(R.id.qr_add_photo_del));
+        sleep(2000);
+        assertFalse(locationImageView.isShown());
+
+        // take another photo
+        // click take a photo, ensure the photo is displayed in imageview
+        solo.clickOnView(solo.getView(R.id.qr_add_image_button));
+        // wait for tester to take a photo (7 seconds)
+        sleep(7000);
+
+        // click add a geolocation, ensure the geolocation is displayed in textview
+        solo.clickOnView(solo.getView(R.id.qr_add_geolocation));
+        TextView geolocationText = (TextView) solo.getView(R.id.qr_add_geo_text);
+        assertNotNull(geolocationText);
+        assertTrue(geolocationText.isShown());
+        // press clear, ensure textview is empty
+        solo.clickOnView(solo.getView(R.id.qr_add_geo_del));
+        sleep(2000);
+        assertFalse(geolocationText.isShown());
+        // click add a geolocation
+        solo.clickOnView(solo.getView(R.id.qr_add_geolocation));
+        // click the capture button
+        solo.clickOnView(solo.getView(R.id.confirm_fab));
+
+        // ensure we are back in the user profile screen
+        solo.waitForFragmentById(R.id.fragment_user_profile, 5000);
+        FrameLayout userProfileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
+        assertNotNull(userProfileLayout);
+        assertTrue(userProfileLayout.isShown());
+        // ensure the new qr code is displayed in user profile
+        solo.clickInList(0);
+
+        // wait for qrdetail to be displayed
+        solo.waitForFragmentById(R.id.fragment_qr_detail, 5000);
+        RelativeLayout qrDetailLayout = (RelativeLayout) solo.getCurrentActivity().findViewById(R.id.fragment_qr_detail);
+        assertNotNull(qrDetailLayout);
+        assertTrue(qrDetailLayout.isShown());
+        // delete the qr code
+        solo.clickOnView(solo.getView(R.id.fab_delete_qr));
+
+        // ensure we are back in the user profile screen
+        solo.waitForFragmentById(R.id.fragment_user_profile, 5000);
+        userProfileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
+        assertNotNull(userProfileLayout);
+        assertTrue(userProfileLayout.isShown());
+
+        // ensure that the list is empty
+        ListView qrList = (ListView) solo.getView(R.id.profileList);
+        assertEquals(0, qrList.getCount());
     }
 
 
