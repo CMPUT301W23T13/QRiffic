@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -39,6 +41,9 @@ import androidx.navigation.Navigation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -343,9 +348,30 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         String congratsText = "Congrats! You found a new " + monsterName + "! " +
                 "What would you like to do?";
 
+        String warningText = "You have already scanned this QR code before. "
+                + "If you choose to add it again, you will lose your previous comment, photo,"
+                + " and location information.";
+
         nameTextView.setText(monsterName);
         scoreTextView.setText(monsterScore + "pts");
         congratsTextView.setText(congratsText);
+        PlayerProfile player = new PlayerProfile();
+        player.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                Collection<QRCode> previousQRCodes = player.getCaptured().values();
+                for (QRCode eachQR : previousQRCodes) {
+                    if (eachQR.getIdHash().equals(qrCode.getIdHash())) {
+                        congratsTextView.setText(warningText);
+                        congratsTextView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#d91727")));
+                    }
+                }
+            }
+            @Override
+            public void onFetchFailure() {
+            }
+        });
+        DBA.getPlayer(player, username);
     }
 
     public String bitmapToBase64(Bitmap bitmap) {
