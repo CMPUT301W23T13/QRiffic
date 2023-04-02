@@ -90,7 +90,7 @@ public class QRDataTest {
         assertEquals(mockQRData.getUsers().size(), before + 1);
 
         before = mockQRData.getUsers().size();
-        mockQRData.removeUser(tempQRCode);
+        mockQRData.removeUser(tempQRCode.getUsername());
         assertEquals(mockQRData.getUsers().size(), before - 1);
     }
 }
