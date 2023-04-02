@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    env:
+      JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
 
     steps:
     - uses: actions/checkout@v2
