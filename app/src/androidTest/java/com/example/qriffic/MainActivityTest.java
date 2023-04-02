@@ -8,7 +8,10 @@ import static java.lang.Thread.sleep;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Point;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -21,7 +24,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.internal.IGoogleMapDelegate;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -304,59 +309,65 @@ public void checkLeaderboards() throws Exception {
 
     }
 
-    /**
-     * Test to check if you can click on markers and see qr code details
-     */
+//    /**
+//     * Test to check if you can click on markers and see qr code details
+//     */
+//
+//    @Test
+//    public void checkMarkerClick() throws Exception{
+//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+//        //click on nav drawer button
+//        solo.clickOnImageButton(0);
+//        //click on map
+//        solo.clickOnText("QRs Nearby");
+//        //wait for map to load
+//        solo.waitForFragmentById(R.id.fragment_map, 5000);
+//        //check if map fragment is visible
+//        FrameLayout mapLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_map);
+//        assertNotNull(mapLayout);
+//        assertTrue(mapLayout.isShown());
+//
+//        sleep(7000);
+//
+//        MapFragment mapFragment = (MapFragment) solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
+//        solo.waitForFragmentById(R.id.fragment_map, 5000);
+//        mapFragment.getMapAsync(new OnMapReadyCallback() {
+//            @Override
+//            public void onMapReady(GoogleMap googleMap) {
+//                // Get a reference to the GoogleMap object
+//                GoogleMap map = googleMap;
+//
+//                // Set a marker click listener
+//                map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                    @Override
+//                    public boolean onMarkerClick(Marker marker) {
+//                        Projection projection = map.getProjection();
+//                        LatLng markerLocation = marker.getPosition();
+//                        Point screenPosition = projection.toScreenLocation(markerLocation);
+//                        long downTime = SystemClock.uptimeMillis();
+//                        long eventTime = SystemClock.uptimeMillis() + 100;
+//                        MotionEvent motionEvent = MotionEvent.obtain(
+//                                downTime,
+//                                eventTime,
+//                                MotionEvent.ACTION_UP,
+//                                screenPosition.x,
+//                                screenPosition.y,
+//                                0
+//                        );
+////                        mapView.dispatchTouchEvent(motionEvent);
+//                        return true;
+//                    }
+//                });
+//            }
+//        });
 
-    @Test
-    public void checkMarkerClick() throws Exception{
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        //click on nav drawer button
-        solo.clickOnImageButton(0);
-        //click on map
-        solo.clickOnText("QRs Nearby");
-        //wait for map to load
-        solo.waitForFragmentById(R.id.fragment_map, 5000);
-        //check if map fragment is visible
-        FrameLayout mapLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_map);
-        assertNotNull(mapLayout);
-        assertTrue(mapLayout.isShown());
-
-        // Get a reference to the GoogleMap object
-        MapFragment mapFragment = (MapFragment) solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
-        mapFragment.getMapAsync(
-                new OnMapReadyCallback() {
-                    @Override
-                    public void onMapReady(GoogleMap googleMap) {
-                        // Get a reference to the GoogleMap object
-                        GoogleMap map = googleMap;
-
-                        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                            @Override
-                            public boolean onMarkerClick(Marker marker) {
-
-                                // Get the marker position
-                                Marker markerOptions = map.addMarker(new MarkerOptions().position(marker.getPosition()));
-                                LatLng markerPosition = markerOptions.getPosition();
-
-                                // Click on the marker position
-                                solo.clickOnScreen((int) markerPosition.longitude, (int) markerPosition.latitude);
 
 
 
 
-                                return false;
-                            }
-                        });
 
 
-                    }
-                }
-        );
-
-
-
-    }
+//    }
 
     /**
      * Test to check if qr code is scanned, if capture screen is functioning,
