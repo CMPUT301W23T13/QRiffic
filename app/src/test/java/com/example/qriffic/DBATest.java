@@ -21,7 +21,7 @@ public class DBATest {
     }
 
     private PlayerProfile mockPlayerProfile() {
-        return new PlayerProfile("testname", "testuuid", "username@outlook.com", "999.999.9999", new HashMap<String, QRCode>());
+        return new PlayerProfile("testname", "username@outlook.com", "999.999.9999", new HashMap<String, QRCode>());
     }
 
     @Test

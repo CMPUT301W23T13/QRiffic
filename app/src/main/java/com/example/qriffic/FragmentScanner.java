@@ -71,6 +71,11 @@ public class FragmentScanner extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
 
+        // check if location permissions are granted, ask once, location is generated after a successful scan (optional)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
         // camera permission handling is done in onResume()
         barcodeView = view.findViewById(R.id.barcode_scanner);
         barcodeView.setStatusText("");

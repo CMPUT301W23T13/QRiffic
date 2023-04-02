@@ -50,7 +50,6 @@ public class DBA {
     public static void setPlayer(PlayerProfile player) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("username", player.getUsername());
-        data.put("uniqueID", player.getUniqueID());
         data.put("email", player.getEmail());
         data.put("phoneNum", player.getPhoneNum());
         data.put("highScore", player.getHighScore());
@@ -123,11 +122,6 @@ public class DBA {
                     }
 
                     player.setUsername(fetchedPlayer.get("username").toString());
-                    if (fetchedPlayer.get("uniqueID") == null) {
-                        player.setUniqueID(null);
-                    } else {
-                        player.setUniqueID(fetchedPlayer.get("uniqueID").toString());
-                    }
                     if (fetchedPlayer.get("email") == null) {
                         player.setEmail(null);
                     } else {
@@ -171,7 +165,6 @@ public class DBA {
      * The QRCode object to be added
      */
     public static void addQR(PlayerProfile player, QRCode qr) {
-
         HashMap<String, Object> data = new HashMap<>();
         data.put("username", player.getUsername());
         data.put("uniqueID", player.getUniqueID());
