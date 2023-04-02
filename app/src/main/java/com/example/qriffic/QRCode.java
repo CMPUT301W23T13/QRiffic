@@ -15,14 +15,37 @@ import java.util.Random;
  * This class defines a QRCode object
  */
 public class QRCode implements Comparable {
-
+    /**
+     * The score of the QRCode, as an int
+     */
     private int score;
+    /**
+     * Represents the geolocation of the QRCode
+     */
     private GeoLocation geoLocation;
+    /**
+     * The hash value of the QRCode
+     */
     private String idHash;
+    /**
+     * The generated name of the QRCode
+     */
     private String name;
+    /**
+     * The username of a player associated with the QRCode
+     */
     private String username;
+    /**
+     * The location image a player took for the QRCode as a Base64 String
+     */
     private String locationImage;
+    /**
+     * The comment a player left on the QRCode
+     */
     private String comment;
+    /**
+     * Contains listeners used when fetching QRCode data from the database
+     */
     private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
 
     /**
@@ -31,6 +54,12 @@ public class QRCode implements Comparable {
      */
     public QRCode() {}
 
+    /**
+     * Constructs a QRCode object
+     * @param name The name of the QRCode
+     * @param score The score of the QRCode
+     * @param idHash The hash value of the QRCode
+     */
     public QRCode(String name, long score, String idHash) {
         this.name = name;
         this.score = (int) score;
@@ -38,7 +67,7 @@ public class QRCode implements Comparable {
     }
 
     /**
-     * This is a constructor for a QRCode object
+     * This is a constructor for a QRCode object, which generates a name and score from the hash
      * @param rawString
      * The string from scanning the QR code
      * @param geoLocation
@@ -47,6 +76,8 @@ public class QRCode implements Comparable {
      * The username of the player who scanned the QR code
      * @param locationImage
      * The image of the location of the QR code as a Base64 String
+     * @param comment
+     * The comment the user left for the QR code
      */
     public QRCode(String rawString, GeoLocation geoLocation, String username, String locationImage,
                   String comment) {
@@ -113,30 +144,49 @@ public class QRCode implements Comparable {
                 .compareTo(qrCode.idHash.substring(qrCode.idHash.length()-6));
     }
 
+    /**
+     * Sets the score of the QRCode
+     * @param score The score to be set to, as an int
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
+    /**
+     * Sets the geolocation of the QRCode
+     * @param geoLocation A GeoLocation object representing the QRCode's location
+     */
     public void setGeoLocation(GeoLocation geoLocation) {
         this.geoLocation = geoLocation;
     }
 
+    /**
+     * Sets the idHash of the QRCode
+     * @param idHash The idHash to be set to, as a String
+     */
     public void setIdHash(String idHash) {
         this.idHash = idHash;
     }
 
+    /**
+     * Sets the name of the QRCode
+     * @param name The name to be set to, as a String
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Sets the username of a player associated with the QRCode
+     * @param username The username of the associated player
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
      * This method sets the location image of the QR code
-     * @param locationImage
-     * The location image of the QR code
+     * @param locationImage The location image of the QR code
      */
     public void setLocationImage(String locationImage) {
         this.locationImage = locationImage;
@@ -144,8 +194,7 @@ public class QRCode implements Comparable {
 
     /**
      * This method sets the comment of the QR code
-     * @param comment
-     * The comment of the QR code
+     * @param comment The comment of the QR code
      */
     public void setComment(String comment) {
         this.comment = comment;
@@ -159,7 +208,7 @@ public class QRCode implements Comparable {
      * Author: Unavailable
      * Date: 24/03/2023
      *
-     * @param toAdd
+     * @param toAdd the fetchListener to be added
      */
     public void addListener(fetchListener toAdd) {
         listeners.add(toAdd);

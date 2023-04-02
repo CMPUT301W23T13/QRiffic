@@ -32,7 +32,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -41,12 +40,9 @@ import androidx.navigation.Navigation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -83,6 +79,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Adds slide/fade transitions to the fragment
         TransitionInflater inflater = TransitionInflater.from(requireContext());
         setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
         setExitTransition(inflater.inflateTransition(R.transition.fade));
@@ -131,7 +128,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     ActivityCompat.requestPermissions(requireActivity(),
                             new String[]{Manifest.permission.CAMERA}, 1);
                     Toast.makeText(requireContext(), "Please grant camera permission to use this feature",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     activityResultLauncher.launch(intent);
@@ -154,7 +151,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     locationFlag = true;
                 } else {
                     Toast.makeText(requireContext(), "Please enable location services and re-scan the QR code to use this feature",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -219,13 +216,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     locationImage.compress(Bitmap.CompressFormat.JPEG, 90, stream);
                     byte[] byteArray = stream.toByteArray();
                     locationImage = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
-                    // print the size of the locationImage in kilobytes
-//                    System.out.println("locationImage size: " + byteArray.length / 1024 + " kb");
-
-                    // print the width and height of the locationImage in pixels
-//                    System.out.println("locationImage width: " + locationImage.getWidth());
-//                    System.out.println("locationImage height: " + locationImage.getHeight());
 
                     // display the locationImage in locationImageView
                     locationImageView.setImageBitmap(locationImage);
@@ -328,10 +318,10 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 boolean newFlag = player.addQRCode(qrCode);
                 if (newFlag) {
                     CharSequence text = "QRMon successfully added!";
-                    Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    CharSequence text = "This QRMon has been captured before! Previous data was overwritten";
+                    CharSequence text = "QRMon data has been updated";
                     Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -368,7 +358,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 for (QRCode eachQR : previousQRCodes) {
                     if (eachQR.getIdHash().equals(qrCode.getIdHash())) {
                         congratsTextView.setText(warningText);
-                        congratsTextView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#d91727")));
+                        congratsTextView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#DF5B5B")));
                     }
                 }
             }

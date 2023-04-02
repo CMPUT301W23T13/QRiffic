@@ -9,6 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * Keeps track of the user's username, which is persistent and saved on the disk
+ */
 public class UsernamePersistent {
     private Context context;
 

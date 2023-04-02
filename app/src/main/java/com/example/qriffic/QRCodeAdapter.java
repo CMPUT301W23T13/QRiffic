@@ -16,6 +16,9 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class extends the ArrayAdapter class and adapts for QRCode objects
+ */
 public class QRCodeAdapter extends ArrayAdapter<QRCode>{
 
     private Context context;
