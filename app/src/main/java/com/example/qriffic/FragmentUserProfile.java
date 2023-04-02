@@ -93,6 +93,8 @@ public class FragmentUserProfile extends Fragment {
         TextView botQRName = view.findViewById(R.id.botQRName);
         LinearLayout topQRLayout = view.findViewById(R.id.top_score_linear_layout);
         LinearLayout botQRLayout = view.findViewById(R.id.bot_score_linear_layout);
+        ImageView topQRImage = view.findViewById(R.id.imageTop);
+        ImageView botQRImage = view.findViewById(R.id.imageBot);
 
         //initialize an array list of QR codes
         qrList = new ArrayList<>();
@@ -181,6 +183,8 @@ public class FragmentUserProfile extends Fragment {
                             Toast.makeText(getContext(), "No QRMon to display", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    topQRImage.setVisibility(View.GONE);
+                    botQRImage.setVisibility(View.GONE);
                 }
 
 
