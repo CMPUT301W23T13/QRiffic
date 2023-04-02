@@ -9,13 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GeoLocationTest {
 
     private GeoLocation mockLocation() {
-
         return new GeoLocation(53.5461, 113.4937, "Edmonton");
     }
 
     @Test
     void testGetters() {
-
         GeoLocation mockGeoLocation = mockLocation();
 
         assertEquals(53.5461, mockGeoLocation.getLongitude());
