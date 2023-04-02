@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_profileCreate"
         android:name="com.example.qriffic.FragmentProfileCreate"
-        android:label="@string/second_fragment_label"
+        android:label="Create Profile"
         tools:layout="@layout/profile_create">
         <action
             android:id="@+id/action_ProfileCreate_to_userProfile"
@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/nav_scanner"
         android:name="com.example.qriffic.FragmentScanner"
-        android:label="FragmentScanner"
+        android:label="Scanner"
         tools:layout="@layout/fragment_scanner">
         <action
             android:id="@+id/action_nav_scanner_to_nav_capture_screen"
@@ -92,7 +92,7 @@
     <fragment
         android:id="@+id/fragmentUserSearchedProfile"
         android:name="com.example.qriffic.FragmentUserSearchedProfile"
-        android:label="FragmentUserSearchedProfile" >
+        android:label="Searched Profile">
         <action
             android:id="@+id/action_fragmentUserSearchedProfile_to_nav_QRDetail"
             app:destination="@id/nav_QRDetail" />

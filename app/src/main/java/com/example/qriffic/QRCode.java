@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class defines a QRCode object
@@ -30,9 +31,10 @@ public class QRCode implements Comparable {
      */
     public QRCode() {}
 
-    public QRCode(String name, long score) {
+    public QRCode(String name, long score, String idHash) {
         this.name = name;
         this.score = (int) score;
+        this.idHash = idHash;
     }
 
     /**
@@ -89,7 +91,12 @@ public class QRCode implements Comparable {
         }
 
         // score generator
-        this.score = Integer.parseInt(last6, 16);
+        this.score = (int) (Math.pow(3, (Integer.parseInt(last6, 16) + 4800000)/3355443) + 100);
+
+        // add uniform random [-25, 25] to score
+        Random rand = new Random();
+        rand.setSeed(Integer.parseInt(last6, 16));
+        this.score = this.score + rand.nextInt(51)-25;
     }
 
     /**

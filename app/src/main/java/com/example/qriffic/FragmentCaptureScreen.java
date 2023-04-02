@@ -15,10 +15,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.TransitionInflater;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,6 +63,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     private TextView geoLocationTextView;
     private TextView congratsTextView;
     private Bitmap locationImage;
+    private Button commentDel;
+    private Button imageDel;
+    private Button locationDel;
     private Boolean locationFlag = false;
 
 
@@ -71,6 +76,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
     }
 
     @Override
@@ -122,6 +130,30 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             }
         });
 
+        commentDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentEditText.setText("");
+            }
+        });
+
+        imageDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationImageLayout.setVisibility(View.VISIBLE);
+                locationImageView.setVisibility(View.GONE);
+                locationImage = null;
+            }
+        });
+
+        locationDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                geoLocationLayout.setVisibility(View.VISIBLE);
+                geoLocationTextView.setVisibility(View.GONE);
+                locationFlag = false;
+            }
+        });
 
         // comments cannot be longer than 128 characters
         commentEditText.addTextChangedListener(new TextWatcher() {
@@ -145,7 +177,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
         return view;
     }
-
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -188,6 +219,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         commentEditText = view.findViewById(R.id.qr_add_comment_text);
         geoLocationLayout = view.findViewById(R.id.qr_add_geolocation);
         geoLocationTextView = view.findViewById(R.id.qr_add_geo_text);
+        commentDel = view.findViewById(R.id.qr_add_comment_del);
+        imageDel = view.findViewById(R.id.qr_add_photo_del);
+        locationDel = view.findViewById(R.id.qr_add_geo_del);
     }
 
     private void initLocation() {
@@ -241,13 +275,13 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     }
 
     private void generateIdenticon(View view) {
-        String url = "https://www.gravatar.com/avatar/" + qrCode.getScore() +
+        String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() +
                 "?s=55&d=identicon&r=PG%22";
         Glide.with(getContext())
                 .load(url)
                 .centerCrop()
                 .error(R.drawable.ic_launcher_background)
-                .into((ImageView) view.findViewById(R.id.qr_add_location_image));
+                .into((ImageView) view.findViewById(R.id.qr_add_image));
     }
 
     private void uploadToDB() {
@@ -269,7 +303,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 "What would you like to do?";
 
         nameTextView.setText(monsterName);
-        scoreTextView.setText(monsterScore);
+        scoreTextView.setText(monsterScore + "pts");
         congratsTextView.setText(congratsText);
     }
 
@@ -281,12 +315,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override

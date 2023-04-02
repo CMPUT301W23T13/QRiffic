@@ -24,7 +24,7 @@
 
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
 
         <LinearLayout
@@ -125,6 +125,19 @@
                 android:drawSelectorOnTop="true"
                 android:entries="@array/leaderboard_spinner"
                 android:layout_marginHorizontal="10dp"
+                />
+
+            <TextView
+                android:id="@+id/no_region_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+
+                android:text="Location features not enabled"
+                android:textAlignment="center"
+                android:textColor="@color/boxDarkGrey"
+                android:textSize="20sp"
+                android:visibility="gone"
                 />
 
             <ListView

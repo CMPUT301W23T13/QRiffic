@@ -264,7 +264,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
 
-            android:text="@string/empty_qrmon_label"
+            android:text="They don't have any!"
             android:textAlignment="center"
             android:textColor="@color/boxDarkGrey"
             android:textSize="20sp"

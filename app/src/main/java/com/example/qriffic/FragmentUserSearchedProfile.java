@@ -1,6 +1,7 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewGroupCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -51,7 +54,15 @@ public class FragmentUserSearchedProfile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        postponeEnterTransition();
     }
 
     @Override
@@ -81,6 +92,7 @@ public class FragmentUserSearchedProfile extends Fragment {
         playerProfile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
+                startPostponedEnterTransition();
                 qrList = new ArrayList<QRCode>(playerProfile.getCaptured().values());
 
                 ArrayList<QRCode> QRAdapterList = new ArrayList<QRCode>();
@@ -88,6 +100,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 //create array for lowest score
                 long[] lowScoreArray = new long[qrList.size()];
                 String[] NameArray = new String[qrList.size()];
+                String[] HashArray = new String[qrList.size()];
 
                 //make a dictionary for the scores and names
                 HashMap<String, Integer> NameMap = new HashMap<>();
@@ -96,7 +109,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                     NameMap.put(qrList.get(i).getName(), qrList.get(i).getScore());
                     lowScoreArray[i] = qrList.get(i).getScore();
                     NameArray[i] = qrList.get(i).getName();
-
+                    HashArray[i] = qrList.get(i).getIdHash();
                 }
 
                 totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
@@ -105,7 +118,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 qrAdapter = new QRCodeAdapter(getContext(), dataList);
 
                 for (int i = 0; i < qrList.size(); i++) {
-                    dataList.add(new QRCode(NameArray[i], lowScoreArray[i]));
+                    dataList.add(new QRCode(NameArray[i], lowScoreArray[i], HashArray[i]));
                 }
 
                 qrAdapter.notifyDataSetChanged();
@@ -113,6 +126,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 System.out.println("qrAdapter"+qrAdapter);
 
                 profileListView = view.findViewById(R.id.profileList);
+                ViewGroupCompat.setTransitionGroup(profileListView, true);
                 profileListView.setAdapter(qrAdapter);
 
                 if (qrList.size() > 0) {
@@ -120,21 +134,6 @@ public class FragmentUserSearchedProfile extends Fragment {
                     highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
                     totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
-
-                    //set images for highest and lowest score
-                    String highurl = "https://www.gravatar.com/avatar/" + playerProfile.getHighScore() + "?s=55&d=identicon&r=PG%22";
-                    Glide.with(getContext())
-                        .load(highurl)
-                        .centerCrop()
-                        .error(R.drawable.ic_launcher_background)
-                        .into((ImageView) view.findViewById(R.id.imageTop));
-
-                    String lowurl = "https://www.gravatar.com/avatar/" + playerProfile.getLowScore() + "?s=55&d=identicon&r=PG%22";
-                    Glide.with(getContext())
-                        .load(lowurl)
-                        .centerCrop()
-                        .error(R.drawable.ic_launcher_background)
-                        .into((ImageView) view.findViewById(R.id.imageBot));
                 } else {
                     tvEmptyQRMon.setVisibility(View.VISIBLE);
                     lowScore.setText("N/A");
@@ -145,10 +144,27 @@ public class FragmentUserSearchedProfile extends Fragment {
                 for (QRCode qrCode : qrList) {
                     if (qrCode.getScore() == playerProfile.getHighScore()) {
                         topQRName.setText(qrCode.getName());
+
+                        //set image for highest score
+                        String highurl = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                        Glide.with(getContext())
+                            .load(highurl)
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_background)
+                            .into((ImageView) view.findViewById(R.id.imageTop));
+
                     }
 
                     if (qrCode.getScore() == playerProfile.getLowScore()) {
                         botQRName.setText(qrCode.getName());
+
+                        //set image for lowest score
+                        String lowurl = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                        Glide.with(getContext())
+                            .load(lowurl)
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_background)
+                            .into((ImageView) view.findViewById(R.id.imageBot));
                     }
                 }
 
@@ -190,6 +206,7 @@ public class FragmentUserSearchedProfile extends Fragment {
 //        });
 
         profileListView = view.findViewById(R.id.profileList);
+        ViewGroupCompat.setTransitionGroup(profileListView, true);
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

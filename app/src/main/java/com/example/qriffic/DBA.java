@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -22,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class is used as controller to access the database
@@ -233,8 +235,24 @@ public class DBA {
                                                    if (document.exists()) {
                                                        // qr in db
                                                        QRData dbQRData = document.toObject(QRData.class);
-                                                       dbQRData.removeUser(qr.getUsername());
-                                                       qrColRef.document(qr.getIdHash()).set(dbQRData);
+                                                       boolean removeFlag = dbQRData.removeUser(qr.getUsername());
+                                                       if (removeFlag) {
+                                                           qrColRef.document(qr.getIdHash()).delete()
+                                                                   .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                       @Override
+                                                                       public void onSuccess(Void aVoid) {
+                                                                           Log.d("deleteQR", "QR successfully deleted!");
+                                                                       }
+                                                                   })
+                                                                   .addOnFailureListener(new OnFailureListener() {
+                                                                       @Override
+                                                                       public void onFailure(@NonNull Exception e) {
+                                                                           Log.w("deleteQR", "Error deleting document", e);
+                                                                       }
+                                                                   });
+                                                       } else {
+                                                           qrColRef.document(qr.getIdHash()).set(dbQRData);
+                                                       }
                                                    } else {
                                                        // qr not in db
                                                        throw new IllegalArgumentException("QRCode does not exist in database");
@@ -306,7 +324,7 @@ public class DBA {
                 });
     }
 
-    public static void getLeaderboard(LeaderboardData data, PlayerProfile profile) {
+    public static void getLeaderboard(LeaderboardData data, String city) {
         Task playerPointQuery = playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -353,17 +371,71 @@ public class DBA {
                             }
 
                         } else {
-                            Log.d("topQRrPoints", "Error getting documents");
+                            Log.d("topQRPoints", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
 
-        Tasks.whenAllComplete(playerPointQuery, playerScanQuery, qrPointQuery).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
-            @Override
-            public void onSuccess(List<Task<?>> tasks) {
-                data.fetchComplete();
-            }
-        });
+        if (city != null) {
+            Log.d("city", city);
+            Task qrRegionQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    boolean regionFlag = false;
+
+                                    Object users = document.get("users");
+                                    if (Objects.nonNull(users)) {
+                                        Map userMap = (Map) users;
+
+                                        for (Object value : userMap.values()) {
+                                            if (Objects.nonNull(value)) {
+                                                Map valueMap = (Map) value;
+                                                Object geoInfo = valueMap.get("geoLocation");
+                                                if (Objects.nonNull(geoInfo)) {
+                                                    Map geoMap = (Map) geoInfo;
+                                                    Object qrCity = geoMap.get("city");
+                                                    if (Objects.nonNull(qrCity)) {
+                                                        String qrCityString = (String) qrCity;
+                                                        if (qrCityString.equals(city)) {
+                                                            regionFlag = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (regionFlag) {
+                                            String name = document.get("name").toString();
+                                            String score = document.get("score").toString();
+                                            data.addRegionQRPoint(name, score);
+                                        }
+                                    }
+                                }
+
+                            } else {
+                                Log.d("topRegionQRPoints", "Error getting documents");
+                                data.fetchFailed();
+                            }
+                        }
+                    });
+
+            Tasks.whenAllComplete(playerPointQuery, playerScanQuery, qrPointQuery, qrRegionQuery).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                @Override
+                public void onSuccess(List<Task<?>> tasks) {
+                    data.fetchComplete();
+                }
+            });
+        } else {
+            Tasks.whenAllComplete(playerPointQuery, playerScanQuery, qrPointQuery).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                @Override
+                public void onSuccess(List<Task<?>> tasks) {
+                    data.fetchComplete();
+                }
+            });
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewGroupCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -28,6 +31,20 @@ public class FragmentQRDetail extends Fragment {
 
     public FragmentQRDetail() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        postponeEnterTransition();
     }
 
     /**
@@ -59,7 +76,6 @@ public class FragmentQRDetail extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBA dba = new DBA();
                 QRCode qrCode = new QRCode();
                 UsernamePersistent usernamePersistent = new UsernamePersistent(getContext());
                 qrCode.setIdHash(QRID);
@@ -75,13 +91,11 @@ public class FragmentQRDetail extends Fragment {
                         Toast.makeText(getContext(), "Failed to delete QR", Toast.LENGTH_SHORT).show();
                     }
                 });
-                dba.deleteQR(qrCode);
+                DBA.deleteQR(qrCode);
             }
         });
 
         //fetch the QR data from the database
-
-
 
         System.out.println("QRID: " + QRID);
 
@@ -97,6 +111,8 @@ public class FragmentQRDetail extends Fragment {
                 setMainImage(view, instance);
                 setScoreAndName(view, instance);
                 populateList(view, instance);
+
+                startPostponedEnterTransition();
             }
             @Override
             public void onFetchFailure() {
@@ -115,7 +131,7 @@ public class FragmentQRDetail extends Fragment {
      * @param instance the QR code data
      */
     private void setMainImage(View view, QRData instance) {
-        String highurl = "https://www.gravatar.com/avatar/" + instance.getScore() + "?s=55&d=identicon&r=PG%22";
+        String highurl = "https://www.gravatar.com/avatar/" + instance.getIdHash() + "?s=55&d=identicon&r=PG%22";
         Glide.with(getContext())
                 .load(highurl)
                 .centerCrop()
@@ -133,11 +149,12 @@ public class FragmentQRDetail extends Fragment {
         TextView name = view.findViewById(R.id.qr_detail_name);
         TextView score = view.findViewById(R.id.qr_detail_score);
         name.setText(instance.getName());
-        score.setText(String.format("%d", instance.getScore()));
+        score.setText(String.format("%d", instance.getScore()) + "pts");
     }
 
     private void populateList(View view, QRData instance) {
         qrDetailList = view.findViewById(R.id.qr_detail_list);
+        ViewGroupCompat.setTransitionGroup(qrDetailList, true);
         ArrayList<HashMap<String,Object>> instanceList = new ArrayList<>();
 
         HashMap<String, HashMap<String, Object>> users = instance.getUsers();
@@ -147,6 +164,7 @@ public class FragmentQRDetail extends Fragment {
 
         QRDetailAdapter instanceAdapter = new QRDetailAdapter(getContext(), instanceList);
         qrDetailList.setAdapter(instanceAdapter);
+
     }
 
 }

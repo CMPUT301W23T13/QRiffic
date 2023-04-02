@@ -1,15 +1,19 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -20,8 +24,17 @@ public class FragmentProfileUpdate extends Fragment {
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPhone;
-    private TextView textViewUsernameWarning;
+    private TextView welcomeText;
     private UsernamePersistent usernamePersistent;
+    private LinearLayout mainLayout;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
+    }
 
     @Override
     public View onCreateView(
@@ -36,17 +49,25 @@ public class FragmentProfileUpdate extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        postponeEnterTransition();
 
+        mainLayout = view.findViewById(R.id.linearLayout);
+        welcomeText = view.findViewById(R.id.welcome_text);
         editTextUsername = view.findViewById(R.id.edit_username);
         editTextUsername.setEnabled(false);
         editTextEmail = view.findViewById(R.id.edit_email);
         editTextPhone = view.findViewById(R.id.edit_phone);
-        textViewUsernameWarning = view.findViewById(R.id.username_warning);
+
+        welcomeText.setVisibility(View.GONE);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mainLayout.getLayoutParams();
+        params.verticalBias = 0.4f;
+        mainLayout.setLayoutParams(params);
 
         PlayerProfile profile = new PlayerProfile();
         profile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
+                startPostponedEnterTransition();
                 editTextUsername.setText(profile.getUsername());
                 editTextEmail.setText(profile.getEmail());
                 editTextPhone.setText(profile.getPhoneNum());
