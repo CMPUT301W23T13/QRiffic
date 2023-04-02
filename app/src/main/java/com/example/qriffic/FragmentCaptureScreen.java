@@ -308,7 +308,37 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         qrCode.setLocationImage(locationImageBase64);
         qrCode.setComment(commentEditText.getText().toString());
         // update player's captured list and QRs collection in DB
-        DBA.addQR(username, qrCode);
+        PlayerProfile player = new PlayerProfile();
+        DBA.getPlayer(player, username);
+        player.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                boolean newFlag = player.addQRCode(qrCode);
+                if (newFlag) {
+                    CharSequence text = "QRMon successfully added!";
+                    Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    CharSequence text = "You already have this QRMon!";
+                    Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                DBA.addQR(player, qrCode);
+            }
+            @Override
+            public void onFetchFailure() {
+            }
+        });
+
+        qrCode.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                return;
+            }
+            @Override
+            public void onFetchFailure() {
+            }
+        });
     }
 
     private void displayUpdatedText() {

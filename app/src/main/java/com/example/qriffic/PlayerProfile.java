@@ -270,12 +270,18 @@ public class PlayerProfile {
      * @param qrCode
      * The QRCode object to be added to the ArrayList of QRCode objects
      */
-    public void addQRCode(QRCode qrCode) {
-        this.captured.put(qrCode.getIdHash(), qrCode);
-        this.updateHighScore(qrCode.getScore());
-        this.updateLowScore(qrCode.getScore());
-        this.totalScore += qrCode.getScore();
-        this.totalScanned += 1;
+    public boolean addQRCode(QRCode qrCode) {
+        if (this.captured.containsKey(qrCode.getIdHash())) {
+            this.captured.put(qrCode.getIdHash(), qrCode);
+            return false;
+        } else {
+            this.captured.put(qrCode.getIdHash(), qrCode);
+            this.updateHighScore(qrCode.getScore());
+            this.updateLowScore(qrCode.getScore());
+            this.totalScore += qrCode.getScore();
+            this.totalScanned += 1;
+            return true;
+        }
     }
 
     /**
