@@ -18,7 +18,14 @@
         android:id="@+id/nav_leaderboard"
         android:name="com.example.qriffic.FragmentLeaderboard"
         android:label="@string/leaderboard"
-        tools:layout="@layout/fragment_leaderboard" />
+        tools:layout="@layout/fragment_leaderboard" >
+        <action
+            android:id="@+id/action_nav_leaderboard_to_nav_QRDetail"
+            app:destination="@id/nav_QRDetail" />
+        <action
+            android:id="@+id/action_nav_leaderboard_to_fragmentUserSearchedProfile"
+            app:destination="@id/fragmentUserSearchedProfile" />
+    </fragment>
     <fragment
         android:id="@+id/nav_searchUser"
         android:name="com.example.qriffic.FragmentSearchUser"

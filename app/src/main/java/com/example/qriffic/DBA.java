@@ -361,9 +361,10 @@ public class DBA {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.get("name").toString();
+                                String idHash = document.get("idHash").toString();
                                 String score = document.get("score").toString();
-                                data.addQRPoint(name, score);
+                                String name = document.get("name").toString();
+                                data.addQRPoint(idHash, score, name);
                             }
 
                         } else {
@@ -405,9 +406,10 @@ public class DBA {
                                         }
 
                                         if (regionFlag) {
-                                            String name = document.get("name").toString();
+                                            String idHash = document.get("idHash").toString();
                                             String score = document.get("score").toString();
-                                            data.addRegionQRPoint(name, score);
+                                            String name = document.get("name").toString();
+                                            data.addRegionQRPoint(idHash, score, name);
                                         }
                                     }
                                 }
