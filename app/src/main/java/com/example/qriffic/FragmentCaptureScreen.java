@@ -313,7 +313,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
-                    CharSequence text = "You already have this QRMon!";
+                    CharSequence text = "This QRMon has been captured before! Previous data was overwritten";
                     Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
                     toast.show();
                 }
