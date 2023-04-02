@@ -169,6 +169,18 @@ public class FragmentUserProfile extends Fragment {
                     tvEmptyQRMon.setVisibility(View.VISIBLE);
                     lowScore.setText("N/A");
                     highScore.setText("N/A");
+                    topQRLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getContext(), "No QRMon to display", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    botQRLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getContext(), "No QRMon to display", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
 
