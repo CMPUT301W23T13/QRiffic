@@ -18,7 +18,7 @@ public class PlayerProfileTest {
 
     private PlayerProfile mockPlayerProfile() {
 
-        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999",  new HashMap<String, QRCode>());
+        return new PlayerProfile("username", "username@outlook.com", "999.999.9999",  new HashMap<String, QRCode>());
     }
 
     @Test
@@ -28,9 +28,6 @@ public class PlayerProfileTest {
 
         assertEquals("username", mockPlayerProfile.getUsername());
         assertNotEquals("player name", mockPlayerProfile.getUsername());
-
-        assertEquals("uuid", mockPlayerProfile.getUniqueID());
-        assertNotEquals("uuid2", mockPlayerProfile.getUniqueID());
 
         assertEquals("999.999.9999", mockPlayerProfile.getPhoneNum());
         assertEquals("username@outlook.com", mockPlayerProfile.getEmail());
