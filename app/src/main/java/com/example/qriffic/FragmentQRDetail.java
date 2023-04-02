@@ -83,6 +83,9 @@ public class FragmentQRDetail extends Fragment {
                 qrCode.addListener(new fetchListener() {
                     @Override
                     public void onFetchComplete() {
+                        CharSequence text = "QRMon successfully deleted!";
+                        Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
+                        toast.show();
                         Navigation.findNavController(view).popBackStack();
                     }
 

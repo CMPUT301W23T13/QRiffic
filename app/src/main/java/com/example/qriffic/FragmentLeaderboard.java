@@ -14,6 +14,7 @@ import androidx.core.view.ViewGroupCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -148,12 +149,35 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
             }
         });
 
+        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                bundle.putString("username", entry.getId());
+                bundle.putBoolean("isUser", false);
+                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_fragmentUserSearchedProfile,bundle);
+            }
+        });
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String choice = (String)parent.getItemAtPosition(position);
                 if (Objects.nonNull(dataList)) {
                     if (Objects.equals(choice, "Top Player Scores")) {
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("username", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_fragmentUserSearchedProfile,bundle);
+                            }
+                        });
+
                         dataList = data.getTopPlayerPoints();
                         leaderboardPlayerTitle.setText("My Score");
 
@@ -179,6 +203,18 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardAdapter.addAll(data.getTopPlayerPoints());
                         leaderboardAdapter.notifyDataSetChanged();
                     } else if (Objects.equals(choice, "Most QRMons Scanned")) {
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("username", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_fragmentUserSearchedProfile,bundle);
+                            }
+                        });
+
                         dataList = data.getTopPlayerScans();
                         leaderboardPlayerTitle.setText("My Scans");
                         int myRank = 0;
@@ -204,6 +240,18 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardAdapter.addAll(data.getTopPlayerScans());
                         leaderboardAdapter.notifyDataSetChanged();
                     } else if (Objects.equals(choice, "Top QRMons Globally")) {
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("QRID", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_nav_QRDetail,bundle);
+                            }
+                        });
+
                         dataList = data.getTopQRPoints();
                         leaderboardPlayerTitle.setText("My Best QRMon");
 
@@ -217,7 +265,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                             myPoints.setText(Integer.toString(qr.getScore()));
                             int myRank = 0;
                             while (myRank < dataList.size()) {
-                                if (Objects.equals(dataList.get(myRank).getId(), qr.getName())) {
+                                if (Objects.equals(dataList.get(myRank).getId(), qr.getIdHash())) {
                                     break;
                                 }
                                 myRank += 1;
@@ -231,6 +279,18 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardAdapter.addAll(data.getTopQRPoints());
                         leaderboardAdapter.notifyDataSetChanged();
                     } else if (Objects.equals(choice, "Top QRMons Regionally")) {
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("QRID", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_nav_QRDetail,bundle);
+                            }
+                        });
+
                         dataList = data.getTopRegionQRPoints();
                         if (city == null) {
                             leaderboardPlayerTitle.setText("My Best QRMon");
@@ -263,7 +323,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                                 boolean hasFlag = false;
                                 while (myRank < dataList.size()) {
                                     for (QRCode checkQR : profile.getCaptured().values()) {
-                                        if (checkQR.getName().equals(dataList.get(myRank).getId())) {
+                                        if (checkQR.getIdHash().equals(dataList.get(myRank).getId())) {
                                             hasFlag = true;
                                             myName.setText(checkQR.getName());
                                             myPoints.setText(Integer.toString(checkQR.getScore()));
@@ -350,7 +410,6 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-
     }
 
     @Override

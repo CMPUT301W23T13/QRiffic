@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,6 +91,10 @@ public class FragmentUserProfile extends Fragment {
         TextView lowScore = view.findViewById(R.id.topQRName3);
         TextView topQRName = view.findViewById(R.id.topQRName);
         TextView botQRName = view.findViewById(R.id.botQRName);
+        LinearLayout topQRLayout = view.findViewById(R.id.top_score_linear_layout);
+        LinearLayout botQRLayout = view.findViewById(R.id.bot_score_linear_layout);
+        ImageView topQRImage = view.findViewById(R.id.imageTop);
+        ImageView botQRImage = view.findViewById(R.id.imageBot);
 
         //initialize an array list of QR codes
         qrList = new ArrayList<>();
@@ -138,39 +144,50 @@ public class FragmentUserProfile extends Fragment {
                     highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
                     totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
-                } else {
-                    tvEmptyQRMon.setVisibility(View.VISIBLE);
-                    lowScore.setText("N/A");
-                    highScore.setText("N/A");
-                }
+                    //set name for lowest score and  highest score
+                    QRCode topQR = playerProfile.getBestQR();
+                    topQRName.setText(topQR.getName());
 
-                //set name for lowest score and  highest score
-                for (QRCode qrCode : qrList) {
-                    if (qrCode.getScore() == playerProfile.getHighScore()) {
-                        topQRName.setText(qrCode.getName());
-
-                        //set image for highest score
-                        String highurl = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
-                        Glide.with(getContext())
+                    //set image for highest score
+                    String highurl = "https://www.gravatar.com/avatar/" + topQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                    Glide.with(getContext())
                             .load(highurl)
                             .centerCrop()
                             .error(R.drawable.ic_launcher_background)
                             .into((ImageView) view.findViewById(R.id.imageTop));
 
-                    }
+                    QRCode worstQR = playerProfile.getWorstQR();
+                    botQRName.setText(worstQR.getName());
 
-                    if (qrCode.getScore() == playerProfile.getLowScore()) {
-                        botQRName.setText(qrCode.getName());
 
-                        //set image for lowest score
-                        String lowurl = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
-                        Glide.with(getContext())
+                    //set image for lowest score
+                    String lowurl = "https://www.gravatar.com/avatar/" + worstQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                    Glide.with(getContext())
                             .load(lowurl)
                             .centerCrop()
                             .error(R.drawable.ic_launcher_background)
                             .into((ImageView) view.findViewById(R.id.imageBot));
-                    }
+                } else {
+                    tvEmptyQRMon.setVisibility(View.VISIBLE);
+                    lowScore.setText("N/A");
+                    highScore.setText("N/A");
+                    topQRLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getContext(), "No QRMon to display", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    botQRLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getContext(), "No QRMon to display", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    topQRImage.setVisibility(View.GONE);
+                    botQRImage.setVisibility(View.GONE);
                 }
+
+
 
                 //set the text views to the user data
                 tvUsername.setText(playerProfile.getUsername());
@@ -186,28 +203,7 @@ public class FragmentUserProfile extends Fragment {
             }
         });
 
-        //navigate to QR detail page by clicking on top, bot, or listview
-        //todo: see if we want top/bot to be clickable
-//        ImageView imageTop = view.findViewById(R.id.imageTop);
-//        ImageView imageBot = view.findViewById(R.id.imageBot);
-//
-//        imageTop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("QRID", topQRName.getText().toString());
-//                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
-//            }
-//        });
-//
-//        imageBot.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("QRID", botQRName.getText().toString());
-//                Navigation.findNavController(v).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
-//            }
-//        });
+
 
         profileListView = view.findViewById(R.id.profileList);
         ViewGroupCompat.setTransitionGroup(profileListView, true);
@@ -221,6 +217,29 @@ public class FragmentUserProfile extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
             }
         });
+
+        topQRLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                QRCode qrCode = playerProfile.getBestQR();
+                bundle.putString("QRID", qrCode.getIdHash());
+                bundle.putBoolean("isUser", true);
+                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+            }
+        });
+
+        botQRLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                QRCode qrCode = playerProfile.getWorstQR();
+                bundle.putString("QRID", qrCode.getIdHash());
+                bundle.putBoolean("isUser", true);
+                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+            }
+        });
+
         DBA.getPlayer(playerProfile, new UsernamePersistent(getContext()).fetchUsername());
 
         return view;

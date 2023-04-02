@@ -33,19 +33,19 @@ public class LeaderboardData {
     }
 
     public void addPlayerPoint(String username, String score) {
-        topPlayerPoints.add(new LeaderboardEntry(username, score));
+        topPlayerPoints.add(new LeaderboardEntry(username, score, username));
     }
 
     public void addPlayerScan(String username, String scans) {
-        topPlayerScans.add(new LeaderboardEntry(username, scans));
+        topPlayerScans.add(new LeaderboardEntry(username, scans, username));
     }
 
-    public void addQRPoint(String idHash, String score) {
-        topQRPoints.add(new LeaderboardEntry(idHash, score));
+    public void addQRPoint(String idHash, String score, String name) {
+        topQRPoints.add(new LeaderboardEntry(idHash, score, name));
     }
 
-    public void addRegionQRPoint(String idHash, String score) {
-        topRegionQRPoints.add(new LeaderboardEntry(idHash, score));
+    public void addRegionQRPoint(String idHash, String score, String name) {
+        topRegionQRPoints.add(new LeaderboardEntry(idHash, score, name));
     }
 
     public ArrayList<LeaderboardEntry> getTopPlayerPoints() {

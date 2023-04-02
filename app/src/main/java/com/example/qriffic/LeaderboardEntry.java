@@ -3,10 +3,13 @@ package com.example.qriffic;
 public class LeaderboardEntry {
     private String id;
     private String value;
+    private String name;
 
-    public LeaderboardEntry(String id, String value) {
+
+    public LeaderboardEntry(String id, String value, String name) {
         this.id = id;
         this.value = value;
+        this.name = name;
     }
 
     public void setId(String id) {
@@ -24,4 +27,6 @@ public class LeaderboardEntry {
     public String getValue() {
         return this.value;
     }
+    public void setName() {this.name = name;}
+    public String getName() {return this.name;}
 }
