@@ -304,7 +304,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         qrCode.setComment(commentEditText.getText().toString());
         // update player's captured list and QRs collection in DB
         PlayerProfile player = new PlayerProfile();
-        DBA.getPlayer(player, username);
         player.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
@@ -324,6 +323,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             public void onFetchFailure() {
             }
         });
+        DBA.getPlayer(player, username);
 
         qrCode.addListener(new fetchListener() {
             @Override
