@@ -358,6 +358,34 @@ public void checkLeaderboards() throws Exception {
 
     }
 
+    /**
+     * Test to check if qr code is scanned, if capture screen is functioning,
+     * and if the qr is added to the account
+     * NOTE: THIS TEST WILL FAIL IF THE CAMERA DOES NOT HAVE A PHYSICAL QR CODE TO SCAN IN FRONT OF
+     * IT. PLEASE POSITION THE DEVICE ACCORDINGLY BEFORE RUNNING THIS TEST. THE QR CODE MUST
+     * REPRESENT THE STRING "testqr" FOR THE TEST TO PASS.
+     * @throws Exception
+     */
+    @Test
+    public void checkScanCapture() throws Exception {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        //click on scanner
+        solo.clickOnText("Snap a QR");
+
+        // give the scanner up to five seconds to capture the QR code and navigate to the capture fragment
+        // wait for capture fragment to become visible
+        solo.waitForFragmentById(R.id.fragment_new_qrmon, 5000);
+        // Verify that LeaderboardFragment is visible
+        RelativeLayout captureLayout = (RelativeLayout) solo.getCurrentActivity().findViewById(R.id.fragment_new_qrmon);
+        assertNotNull(captureLayout);
+        assertTrue(captureLayout.isShown());
+
+
+
+    }
+
 
     @After
     public void tearDown() throws Exception {
