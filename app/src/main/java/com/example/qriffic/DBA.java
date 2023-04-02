@@ -104,12 +104,6 @@ public class DBA {
      * The PlayerProfile object to be overwritten to
      */
     public static void getPlayer(PlayerProfile player, String name) {
-        /*
-        Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
-                + player.getUniqueID() + " " + player.getEmail() + " "
-                + player.getPhoneNum() + " " + player.getHighScore() + " "
-                + player.getLowScore() + " " + player.getCaptured().size());
-         */
         playersColRef.document(name).get()
             .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -145,14 +139,6 @@ public class DBA {
                     }
 
                     player.fetchComplete();
-
-                    /*
-                    // For testing purposes
-                    Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
-                            + player.getUniqueID() + " " + player.getEmail() + " "
-                            + player.getPhoneNum() + " " + player.getHighScore() + " "
-                            + player.getLowScore() + " " + player.getCaptured().size());
-//                     */
                 }
         });
     }
@@ -167,7 +153,6 @@ public class DBA {
     public static void addQR(PlayerProfile player, QRCode qr) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("username", player.getUsername());
-        data.put("uniqueID", player.getUniqueID());
         data.put("email", player.getEmail());
         data.put("phoneNum", player.getPhoneNum());
         data.put("highScore", player.getHighScore());
