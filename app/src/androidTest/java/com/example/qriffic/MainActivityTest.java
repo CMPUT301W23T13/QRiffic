@@ -36,7 +36,7 @@ import org.junit.*;
 /**
  * Test class for MainActivity. All the UI tests are written here.
  * Robotium test framework is used
- * Assumes that the app is freshly installed on the device and the robot's username is not in the database
+ * Assumes that there are no QR codes in a pre existing test account
  */
 public class MainActivityTest {
 
@@ -179,7 +179,7 @@ public class MainActivityTest {
         assertTrue(searchLayout.isShown());
 
         //search for a user
-        solo.enterText(0, "Luke007");
+        solo.enterText(0, "Luke");
         solo.clickOnView(solo.getView(R.id.search_button));
         //wait for the search to complete
         sleep(5000);
@@ -192,7 +192,7 @@ public class MainActivityTest {
         //check if the user is displayed
         //check if the textview has the correct text
         TextView username = (TextView) solo.getView(R.id.user_name);
-        assertEquals("Luke007", username.getText().toString());
+        assertEquals("Luke", username.getText().toString());
 
 
     }
@@ -368,7 +368,7 @@ public void checkLeaderboards() throws Exception {
      * NOTE: THIS TEST WILL FAIL IF THE CAMERA DOES NOT HAVE A PHYSICAL QR CODE TO SCAN IN FRONT OF
      * IT. PLEASE POSITION THE DEVICE ACCORDINGLY BEFORE RUNNING THIS TEST. THE QR CODE MUST
      * REPRESENT THE STRING "testqr" FOR THE TEST TO PASS. THE TESTER MUST ALSO TAKE THE LOCATION
-     * IMAGE WHEN THE CAMERA ACTIVITY IS ACTIVE. THE TEST ACCOUNT MUST HAVE NO QR CODES.
+     * IMAGE WHEN THE CAMERA ACTIVITY IS ACTIVE. THE TEST ACCOUNT MUST HAVE 0 QR CODES IN IT BEFORE
      * @throws Exception
      */
     @Test
