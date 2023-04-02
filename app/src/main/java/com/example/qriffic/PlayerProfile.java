@@ -427,4 +427,13 @@ public class PlayerProfile {
         }
         return null;
     }
+
+    public QRCode getWorstQR() {
+        for (QRCode qr : captured.values()) {
+            if (qr.getScore() == this.lowScore) {
+                return qr;
+            }
+        }
+        return null;
+    }
 }
