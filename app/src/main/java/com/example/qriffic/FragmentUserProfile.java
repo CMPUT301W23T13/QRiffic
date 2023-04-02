@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,34 +142,36 @@ public class FragmentUserProfile extends Fragment {
                     highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
                     totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
+                    //set name for lowest score and  highest score
+                    QRCode topQR = playerProfile.getBestQR();
+                    topQRName.setText(topQR.getName());
+
+                    //set image for highest score
+                    String highurl = "https://www.gravatar.com/avatar/" + topQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                    Glide.with(getContext())
+                            .load(highurl)
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_background)
+                            .into((ImageView) view.findViewById(R.id.imageTop));
+
+                    QRCode worstQR = playerProfile.getWorstQR();
+                    botQRName.setText(worstQR.getName());
+
+
+                    //set image for lowest score
+                    String lowurl = "https://www.gravatar.com/avatar/" + worstQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                    Glide.with(getContext())
+                            .load(lowurl)
+                            .centerCrop()
+                            .error(R.drawable.ic_launcher_background)
+                            .into((ImageView) view.findViewById(R.id.imageBot));
                 } else {
                     tvEmptyQRMon.setVisibility(View.VISIBLE);
                     lowScore.setText("N/A");
                     highScore.setText("N/A");
                 }
 
-                //set name for lowest score and  highest score
-                QRCode topQR = playerProfile.getBestQR();
-                topQRName.setText(topQR.getName());
 
-                //set image for highest score
-                String highurl = "https://www.gravatar.com/avatar/" + topQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
-                Glide.with(getContext())
-                        .load(highurl)
-                        .centerCrop()
-                        .error(R.drawable.ic_launcher_background)
-                        .into((ImageView) view.findViewById(R.id.imageTop));
-
-                QRCode worstQR = playerProfile.getWorstQR();
-                botQRName.setText(worstQR.getName());
-
-                //set image for lowest score
-                String lowurl = "https://www.gravatar.com/avatar/" + worstQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
-                Glide.with(getContext())
-                        .load(lowurl)
-                        .centerCrop()
-                        .error(R.drawable.ic_launcher_background)
-                        .into((ImageView) view.findViewById(R.id.imageBot));
 
                 //set the text views to the user data
                 tvUsername.setText(playerProfile.getUsername());
