@@ -11,6 +11,13 @@ buildscript {
     }
 }
 
+String getSecretKey() {
+    def propFile = rootProject.file("./local.properties")
+    def properties = new Properties()
+    properties.load(new FileInputStream(propFile))
+    return properties['SECRET_KEY']
+}
+
 
 plugins {
     id 'com.android.application' version '7.3.1' apply false
