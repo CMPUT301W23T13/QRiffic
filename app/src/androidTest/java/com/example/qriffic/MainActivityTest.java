@@ -205,7 +205,6 @@ public class MainActivityTest {
     @Test
     public void checkQRDetails() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        TextView qrName = (TextView) solo.getView(R.id.pListName);
 
         //click on nav drawer button
         solo.clickOnImageButton(0);
@@ -227,6 +226,9 @@ public class MainActivityTest {
         FrameLayout userProfileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
         assertNotNull(userProfileLayout);
         assertTrue(userProfileLayout.isShown());
+
+        // get the name of the qr code
+        TextView qrName = (TextView) solo.getView(R.id.pListName);
 
         //click on list view item
         solo.clickInList(0);
@@ -258,7 +260,6 @@ public class MainActivityTest {
     @Test
     public void checkDeleteQR() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        TextView qrName = (TextView) solo.getView(R.id.pListName);
 
         ListView listView = (ListView) solo.getView(R.id.profileList);
         //get adapter
@@ -287,6 +288,9 @@ public class MainActivityTest {
         FrameLayout userProfileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
         assertNotNull(userProfileLayout);
         assertTrue(userProfileLayout.isShown());
+
+        // get the name of the qr code
+        TextView qrName = (TextView) solo.getView(R.id.pListName);
 
         //click on list view item
         solo.clickInList(0);
