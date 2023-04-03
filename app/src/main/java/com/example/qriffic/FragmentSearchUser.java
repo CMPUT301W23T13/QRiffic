@@ -1,6 +1,7 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import androidx.navigation.Navigation;
  * A fragment to allow users to search for other users' profiles.
  */
 public class FragmentSearchUser extends Fragment {
-
+    private long mLastClickTime = 0;
     private NavController navController;
 
     public FragmentSearchUser() {
@@ -70,6 +71,10 @@ public class FragmentSearchUser extends Fragment {
                     fetchedPlayer.addListener(new fetchListener() {
                         @Override
                         public void onFetchComplete() {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
                             Bundle bundle = new Bundle();
                             bundle.putString("username", etSearch.getText().toString());
                             Navigation.findNavController(v).navigate(R.id.action_nav_searchUser_to_fragmentUserSearchedProfile, bundle);
