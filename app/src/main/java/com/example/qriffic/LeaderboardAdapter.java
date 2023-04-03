@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class LeaderboardAdapter extends ArrayAdapter<LeaderboardEntry> {
 
     public LeaderboardAdapter(@NonNull Context context, @NonNull ArrayList<LeaderboardEntry> entires) {
-        super (context, 0, entires);
+        super(context, 0, entires);
     }
 
     @NonNull

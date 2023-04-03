@@ -1,7 +1,6 @@
 package com.example.qriffic;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 /**
  * This class holds all of the data that the leaderboard needs
@@ -10,23 +9,23 @@ public class LeaderboardData {
     /**
      * An array of LeaderboardEntry objects that represent players, ordered descending by their total score
      */
-    private ArrayList<LeaderboardEntry> topPlayerPoints;
+    private final ArrayList<LeaderboardEntry> topPlayerPoints;
     /**
      * An array of LeaderboardEntry objects that represent players, ordered descending by their total scans
      */
-    private ArrayList<LeaderboardEntry> topPlayerScans;
+    private final ArrayList<LeaderboardEntry> topPlayerScans;
     /**
      * An array of LeaderboardEntry objects that represent QRCodes, ordered descending by their individual score
      */
-    private ArrayList<LeaderboardEntry> topQRPoints;
+    private final ArrayList<LeaderboardEntry> topQRPoints;
     /**
      * An array of LeaderboardEntry objects that represent QRCodes that belong in a certain region, ordered descending by their individual score
      */
-    private ArrayList<LeaderboardEntry> topRegionQRPoints;
+    private final ArrayList<LeaderboardEntry> topRegionQRPoints;
     /**
      * Holds fetchListeners used by the class to know when data has been successfully fetched from the database
      */
-    private ArrayList<fetchListener> listeners;
+    private final ArrayList<fetchListener> listeners;
 
     /**
      * Constructs the class and initializes all arrays as empty ones
@@ -41,14 +40,13 @@ public class LeaderboardData {
 
     /**
      * This method adds a fetchListener to the PlayerProfile object
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
      * Date: 10/03/2023
      *
-     * @param listener
-     * The fetchListener to be added
+     * @param listener The fetchListener to be added
      */
     public void addListener(fetchListener listener) {
         listeners.add(listener);
@@ -56,12 +54,11 @@ public class LeaderboardData {
 
     /**
      * This method calls all onFetchComplete() listeners
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
      * Date: 10/03/2023
-     *
      */
     public void fetchComplete() {
         for (fetchListener fl : listeners)
@@ -70,7 +67,7 @@ public class LeaderboardData {
 
     /**
      * This method calls all onFetchFailure() listeners
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
@@ -83,8 +80,9 @@ public class LeaderboardData {
 
     /**
      * Adds a LeaderboardEntry representing a player to the topPlayerPoints array
+     *
      * @param username The username of the player
-     * @param score The total score of the player
+     * @param score    The total score of the player
      */
     public void addPlayerPoint(String username, String score) {
         topPlayerPoints.add(new LeaderboardEntry(username, score, username));
@@ -92,8 +90,9 @@ public class LeaderboardData {
 
     /**
      * Adds a LeaderboardEntry representing a player to the topPlayerScans array
+     *
      * @param username The username of the player
-     * @param scans The total scans of the player
+     * @param scans    The total scans of the player
      */
     public void addPlayerScan(String username, String scans) {
         topPlayerScans.add(new LeaderboardEntry(username, scans, username));
@@ -101,9 +100,10 @@ public class LeaderboardData {
 
     /**
      * Adds a LeaderboardEntry representing a QRMon to the topQRPoints array
+     *
      * @param idHash The idHash of the QRMon
-     * @param score The score of the QRMon
-     * @param name The name of the QRMon
+     * @param score  The score of the QRMon
+     * @param name   The name of the QRMon
      */
     public void addQRPoint(String idHash, String score, String name) {
         topQRPoints.add(new LeaderboardEntry(idHash, score, name));
@@ -111,9 +111,10 @@ public class LeaderboardData {
 
     /**
      * Adds a LeaderboardEntry representing a QRMon to the topRegionQRPoints array
+     *
      * @param idHash The idHash of the QRMon
-     * @param score The score of the QRMon
-     * @param name The name of the QRMon
+     * @param score  The score of the QRMon
+     * @param name   The name of the QRMon
      */
     public void addRegionQRPoint(String idHash, String score, String name) {
         topRegionQRPoints.add(new LeaderboardEntry(idHash, score, name));
@@ -121,6 +122,7 @@ public class LeaderboardData {
 
     /**
      * Returns the topPlayerPoints array, which has all players in it ordered descending by their total score
+     *
      * @return The topPlayerPoints array
      */
     public ArrayList<LeaderboardEntry> getTopPlayerPoints() {
@@ -129,6 +131,7 @@ public class LeaderboardData {
 
     /**
      * Returns the topPlayerScans array, which has all players in it ordered descending by their total scans
+     *
      * @return The topPlayerScans array
      */
     public ArrayList<LeaderboardEntry> getTopPlayerScans() {
@@ -137,6 +140,7 @@ public class LeaderboardData {
 
     /**
      * Returns the topQRPoints array, which has all QRMons in it ordered descending by their scores
+     *
      * @return The topQRPoints array
      */
     public ArrayList<LeaderboardEntry> getTopQRPoints() {
@@ -145,6 +149,7 @@ public class LeaderboardData {
 
     /**
      * Returns the topRegionQRPoints array, which has QRMons from a certain region ordered descending by their scores
+     *
      * @return The topRegionQRPoints array
      */
     public ArrayList<LeaderboardEntry> getTopRegionQRPoints() {

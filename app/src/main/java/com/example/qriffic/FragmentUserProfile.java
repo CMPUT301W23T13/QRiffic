@@ -1,20 +1,24 @@
 package com.example.qriffic;
 
-import static android.content.DialogInterface.*;
-
-
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -23,23 +27,8 @@ import androidx.core.view.ViewGroupCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.provider.Settings;
-import android.transition.TransitionInflater;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,15 +51,17 @@ public class FragmentUserProfile extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     ArrayList<QRCode> qrList;
-    private boolean mLocationPermissionGranted = false;
+    private final boolean mLocationPermissionGranted = false;
 
     public FragmentUserProfile() {
         // Required empty public constructor
     }
 //
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment UserProfile.
      */
     public static FragmentUserProfile newInstance() {
@@ -80,7 +71,7 @@ public class FragmentUserProfile extends Fragment {
         return fragment;
     }
 
-    private boolean isPermissionRequestedBefore = false;
+    private final boolean isPermissionRequestedBefore = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,7 +142,7 @@ public class FragmentUserProfile extends Fragment {
                     HashArray[i] = qrList.get(i).getIdHash();
                 }
 
-                totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
+                totalScore.setText(playerProfile.getTotalScore() + "pts");
 
                 dataList = new ArrayList<QRCode>();
                 qrAdapter = new QRCodeAdapter(getContext(), dataList);
@@ -161,16 +152,16 @@ public class FragmentUserProfile extends Fragment {
                 }
 
                 qrAdapter.notifyDataSetChanged();
-                System.out.println("dataList"+dataList);
-                System.out.println("qrAdapter"+qrAdapter);
+                System.out.println("dataList" + dataList);
+                System.out.println("qrAdapter" + qrAdapter);
 
                 profileListView = view.findViewById(R.id.profileList);
                 profileListView.setAdapter(qrAdapter);
 
                 if (qrList.size() > 0) {
-                    lowScore.setText(String.valueOf(playerProfile.getLowScore()) + "pts");
-                    highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
-                    totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
+                    lowScore.setText(playerProfile.getLowScore() + "pts");
+                    highScore.setText(playerProfile.getHighScore() + "pts");
+                    totalScore.setText(playerProfile.getTotalScore() + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
                     //set name for lowest score and  highest score
                     QRCode topQR = playerProfile.getBestQR();
@@ -216,7 +207,6 @@ public class FragmentUserProfile extends Fragment {
                 }
 
 
-
                 //set the text views to the user data
                 tvUsername.setText(playerProfile.getUsername());
                 tvEmail.setText(playerProfile.getEmail());
@@ -232,7 +222,6 @@ public class FragmentUserProfile extends Fragment {
         });
 
 
-
         profileListView = view.findViewById(R.id.profileList);
         ViewGroupCompat.setTransitionGroup(profileListView, true);
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -242,7 +231,7 @@ public class FragmentUserProfile extends Fragment {
                 QRCode qrCode = qrList.get(position);
                 bundle.putString("QRID", qrCode.getIdHash());
                 bundle.putBoolean("isUser", true);
-                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail, bundle);
             }
         });
 
@@ -253,7 +242,7 @@ public class FragmentUserProfile extends Fragment {
                 QRCode qrCode = playerProfile.getBestQR();
                 bundle.putString("QRID", qrCode.getIdHash());
                 bundle.putBoolean("isUser", true);
-                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail, bundle);
             }
         });
 
@@ -264,7 +253,7 @@ public class FragmentUserProfile extends Fragment {
                 QRCode qrCode = playerProfile.getWorstQR();
                 bundle.putString("QRID", qrCode.getIdHash());
                 bundle.putBoolean("isUser", true);
-                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_userProfile_to_fragment_QR_Detail, bundle);
             }
         });
 
@@ -274,10 +263,8 @@ public class FragmentUserProfile extends Fragment {
     }
 
 
-
-
     // check for location permission
-    private  boolean checkAndRequestPermissions() {
+    private boolean checkAndRequestPermissions() {
 
         //check for camera permission
         int cameraPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA);
@@ -285,7 +272,7 @@ public class FragmentUserProfile extends Fragment {
         // check for location permission
         int locationPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         List<String> listPermissionsNeeded = new ArrayList<>();
-        if (locationPermission != PackageManager.PERMISSION_GRANTED ) {
+        if (locationPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
@@ -293,7 +280,7 @@ public class FragmentUserProfile extends Fragment {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(getActivity(), listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
+            ActivityCompat.requestPermissions(getActivity(), listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
             return false;
         }
         return true;
@@ -302,7 +289,7 @@ public class FragmentUserProfile extends Fragment {
     @SuppressLint("RestrictedApi")
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d(TAG, "Permission callback called-------");
         switch (requestCode) {
@@ -366,13 +353,6 @@ public class FragmentUserProfile extends Fragment {
                 .create()
                 .show();
     }
-
-
-
-
-
-
-
 
 
 }

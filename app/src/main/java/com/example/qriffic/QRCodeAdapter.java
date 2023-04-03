@@ -14,14 +14,13 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class extends the ArrayAdapter class and adapts for QRCode objects
  */
-public class QRCodeAdapter extends ArrayAdapter<QRCode>{
+public class QRCodeAdapter extends ArrayAdapter<QRCode> {
     public QRCodeAdapter(@NonNull Context context, @NonNull ArrayList<QRCode> objects) {
-        super(context, 0, objects );
+        super(context, 0, objects);
 
     }
 
@@ -44,11 +43,11 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode>{
 
             nameTextView.setText(qrCode.getName());
             System.out.println(qrCode.getName());
-            scoreTextView.setText(String.valueOf(qrCode.getScore()) + "pts");
+            scoreTextView.setText(qrCode.getScore() + "pts");
 
             // generate QR code image and load
             String hash = qrCode.getIdHash();
-            System.out.println("QRCodeAdapter hash: "+hash);
+            System.out.println("QRCodeAdapter hash: " + hash);
             String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
             Glide.with(getContext())
                     .load(url)
@@ -56,9 +55,8 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode>{
                     .error(R.drawable.ic_launcher_background)
                     .into((ImageView) view.findViewById(R.id.pListImage));
 
-        }
-        else {
-            System.out.println("QRCodeAdapter QRCode is null at position "+position);
+        } else {
+            System.out.println("QRCodeAdapter QRCode is null at position " + position);
         }
 
 
