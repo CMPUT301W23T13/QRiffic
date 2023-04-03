@@ -41,9 +41,11 @@ public class FragmentUserSearchedProfile extends Fragment {
         // Required empty public constructor
     }
 //
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment UserProfile.
      */
     public static FragmentUserSearchedProfile newInstance() {
@@ -115,7 +117,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                     HashArray[i] = qrList.get(i).getIdHash();
                 }
 
-                totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
+                totalScore.setText(playerProfile.getTotalScore() + "pts");
 
                 dataList = new ArrayList<QRCode>();
                 qrAdapter = new QRCodeAdapter(getContext(), dataList);
@@ -125,17 +127,17 @@ public class FragmentUserSearchedProfile extends Fragment {
                 }
 
                 qrAdapter.notifyDataSetChanged();
-                System.out.println("dataList"+dataList);
-                System.out.println("qrAdapter"+qrAdapter);
+                System.out.println("dataList" + dataList);
+                System.out.println("qrAdapter" + qrAdapter);
 
                 profileListView = view.findViewById(R.id.profileList);
                 ViewGroupCompat.setTransitionGroup(profileListView, true);
                 profileListView.setAdapter(qrAdapter);
 
                 if (qrList.size() > 0) {
-                    lowScore.setText(String.valueOf(playerProfile.getLowScore()) + "pts");
-                    highScore.setText(String.valueOf(playerProfile.getHighScore()) + "pts");
-                    totalScore.setText(String.valueOf(playerProfile.getTotalScore()) + "pts");
+                    lowScore.setText(playerProfile.getLowScore() + "pts");
+                    highScore.setText(playerProfile.getHighScore() + "pts");
+                    totalScore.setText(playerProfile.getTotalScore() + "pts");
                     tvEmptyQRMon.setVisibility(View.GONE);
                 } else {
                     tvEmptyQRMon.setVisibility(View.VISIBLE);
@@ -190,7 +192,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 QRCode qrCode = qrList.get(position);
                 bundle.putString("QRID", qrCode.getIdHash());
                 bundle.putBoolean("isUser", false);
-                Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail, bundle);
             }
         });
 
@@ -201,7 +203,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 QRCode qrCode = playerProfile.getBestQR();
                 bundle.putString("QRID", qrCode.getIdHash());
                 bundle.putBoolean("isUser", false);
-                Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail, bundle);
             }
         });
 
@@ -212,7 +214,7 @@ public class FragmentUserSearchedProfile extends Fragment {
                 QRCode qrCode = playerProfile.getWorstQR();
                 bundle.putString("QRID", qrCode.getIdHash());
                 bundle.putBoolean("isUser", false);
-                Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_fragmentUserSearchedProfile_to_nav_QRDetail, bundle);
             }
         });
 

@@ -20,15 +20,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -56,8 +52,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
 
         // Check if user has granted location permission
@@ -119,8 +113,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
                 ActivityCompat.requestPermissions(getActivity(), new String[]{permission.ACCESS_FINE_LOCATION}, 1);
                 return;
-            }
-            else{
+            } else {
                 map.setMyLocationEnabled(true);
             }
         } else {
@@ -139,12 +132,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         });
 
 
-
         // Get the list of locations from the database
 
         //initialize an array for storing qr
         List<QRData> QRData = new ArrayList<QRData>();
-
 
 
         // Get the list of locations from the database
@@ -153,7 +144,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         List<String> idHash = new ArrayList<String>();
         QRCode qrCode = new QRCode();
 
-        HashMap<String,Object> data = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
 
 
         db.collection("QRs")
@@ -184,10 +175,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
                                         for (String key : qrData.getUsers().keySet()) {
 //
-                                            HashMap<String,Object> user = (HashMap<String, Object>) qrData.getUsers().get(key);
+                                            HashMap<String, Object> user = (HashMap<String, Object>) qrData.getUsers().get(key);
 //
                                             //get the lat and lon
-                                            HashMap<String,Object> geoLocation = (HashMap<String, Object>) user.get("geoLocation");
+                                            HashMap<String, Object> geoLocation = (HashMap<String, Object>) user.get("geoLocation");
 
 //
 
@@ -196,15 +187,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                             Double longitude = (Double) geoLocation.get("longitude");
 
 
-                                           //add the lat and lon to the markerLatLngList
+                                            //add the lat and lon to the markerLatLngList
                                             List<LatLng> markerLatLngList = new ArrayList<>();
 
                                             //if lat long != 9999.0 and !=0
 
 
-
-                                            if((latitude != 9999.0 && longitude != 9999.0) && (latitude != 0.0 && longitude != 0.0)){
-                                                markerLatLngList.add(new LatLng(longitude,latitude));
+                                            if ((latitude != 9999.0 && longitude != 9999.0) && (latitude != 0.0 && longitude != 0.0)) {
+                                                markerLatLngList.add(new LatLng(longitude, latitude));
                                             }
                                             // Add a marker for each LatLng using a loop
                                             for (LatLng latLng : markerLatLngList) {
@@ -215,16 +205,16 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                                 map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                                     @Override
                                                     public boolean onMarkerClick(@NonNull Marker marker) {
-                                                        System.out.println("marker id"+marker.getTag());
+                                                        System.out.println("marker id" + marker.getTag());
 
                                                         //make bundle for id
                                                         Bundle bundle = new Bundle();
-                                                        bundle.putString("QRID",marker.getTag().toString());
-                                                        System.out.println("bundle id"+bundle.getString("QRID"));
+                                                        bundle.putString("QRID", marker.getTag().toString());
+                                                        System.out.println("bundle id" + bundle.getString("QRID"));
                                                         //navigate to qr detail fragment
                                                         View view = getView();
 
-                                                        Navigation.findNavController(view).navigate(R.id.action_nav_map_to_nav_QRDetail,bundle);
+                                                        Navigation.findNavController(view).navigate(R.id.action_nav_map_to_nav_QRDetail, bundle);
 
 
                                                         return false;
@@ -270,18 +260,17 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
-                    if(ContextCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    if (ContextCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         map.setMyLocationEnabled(true);
                     }
                 } else {
 
                     mLocationPermissionGranted = false;
 
-                    }
                 }
             }
         }
-
+    }
 
 
     @Override
@@ -290,7 +279,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 
     }
-
 
 
     @Override

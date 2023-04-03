@@ -30,9 +30,9 @@ import java.util.Objects;
  */
 public class DBA {
 
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static CollectionReference playersColRef= db.collection("Players");;
-    private static CollectionReference qrColRef = db.collection("QRs");
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final CollectionReference playersColRef = db.collection("Players");
+    private static final CollectionReference qrColRef = db.collection("QRs");
 
     /**
      * This is the constructor for the DBA class
@@ -42,8 +42,8 @@ public class DBA {
 
     /**
      * This method adds a PlayerProfile object to the database
-     * @param player
-     * The PlayerProfile object to be added
+     *
+     * @param player The PlayerProfile object to be added
      */
     public static void setPlayer(PlayerProfile player) {
         HashMap<String, Object> data = new HashMap<>();
@@ -72,81 +72,79 @@ public class DBA {
     /**
      * This method updates the contact info of an existing Player in the database.
      * Throws an error if the player does not exist in the database.
-     * @param player
-     * The PlayerProfile object with the updated info
+     *
+     * @param player The PlayerProfile object with the updated info
      */
     public static void updateContactInfo(PlayerProfile player) {
         playersColRef.document(player.getUsername()).get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()) {
-                                        playersColRef.document(player.getUsername()).update("phoneNum", player.getPhoneNum());
-                                        playersColRef.document(player.getUsername()).update("email", player.getEmail());
-                                    } else {
-                                        throw new IllegalArgumentException("Player does not exist in database");
-                                    }
-                                }
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                playersColRef.document(player.getUsername()).update("phoneNum", player.getPhoneNum());
+                                playersColRef.document(player.getUsername()).update("email", player.getEmail());
+                            } else {
+                                throw new IllegalArgumentException("Player does not exist in database");
                             }
-                        });
+                        }
+                    }
+                });
     }
 
     /**
      * This method fetches a PlayerProfile object from the database and overwrites its data onto a
      * given PlayerProfile object
-     * @param name
-     * The username of the Player
-     * @param player
-     * The PlayerProfile object to be overwritten to
+     *
+     * @param name   The username of the Player
+     * @param player The PlayerProfile object to be overwritten to
      */
     public static void getPlayer(PlayerProfile player, String name) {
         playersColRef.document(name).get()
-            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Map<String, Object> fetchedPlayer = documentSnapshot.getData();
-                    if (fetchedPlayer == null) {
-                        // the username is not in the database
-                        player.fetchFailed();
-                        return;
-                    }
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Map<String, Object> fetchedPlayer = documentSnapshot.getData();
+                        if (fetchedPlayer == null) {
+                            // the username is not in the database
+                            player.fetchFailed();
+                            return;
+                        }
 
-                    player.setUsername(fetchedPlayer.get("username").toString());
-                    if (fetchedPlayer.get("email") == null) {
-                        player.setEmail(null);
-                    } else {
-                        player.setEmail(fetchedPlayer.get("email").toString());
-                    }
-                    if (fetchedPlayer.get("phoneNum") == null) {
-                        player.setPhoneNum(null);
-                    } else {
-                        player.setPhoneNum(fetchedPlayer.get("phoneNum").toString());
-                    }
-                    player.setHighScore(Math.toIntExact((long) fetchedPlayer.get("highScore")));
-                    player.setLowScore(Math.toIntExact((long) fetchedPlayer.get("lowScore")));
+                        player.setUsername(fetchedPlayer.get("username").toString());
+                        if (fetchedPlayer.get("email") == null) {
+                            player.setEmail(null);
+                        } else {
+                            player.setEmail(fetchedPlayer.get("email").toString());
+                        }
+                        if (fetchedPlayer.get("phoneNum") == null) {
+                            player.setPhoneNum(null);
+                        } else {
+                            player.setPhoneNum(fetchedPlayer.get("phoneNum").toString());
+                        }
+                        player.setHighScore(Math.toIntExact((long) fetchedPlayer.get("highScore")));
+                        player.setLowScore(Math.toIntExact((long) fetchedPlayer.get("lowScore")));
 
-                    Collection<Object> tempCollection = ((HashMap<String, Object>) fetchedPlayer.get("captured")).values();
-                    ArrayList<Object> tempMap = new ArrayList<Object>(tempCollection);
-                    ObjectMapper mapper = new ObjectMapper();
+                        Collection<Object> tempCollection = ((HashMap<String, Object>) fetchedPlayer.get("captured")).values();
+                        ArrayList<Object> tempMap = new ArrayList<Object>(tempCollection);
+                        ObjectMapper mapper = new ObjectMapper();
 
-                    for (int i = 0; i < tempMap.size(); i++) {
-                        QRCode qrCode = mapper.convertValue(tempMap.get(i), QRCode.class);
-                        player.addQRCode(qrCode);
+                        for (int i = 0; i < tempMap.size(); i++) {
+                            QRCode qrCode = mapper.convertValue(tempMap.get(i), QRCode.class);
+                            player.addQRCode(qrCode);
+                        }
+
+                        player.fetchComplete();
                     }
-
-                    player.fetchComplete();
-                }
-        });
+                });
     }
 
     /**
      * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
-     * @param player
-     * The username of the PlayerProfile object to be added to
-     * @param qr
-     * The QRCode object to be added
+     *
+     * @param player The username of the PlayerProfile object to be added to
+     * @param qr     The QRCode object to be added
      */
     public static void addQR(PlayerProfile player, QRCode qr) {
         HashMap<String, Object> data = new HashMap<>();
@@ -182,7 +180,7 @@ public class DBA {
                     }
                 });
 
-        Tasks.whenAllComplete(updatePlayer,updateQRCode).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+        Tasks.whenAllComplete(updatePlayer, updateQRCode).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
             @Override
             public void onSuccess(List<Task<?>> tasks) {
                 qr.fetchComplete();
@@ -194,8 +192,8 @@ public class DBA {
      * This method removes a QRCode from a PlayerProfile object's captured list
      * and removes the user from the that QRCode's users in the QRs collection
      * The input QRCode object is only used to get the username and idHash and attach the listener
-     * @param qr
-     * The QRCode object to be removed (Only the listeners, idHash, and username fields are used)
+     *
+     * @param qr The QRCode object to be removed (Only the listeners, idHash, and username fields are used)
      */
     public static void deleteQR(QRCode qr) {
         qrColRef.document(qr.getIdHash()).get()
@@ -247,6 +245,7 @@ public class DBA {
                     public void onFetchComplete() {
                         qr.fetchComplete();
                     }
+
                     @Override
                     public void onFetchFailure() {
                         throw new IllegalArgumentException("Player does not exist in database");
@@ -254,6 +253,7 @@ public class DBA {
                 });
                 DBA.setPlayer(dbPlayer);
             }
+
             @Override
             public void onFetchFailure() {
                 throw new IllegalArgumentException("Player does not exist in database");
@@ -261,14 +261,13 @@ public class DBA {
         });
         getPlayer(dbPlayer, qr.getUsername());
     }
-    
+
     /**
      * This method fetches a QRData object from the database and overwrites its data onto a
      * given QRData object
-     * @param qrData
-     * The QRData object to be overwritten to
-     * @param idHash
-     * The idHash of the QRData object to be fetched
+     *
+     * @param qrData The QRData object to be overwritten to
+     * @param idHash The idHash of the QRData object to be fetched
      */
     public static void getQRData(QRData qrData, String idHash) {
         qrColRef.document(idHash).get()
@@ -299,10 +298,9 @@ public class DBA {
     /**
      * This method fetches information from the database to fill the LeaderboardData object which
      * contains all of the data needed for the leaderboard functions
-     * @param data
-     * The LeaderboardData object being filled
-     * @param city
-     * The city that the user is in, used for regional queries
+     *
+     * @param data The LeaderboardData object being filled
+     * @param city The city that the user is in, used for regional queries
      */
     public static void getLeaderboard(LeaderboardData data, String city) {
         // Gets players by their total score

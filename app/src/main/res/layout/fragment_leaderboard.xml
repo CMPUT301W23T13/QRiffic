@@ -1,149 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_leaderboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    tools:context=".FragmentLeaderboard"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/leaderboard_type"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/purple_200"
-        android:layout_marginVertical="10dp"
-        android:padding="7dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/leaderboard"
-
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="24sp" />
-
+    tools:context=".FragmentLeaderboard">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_marginBottom="20dp">
-
+        android:layout_height="match_parent">
         <TextView
-            android:id="@+id/leaderboard_player_title"
+            android:id="@+id/leaderboard_type"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/purple_200"
+            android:layout_marginVertical="10dp"
+            android:padding="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/leaderboard_player_title"
+            android:text="@string/leaderboard"
 
             android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="3dp"
-            android:weightSum="1"
-            android:orientation="horizontal"
-            tools:ignore="DisableBaselineAlignment">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/rounded_left_component"
-                android:backgroundTint="@color/mediumBlue"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/leaderboard_rank_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/my_rank_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/profile_na"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/leaderboard_player_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="0.8"
-                android:background="@drawable/rounded_right_component"
-                android:backgroundTint="@color/lightBlue"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:text="@string/leaderboard_player_title"
 
-                <TextView
-                    android:id="@+id/my_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/leaderboard_username_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/my_points"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="3dp"
+                android:weightSum="1"
+                android:orientation="horizontal"
+                tools:ignore="DisableBaselineAlignment">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/rounded_left_component"
+                    android:backgroundTint="@color/mediumBlue"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/leaderboard_rank_text"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/my_rank_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/profile_na"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_na"
-                    android:textAlignment="center"
-                    android:textColor="@color/purple_500"
-                    android:textSize="20sp" />
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/rounded_right_component"
+                    android:backgroundTint="@color/lightBlue"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/my_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/leaderboard_username_text"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/my_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_na"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_500"
+                        android:textSize="20sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <Spinner
-            android:id="@+id/leaderboard_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/leaderboard_spinner"
-            android:layout_marginHorizontal="10dp"
-            />
-
-        <TextView
-            android:id="@+id/no_region_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-
-            android:text="@string/leaderboard_location_warning"
-            android:textAlignment="center"
-            android:textColor="@color/boxDarkGrey"
-            android:textSize="20sp"
-            android:visibility="gone"
-            />
-
-        <ListView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="3dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10dp"
-            android:id="@+id/leaderboard_list">
-        </ListView>
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/leaderboard_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/leaderboard_spinner"
+                android:layout_marginHorizontal="10dp"
+                />
+
+            <TextView
+                android:id="@+id/no_region_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+
+                android:text="@string/leaderboard_location_warning"
+                android:textAlignment="center"
+                android:textColor="@color/boxDarkGrey"
+                android:textSize="20sp"
+                android:visibility="gone"
+                />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="3dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10dp"
+                android:id="@+id/leaderboard_list">
+            </ListView>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

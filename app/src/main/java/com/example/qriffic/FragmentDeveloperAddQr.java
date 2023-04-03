@@ -6,19 +6,18 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import java.util.List;
 
@@ -87,7 +86,6 @@ public class FragmentDeveloperAddQr extends Fragment implements LocationListener
         String activeUsername = usernamePersistent.fetchUsername();
 
 
-
         // get reference to the button, EditText, and TextView
         Button addQR = view.findViewById(R.id.button_add_qr);
         EditText qrCode = view.findViewById(R.id.editText_enter_qr);
@@ -116,8 +114,8 @@ public class FragmentDeveloperAddQr extends Fragment implements LocationListener
                 Bundle bundle = new Bundle();
                 bundle.putString("barcode_data", qrCode.getText().toString());
                 Navigation.findNavController(getView()).navigate(R.id.nav_capture_screen, bundle);
-                }
-            });
+            }
+        });
 
         return view;
     }

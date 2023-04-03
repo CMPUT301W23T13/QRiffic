@@ -38,14 +38,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-
-import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
@@ -108,6 +108,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                         controller.popBackStack();
                         controller.popBackStack();
                     }
+
                     @Override
                     public void onFetchFailure() {
                     }
@@ -186,6 +187,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // check if the comment is longer than 128 characters
@@ -196,6 +198,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     commentEditText.setSelection(truncatedInput.length());
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -264,7 +267,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             if (location != null) {
                 currLongitude = location.getLongitude();
                 currLatitude = location.getLatitude();
-            }else {
+            } else {
                 currLongitude = 0;
                 currLatitude = 0;
             }
@@ -281,8 +284,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             Address address = addresses.get(0);
             if (address.getLocality() != null) {
                 currCity = address.getLocality();
-            }
-            else {
+            } else {
                 currCity = "N/A";
             }
         }
@@ -327,6 +329,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                 }
                 DBA.addQR(player, qrCode);
             }
+
             @Override
             public void onFetchFailure() {
             }
@@ -362,6 +365,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     }
                 }
             }
+
             @Override
             public void onFetchFailure() {
             }
@@ -375,7 +379,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         }
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 

@@ -1,15 +1,13 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.qriffic.databinding.FragmentSplashBinding;
 import com.google.firebase.FirebaseApp;
@@ -25,13 +23,16 @@ public class FragmentSplash extends Fragment {
     private FragmentSplashBinding binding;
     private String username;
     private NavController navController;
+
     public FragmentSplash() {
         // Required empty public constructor
     }
+
     private UsernamePersistent usernamePersistent;
 
     /**
      * Inflates the layout for this fragment and initializes the usernamePersistent
+     *
      * @param inflater
      * @param container
      * @param savedInstanceState

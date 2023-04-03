@@ -52,8 +52,8 @@ public class FragmentQRDetail extends Fragment {
      * delete the QR code if the user is the main user and clicks the delete button,
      * as well as setting the QR code image and the feed of users who have scanned
      *
-     * @param inflater the inflator of the fragment
-     * @param container the container of the fragment
+     * @param inflater           the inflator of the fragment
+     * @param container          the container of the fragment
      * @param savedInstanceState the saved instance state of the fragment
      * @return the view of the fragment
      */
@@ -117,6 +117,7 @@ public class FragmentQRDetail extends Fragment {
 
                 startPostponedEnterTransition();
             }
+
             @Override
             public void onFetchFailure() {
                 Toast.makeText(getContext(), "Failed to fetch QR data", Toast.LENGTH_SHORT).show();
@@ -130,7 +131,8 @@ public class FragmentQRDetail extends Fragment {
 
     /**
      * This method sets the main image of the QR code
-     * @param view the view of the fragment
+     *
+     * @param view     the view of the fragment
      * @param instance the QR code data
      */
     private void setMainImage(View view, QRData instance) {
@@ -145,7 +147,8 @@ public class FragmentQRDetail extends Fragment {
 
     /**
      * This method sets the score and name of the QR code
-     * @param view the view of the fragment
+     *
+     * @param view     the view of the fragment
      * @param instance the QR code data
      */
     private void setScoreAndName(View view, QRData instance) {
@@ -158,7 +161,7 @@ public class FragmentQRDetail extends Fragment {
     private void populateList(View view, QRData instance) {
         qrDetailList = view.findViewById(R.id.qr_detail_list);
         ViewGroupCompat.setTransitionGroup(qrDetailList, true);
-        ArrayList<HashMap<String,Object>> instanceList = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> instanceList = new ArrayList<>();
 
         HashMap<String, HashMap<String, Object>> users = instance.getUsers();
         users.forEach((key, value) -> {
