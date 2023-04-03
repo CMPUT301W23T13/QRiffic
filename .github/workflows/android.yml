@@ -19,10 +19,22 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
+    
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        sdk-version: '31.0.0'
+        platform: 'android-31'
+        ndk-version: '23.1.7779620'
+        java-version: '11'
       
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
     - name: Build with Gradle
+      env:
+        ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
       run: ./gradlew build
+      
     - name: Run Unit Tests
       run: ./gradlew test
