@@ -29,8 +29,11 @@ jobs:
         SECRET_KEY: $
       run: echo SECRET_KEY=\"$SECRET_KEY\" > ./local.properties
       
+    - name: Clean project with Gradle
+      run: ./gradlew clean
+      
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: ./gradlew build
       
     - name: Run Unit Tests
       run: ./gradlew test
