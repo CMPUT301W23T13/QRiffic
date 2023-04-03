@@ -30,7 +30,7 @@ jobs:
       run: echo SECRET_KEY=\"$SECRET_KEY\" > ./local.properties
       
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew clean build
       
     - name: Run Unit Tests
       run: ./gradlew test
