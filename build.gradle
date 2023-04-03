@@ -1,3 +1,9 @@
+buildscript {
+    repositories {
+        google()
+    }
+}
+
 plugins {
     id 'com.android.application' version '4.2.0'
 
@@ -44,6 +50,8 @@ android {
 }
 
 dependencies {
+
+    classpath 'com.google.gms:google-services:4.3.10'
 
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.google.firebase:firebase-analytics'
