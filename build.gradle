@@ -9,7 +9,6 @@ buildscript {
     dependencies {
         // Add the dependency for the Google services Gradle plugin
         classpath 'com.google.gms:google-services:4.3.15'
-        implementation 'com.google.android.material:material:1.5.0'
     }
 }
 
@@ -45,6 +44,10 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField ("String", "AUTH_CODE", getSecretKey())
+    }
+    
+    dependencies {
+        implementation 'com.google.android.material:material:1.5.0'
     }
 }
 
