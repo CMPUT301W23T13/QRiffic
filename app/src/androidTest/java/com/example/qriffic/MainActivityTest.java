@@ -1,6 +1,7 @@
 package com.example.qriffic;
 
 
+import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.*;
 
 import static org.junit.Assert.assertNotEquals;
@@ -319,7 +320,7 @@ public void checkLeaderboards() throws Exception {
      */
 
     @Test
-    public void checkMarkerClick() throws Exception{
+    public void checkMarkerClick() throws Throwable {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         //click on nav drawer button
         solo.clickOnImageButton(0);
@@ -332,37 +333,53 @@ public void checkLeaderboards() throws Exception {
         assertNotNull(mapLayout);
         assertTrue(mapLayout.isShown());
 
-        // Get a reference to the GoogleMap object
-        MapFragment mapFragment = (MapFragment) solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
-        mapFragment.getMapAsync(
-                new OnMapReadyCallback() {
+        //wait for map to load
+        sleep(5000);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Get a reference to the GoogleMap object
+                MapView mapView = (MapView) solo.getView(R.id.mapView);
+                // Get a reference to the GoogleMap object
+                MapFragment mapFragment = (MapFragment) solo.getCurrentActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
+                mapView.getMapAsync(new OnMapReadyCallback() {
                     @Override
                     public void onMapReady(GoogleMap googleMap) {
                         // Get a reference to the GoogleMap object
                         GoogleMap map = googleMap;
 
+                        // Set a marker click listener
                         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(Marker marker) {
+                                // Check if the clicked marker has the desired title
+                                if (marker.getTitle().equals("Marker")) {
 
-                                // Get the marker position
-                                Marker markerOptions = map.addMarker(new MarkerOptions().position(marker.getPosition()));
-                                LatLng markerPosition = markerOptions.getPosition();
+                                    //get tag of marker
+                                    String tag = marker.getTag().toString();
+                                    // click on marker with the tag from the marker
+                                    // Perform the click action
+                                    LatLng markerPosition = marker.getPosition();
+                                    //project the marker position to the screen
+                                    // Get a projection of the map
+                                    Projection projection = map.getProjection();
 
-                                // Click on the marker position
-                                solo.clickOnScreen((int) markerPosition.longitude, (int) markerPosition.latitude);
+                                    // Convert the click location to screen coordinates
+                                    Point screenLocation = projection.toScreenLocation(markerPosition);
+                                    solo.clickOnScreen(screenLocation.x, screenLocation.y);
+                                    Log.d("Marker Clicked", "Marker Clicked:"+ screenLocation.x + " " + screenLocation.y);
+                                    solo.waitForFragmentById(R.id.fragment_qr_detail, 5000);
+                                    // Return true to indicate that the listener has consumed the event
 
-
-
-
+                                    return true;
+                                }
                                 return false;
                             }
                         });
-
-
                     }
-                }
-        );
+                });
+            }
+        });
 
 
 
