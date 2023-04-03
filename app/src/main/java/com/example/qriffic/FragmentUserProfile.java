@@ -53,6 +53,22 @@ public class FragmentUserProfile extends Fragment {
     ArrayList<QRCode> qrList;
     private final boolean mLocationPermissionGranted = false;
 
+    //Declare the views
+    private TextView tvUsername;
+    private TextView tvEmail;
+    private TextView tvPhoneNum;
+    private TextView tvEmptyQRMon;
+    private TextView noScanned;
+    private TextView totalScore;
+    private TextView highScore;
+    private TextView lowScore;
+    private TextView topQRName;
+    private TextView botQRName;
+    private LinearLayout topQRLayout;
+    private LinearLayout botQRLayout;
+    private ImageView topQRImage;
+    private ImageView botQRImage;
+
     public FragmentUserProfile() {
         // Required empty public constructor
     }
@@ -100,20 +116,20 @@ public class FragmentUserProfile extends Fragment {
 
 
         //initialize the text views
-        TextView tvUsername = view.findViewById(R.id.user_name);
-        TextView tvEmail = view.findViewById(R.id.profile_email);
-        TextView tvPhoneNum = view.findViewById(R.id.profile_phone);
-        TextView tvEmptyQRMon = view.findViewById(R.id.empty_qrmon_label);
-        TextView noScanned = view.findViewById(R.id.user_scanned);
-        TextView totalScore = view.findViewById(R.id.user_score);
-        TextView highScore = view.findViewById(R.id.topQRName2);
-        TextView lowScore = view.findViewById(R.id.topQRName3);
-        TextView topQRName = view.findViewById(R.id.topQRName);
-        TextView botQRName = view.findViewById(R.id.botQRName);
-        LinearLayout topQRLayout = view.findViewById(R.id.top_score_linear_layout);
-        LinearLayout botQRLayout = view.findViewById(R.id.bot_score_linear_layout);
-        ImageView topQRImage = view.findViewById(R.id.imageTop);
-        ImageView botQRImage = view.findViewById(R.id.imageBot);
+        tvUsername = view.findViewById(R.id.user_name);
+        tvEmail = view.findViewById(R.id.profile_email);
+        tvPhoneNum = view.findViewById(R.id.profile_phone);
+        tvEmptyQRMon = view.findViewById(R.id.empty_qrmon_label);
+        noScanned = view.findViewById(R.id.user_scanned);
+        totalScore = view.findViewById(R.id.user_score);
+        highScore = view.findViewById(R.id.topQRName2);
+        lowScore = view.findViewById(R.id.topQRName3);
+        topQRName = view.findViewById(R.id.topQRName);
+        botQRName = view.findViewById(R.id.botQRName);
+        topQRLayout = view.findViewById(R.id.top_score_linear_layout);
+        botQRLayout = view.findViewById(R.id.bot_score_linear_layout);
+        topQRImage = view.findViewById(R.id.imageTop);
+        botQRImage = view.findViewById(R.id.imageBot);
 
         //initialize an array list of QR codes
         qrList = new ArrayList<>();
