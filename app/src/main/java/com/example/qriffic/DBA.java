@@ -37,7 +37,7 @@ public class DBA {
     /**
      * This is the constructor for the DBA class
      */
-    public DBA() {
+    private DBA() {
     }
 
     /**
