@@ -1,10 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-android {
-    defaultConfig {
-        buildConfigField ("String", "AUTH_CODE", getSecretKey())
-    }
-}
+
 
 buildscript {
     repositories {
@@ -26,6 +22,12 @@ plugins {
 
     id 'com.google.gms.google-services' version '4.3.15' apply false
 
+}
+
+android {
+    defaultConfig {
+        buildConfigField ("String", "AUTH_CODE", getSecretKey())
+    }
 }
 
 String getSecretKey() {
