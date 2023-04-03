@@ -24,10 +24,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
-    - name: Access SECRET_KEY
-      env:
-        SECRET_KEY: $
-      run: echo SECRET_KEY=\"$SECRET_KEY\" > ./local.properties
+    - name: Access API_KEY
+      run: echo API_KEY=${{ secrets.API_KEY }} > ./local.properties
       
     - name: Clean project with Gradle
       run: ./gradlew clean --refresh-dependencies
