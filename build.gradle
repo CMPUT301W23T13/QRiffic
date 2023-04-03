@@ -23,6 +23,14 @@ apply plugin: 'com.android.application'
 android {
     namespace 'com.example.qriffic'
     compileSdk 33
+    
+    sourceSets {
+        main {
+            manifest.srcFile 'app/src/main/AndroidManifest.xml'
+            java.srcDirs = ['app/src/main/java']
+            res.srcDirs = ['app/src/main/res']
+        }
+    }
 
     defaultConfig {
         applicationId "com.example.qriffic"
