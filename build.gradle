@@ -28,6 +28,14 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
     
+    sourceSets {
+        main {
+            manifest.srcFile 'app/src/main/AndroidManifest.xml'
+            java.srcDirs = ['app/src/main/java']
+            res.srcDirs = ['app/src/main/res']
+        }
+    }
+    
     defaultConfig {
         applicationId "com.example.qriffic"
         minSdkVersion 21
