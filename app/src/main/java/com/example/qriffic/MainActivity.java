@@ -1,10 +1,23 @@
 package com.example.qriffic;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,8 +29,15 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.qriffic.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+public class MainActivity extends AppCompatActivity {
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    private boolean mLocationPermissionGranted = false;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private UsernamePersistent usernamePersistent;
@@ -53,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
     }
 
     /**
@@ -87,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    private void changeFragment(Fragment fr){
+
+
+private void changeFragment(Fragment fr){
         FrameLayout fl = (FrameLayout) findViewById(R.id.fragmentContainerView);
         fl.removeAllViews();
 
