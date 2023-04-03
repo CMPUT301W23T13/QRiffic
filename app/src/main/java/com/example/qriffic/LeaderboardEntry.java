@@ -67,4 +67,12 @@ public class LeaderboardEntry {
     public String getName() {
         return this.name;
     }
+
+    /**
+     * Sets the name of the entry to a new one
+     * @param name The new name to be set to, as a String
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 }
