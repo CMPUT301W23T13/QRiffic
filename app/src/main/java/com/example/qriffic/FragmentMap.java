@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ import java.util.List;
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMyLocationClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
-
+    private long mLastClickTime = 0;
     GoogleMap map;
     MapView mapView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -205,7 +206,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                                 map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                                     @Override
                                                     public boolean onMarkerClick(@NonNull Marker marker) {
-                                                        System.out.println("marker id" + marker.getTag());
+                                                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                                            return false;
+                                                        }
+                                                        mLastClickTime = SystemClock.elapsedRealtime();
 
                                                         //make bundle for id
                                                         Bundle bundle = new Bundle();

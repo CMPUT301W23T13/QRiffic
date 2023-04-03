@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class FragmentLeaderboard extends Fragment implements LocationListener {
-
+    private long mLastClickTime = 0;
     private ArrayList<LeaderboardEntry> dataList;
     private LeaderboardAdapter leaderboardAdapter;
 
@@ -156,6 +157,10 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
         leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Bundle bundle = new Bundle();
                 LeaderboardEntry entry = leaderboardAdapter.getItem(position);
                 bundle.putString("username", entry.getId());
@@ -176,6 +181,10 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                                 Bundle bundle = new Bundle();
                                 LeaderboardEntry entry = leaderboardAdapter.getItem(position);
                                 bundle.putString("username", entry.getId());
@@ -217,6 +226,10 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                                 Bundle bundle = new Bundle();
                                 LeaderboardEntry entry = leaderboardAdapter.getItem(position);
                                 bundle.putString("username", entry.getId());
@@ -257,6 +270,10 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                                 Bundle bundle = new Bundle();
                                 LeaderboardEntry entry = leaderboardAdapter.getItem(position);
                                 bundle.putString("QRID", entry.getId());
@@ -299,6 +316,10 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                                 Bundle bundle = new Bundle();
                                 LeaderboardEntry entry = leaderboardAdapter.getItem(position);
                                 bundle.putString("QRID", entry.getId());

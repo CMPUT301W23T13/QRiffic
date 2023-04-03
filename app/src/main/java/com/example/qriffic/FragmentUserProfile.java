@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class FragmentUserProfile extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    private long mLastClickTime = 0;
     private ListView profileListView;
     private ArrayList<QRCode> dataList;
     private QRCodeAdapter qrAdapter;
@@ -243,6 +245,10 @@ public class FragmentUserProfile extends Fragment {
         profileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Bundle bundle = new Bundle();
                 QRCode qrCode = qrList.get(position);
                 bundle.putString("QRID", qrCode.getIdHash());
@@ -254,6 +260,10 @@ public class FragmentUserProfile extends Fragment {
         topQRLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Bundle bundle = new Bundle();
                 QRCode qrCode = playerProfile.getBestQR();
                 bundle.putString("QRID", qrCode.getIdHash());
@@ -265,6 +275,10 @@ public class FragmentUserProfile extends Fragment {
         botQRLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Bundle bundle = new Bundle();
                 QRCode qrCode = playerProfile.getWorstQR();
                 bundle.putString("QRID", qrCode.getIdHash());
