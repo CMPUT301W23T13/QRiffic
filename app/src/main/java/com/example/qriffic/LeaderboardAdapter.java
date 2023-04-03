@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * This class extends the ArrayAdapter class and adapts a ListView in FragmentLeaderboard for LeaderboardEntry objects
+ */
 public class LeaderboardAdapter extends ArrayAdapter<LeaderboardEntry> {
 
     public LeaderboardAdapter(@NonNull Context context, @NonNull ArrayList<LeaderboardEntry> entires) {

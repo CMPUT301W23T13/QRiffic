@@ -33,8 +33,6 @@ public class DBA {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static CollectionReference playersColRef= db.collection("Players");;
     private static CollectionReference qrColRef = db.collection("QRs");
-    private static CollectionReference mapColRef = db.collection("Map");
-    private static CollectionReference testColRef = db.collection("TestCol"); // Temporary test collection
 
     /**
      * This is the constructor for the DBA class
@@ -43,7 +41,7 @@ public class DBA {
     }
 
     /**
-     * This method adds/sets a PlayerProfile object to the database
+     * This method adds a PlayerProfile object to the database
      * @param player
      * The PlayerProfile object to be added
      */
@@ -179,7 +177,7 @@ public class DBA {
                                 qrColRef.document(qr.getIdHash()).set(qrData);
                             }
                         } else {
-                            Log.d("TESTPRINT", "Failed to get QRData");
+                            Log.d("addQR", "Failed to get QRData");
                         }
                     }
                 });
@@ -298,7 +296,16 @@ public class DBA {
                 });
     }
 
+    /**
+     * This method fetches information from the database to fill the LeaderboardData object which
+     * contains all of the data needed for the leaderboard functions
+     * @param data
+     * The LeaderboardData object being filled
+     * @param city
+     * The city that the user is in, used for regional queries
+     */
     public static void getLeaderboard(LeaderboardData data, String city) {
+        // Gets players by their total score
         Task playerPointQuery = playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -316,6 +323,7 @@ public class DBA {
                     }
                 });
 
+        // Gets players by their total scans
         Task playerScanQuery = playersColRef.whereGreaterThan("totalScanned", 0).orderBy("totalScanned", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -333,6 +341,7 @@ public class DBA {
                     }
                 });
 
+        // Gets QRs by their score
         Task qrPointQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -352,8 +361,8 @@ public class DBA {
                     }
                 });
 
+        // Gets QRs by score in a certain region
         if (city != null) {
-            Log.d("city", city);
             Task qrRegionQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -365,7 +374,7 @@ public class DBA {
                                     Object users = document.get("users");
                                     if (Objects.nonNull(users)) {
                                         Map userMap = (Map) users;
-
+                                        // Checks if a QR has a geotag from the current region
                                         for (Object value : userMap.values()) {
                                             if (Objects.nonNull(value)) {
                                                 Map valueMap = (Map) value;
@@ -383,6 +392,7 @@ public class DBA {
                                             }
                                         }
 
+                                        // Adds QR to list if it is in the region
                                         if (regionFlag) {
                                             String idHash = document.get("idHash").toString();
                                             String score = document.get("score").toString();

@@ -10,15 +10,41 @@ import java.util.Map;
  * This class defines a player profile
  */
 public class PlayerProfile {
-
+    /**
+     * The player's username
+     */
     private String username;
+    /**
+     * The player's email
+     */
     private String email;
+    /**
+     * The player's phone number, as a string
+     */
     private String phoneNum;
+    /**
+     * The score of the user's highest scoring QRMon
+     */
     private int highScore;
+    /**
+     * The score of the user's lowest scoring QRMon
+     */
     private int lowScore;
+    /**
+     * The user's total QRMon score
+     */
     private int totalScore;
+    /**
+     * The total number of QRMons the user has scanned
+     */
     private int totalScanned;
+    /**
+     * A hashmap of all of the QRMons the user has scanned, with their idHash as the key and a QRCode object as the value
+     */
     private HashMap<String, QRCode> captured;
+    /**
+     * Holds listeners that the class uses when fetching data from the database
+     */
     private ArrayList<fetchListener> listeners;
 
     /**
@@ -113,6 +139,7 @@ public class PlayerProfile {
      * Date: 10/03/2023
      *
      * @param toAdd
+     * The fetchListener to be added
      */
     public void addListener(fetchListener toAdd) {
         listeners.add(toAdd);
@@ -253,22 +280,26 @@ public class PlayerProfile {
         return captured;
     }
 
+    /**
+     * This method returns the total score of a PlayerProfile object
+     * @return
+     * The total score as an integer
+     */
     public int getTotalScore() {return totalScore;}
 
-    public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
-    }
-
+    /**
+     * This method returns the total scanned number of a PlayerProfile object
+     * @return
+     * The total scanned number as an integer
+     */
     public int getTotalScanned() {return totalScanned;}
-
-    public void setTotalScanned(int totalScanned) {
-        this.totalScanned = totalScanned;
-    }
 
     /**
      * This method adds a QRCode object to the list of captured QRCodes of a PlayerProfile object
      * @param qrCode
      * The QRCode object to be added to the ArrayList of QRCode objects
+     * @return
+     * true if the player does not have the QRCode already in captured, false if otherwise
      */
     public boolean addQRCode(QRCode qrCode) {
         if (this.captured.containsKey(qrCode.getIdHash())) {
@@ -286,7 +317,7 @@ public class PlayerProfile {
 
     /**
      * This method deletes a QRCode object from the list of captured QRCodes of a
-     * PlayerProfile object
+     * PlayerProfile object and updates other values accordingly
      * @param delQrCode
      * The QRCode object to be deleted from the captured
      */
@@ -330,13 +361,12 @@ public class PlayerProfile {
 
     /**
      * This method deletes a QRCode object from the list of captured QRCodes of a
-     * PlayerProfile object
+     * PlayerProfile object and updates other values accordingly
      * @param idHash
      * The idHash of the QRCode object to be deleted from captured
      */
     public void deleteQRCode(String idHash) {
         QRCode qrCode = this.captured.get(idHash);
-        Log.d("TESTPRINT", "idHash: " + idHash + " qrCode: " + qrCode + " captured: " + this.captured);
 
         // If QR code does not exist in captured
         if (qrCode == null) {
@@ -394,6 +424,11 @@ public class PlayerProfile {
         this.lowScore = Math.min(lowScore, score);
     }
 
+    /**
+     * This method gets the highest scoring QRCode that the player has captured, and returns it
+     * @return
+     * The highest scoring QRCode that the player has, as a QRCode object
+     */
     public QRCode getBestQR() {
         for (QRCode qr : captured.values()) {
             if (qr.getScore() == this.highScore) {
@@ -403,6 +438,11 @@ public class PlayerProfile {
         return null;
     }
 
+    /**
+     * This method gets the lowest scoring QRCode that the player has captured, and returns it
+     * @return
+     * The lowest scoring QRCode that the player has, as a QRCode object
+     */
     public QRCode getWorstQR() {
         for (QRCode qr : captured.values()) {
             if (qr.getScore() == this.lowScore) {
