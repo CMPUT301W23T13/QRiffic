@@ -5,7 +5,7 @@
     android:id="@+id/fragment_temp_add_qr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentTempAddQr">
+    tools:context=".FragmentDeveloperAddQr">
 
 
     <Button
@@ -44,7 +44,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="50dp"
         android:padding="10dp"
-        android:text="TEMPORARY"
+        android:text="DEVELOPER"
         android:textColor="@color/design_default_color_error"
         android:textSize="15sp" />
 

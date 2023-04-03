@@ -92,10 +92,10 @@
         android:name="com.example.qriffic.FragmentProfileUpdate"
         android:label="@string/edit_profile_label" />
     <fragment
-        android:id="@+id/nav_tempAddQR"
-        android:name="com.example.qriffic.FragmentTempAddQr"
-        android:label="fragment_temp_add_qr"
-        tools:layout="@layout/fragment_temp_add_qr" />
+        android:id="@+id/nav_devAddQR"
+        android:name="com.example.qriffic.FragmentDeveloperAddQr"
+        android:label="Developer Add QR"
+        tools:layout="@layout/fragment_developer_add_qr" />
     <fragment
         android:id="@+id/fragmentUserSearchedProfile"
         android:name="com.example.qriffic.FragmentUserSearchedProfile"

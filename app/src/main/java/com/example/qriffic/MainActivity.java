@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_searchUser,
                 R.id.nav_leaderboard,
                 R.id.nav_ProfileUpdate,
-                R.id.nav_tempAddQR)
+                R.id.nav_devAddQR)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
