@@ -1,11 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-android {
-    defaultConfig {
-        buildConfigField ("String", "AUTH_CODE", getSecretKey())
-    }
-}
-
 buildscript {
     repositories {
         google()  // Google's Maven repository
@@ -15,13 +9,6 @@ buildscript {
         // Add the dependency for the Google services Gradle plugin
         classpath 'com.google.gms:google-services:4.3.15'
     }
-}
-
-String getSecretKey() {
-    def propFile = rootProject.file("./local.properties")
-    def properties = new Properties()
-    properties.load(new FileInputStream(propFile))
-    return properties['SECRET_KEY']
 }
 
 
@@ -34,3 +21,17 @@ plugins {
     id 'com.google.gms.google-services' version '4.3.15' apply false
 
 }
+
+android {
+    defaultConfig {
+        buildConfigField ("String", "AUTH_CODE", getSecretKey())
+    }
+}
+
+String getSecretKey() {
+    def propFile = rootProject.file("./local.properties")
+    def properties = new Properties()
+    properties.load(new FileInputStream(propFile))
+    return properties['SECRET_KEY']
+}
+
