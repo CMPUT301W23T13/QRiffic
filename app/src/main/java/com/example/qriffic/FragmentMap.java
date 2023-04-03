@@ -16,14 +16,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,7 +51,26 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Marker marker;
+    private boolean mLocationPermissionGranted = false;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
+
+        // Check if user has granted location permission
+        if (ContextCompat.checkSelfPermission(getContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{permission.ACCESS_FINE_LOCATION}, 1);
+
+        }
+
+    }
 
     @Nullable
     @Override
@@ -68,6 +92,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync((OnMapReadyCallback) this);
+
+
         }
     }
 
@@ -81,22 +107,27 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         map.getUiSettings().setZoomControlsEnabled(true);
         //add compass
         map.getUiSettings().setCompassEnabled(true);
+
+
         //add my location button
-//        map.getUiSettings().setMyLocationButtonEnabled(true);
         map.setOnMyLocationButtonClickListener(this);
         map.setOnMyLocationClickListener(this);
-        //enable my location
-        if (ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(getActivity(), new String[]{permission.ACCESS_FINE_LOCATION}, 1);
 
-            return;
+        // Enable the "My Location" button on the map
+        if (mLocationPermissionGranted) {
+            if (ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(getActivity(), new String[]{permission.ACCESS_FINE_LOCATION}, 1);
+                return;
+            }
+            else{
+                map.setMyLocationEnabled(true);
+            }
+        } else {
+            map.setMyLocationEnabled(false);
         }
-        map.setMyLocationEnabled(true);
+
+//        map.setMyLocationEnabled(true);
         map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
@@ -109,18 +140,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 
 
-
-
-
-
-
         // Get the list of locations from the database
 
         //initialize an array for storing qr
         List<QRData> QRData = new ArrayList<QRData>();
-
-
-
 
 
 
@@ -131,9 +154,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
         QRCode qrCode = new QRCode();
 
         HashMap<String,Object> data = new HashMap<>();
-
-
-
 
 
         db.collection("QRs")
@@ -212,17 +232,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
                                                 });
 
 
-
-
-
-                                                System.out.println("marker id"+marker.getTag());
                                             }
 
                                             //move the camera to the first marker
                                             CameraUpdateFactory.newLatLng(new LatLng((Double) geoLocation.get("longitude"), (Double) geoLocation.get("latitude")));
                                             CameraUpdateFactory.zoomTo(15);
-
-
 
                                         }
 
@@ -247,9 +261,26 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                    if(ContextCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                        map.setMyLocationEnabled(true);
+                    }
+                } else {
 
+                    mLocationPermissionGranted = false;
 
+                    }
+                }
+            }
+        }
 
 
 
@@ -259,6 +290,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, GoogleM
 
 
     }
+
+
 
     @Override
     public boolean onMyLocationButtonClick() {
