@@ -38,10 +38,12 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-        
-        buildConfigField ("String", "SECRET_CODE", getSecretKey())
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        manifestPlaceholders = [API_KEY: "${properties.getProperty('API_KEY')}"]
     }
 
     buildTypes {
@@ -104,11 +106,3 @@ dependencies {
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 }
-
-String getSecretKey() {
-    def propFile = rootProject.file("./local.properties")
-    def properties = new Properties()
-    properties.load(new FileInputStream(propFile))
-    return properties['SECRET_KEY']
-}
-
