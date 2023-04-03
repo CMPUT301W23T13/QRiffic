@@ -84,7 +84,7 @@ public class MainActivityTest {
      * Test to see if the navigation menu takes us to the correct fragment
      * NOTE: DOES NOT TEST SCANNER FRAGMENT. WE ASSUME THAT A QR CODE IS IN VIEW OF THE CAMERA
      * SO IF WE DID NAVIGATE TO THE SCANNER FRAGMENT, THE QR CODE WOULD BE SCANNED AND MESS UP THE
-     * NAVIGATION
+     * INTENDED NAVIGATION FLOW
      */
     @Test
     public void checkNavigationMenu() throws Exception {
@@ -147,19 +147,6 @@ public class MainActivityTest {
 
         //click on nav drawer button
         solo.clickOnImageButton(0);
-
-//        //check if scan fragment is visible
-////        solo.clickOnView(solo.getView(R.id.nav_scan));
-//        solo.clickOnText("Snap a QR");
-//        // Wait for ScanFragment to become visible
-//        solo.waitForFragmentById(R.id.capture_layout, 5000);
-//        // Verify that ScanFragment is visible
-//        FrameLayout scanLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.capture_layout);
-//        assertNotNull(scanLayout);
-//        assertTrue(scanLayout.isShown());
-
-        //click on nav drawer button
-        solo.clickOnImageButton(0);
         //check if update fragment is visible
 //        solo.clickOnView(solo.getView(R.id.nav_update));
         solo.clickOnText("Update Profile");
@@ -192,7 +179,7 @@ public class MainActivityTest {
         assertTrue(searchLayout.isShown());
 
         //search for a user
-        solo.enterText(0, "Luke007");
+        solo.enterText(0, "Luke");
         solo.clickOnView(solo.getView(R.id.search_button));
         //wait for the search to complete
         sleep(5000);
@@ -205,18 +192,41 @@ public class MainActivityTest {
         //check if the user is displayed
         //check if the textview has the correct text
         TextView username = (TextView) solo.getView(R.id.user_name);
-        assertEquals("Luke007", username.getText().toString());
+        assertEquals("Luke", username.getText().toString());
 
 
     }
 
     /**
      * Test to check if you can see QR details
+     * NOTE: THIS TEST WILL FAIL IF THE CAMERA DOES NOT HAVE A PHYSICAL QR CODE TO SCAN IN FRONT OF
+     * IT. PLEASE POSITION THE DEVICE ACCORDINGLY BEFORE RUNNING THIS TEST.
      */
     @Test
     public void checkQRDetails() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         TextView qrName = (TextView) solo.getView(R.id.pListName);
+
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        // navigate to qr scanner
+        solo.clickOnText("Snap a QR");
+        // give the scanner up to five seconds to capture the QR code and navigate to the capture fragment
+        // wait for capture fragment to become visible
+        solo.waitForFragmentById(R.id.fragment_new_qrmon, 5000);
+        // Verify that LeaderboardFragment is visible
+        RelativeLayout captureLayout = (RelativeLayout) solo.getCurrentActivity().findViewById(R.id.fragment_new_qrmon);
+        assertNotNull(captureLayout);
+        assertTrue(captureLayout.isShown());
+
+        // click the capture button
+        solo.clickOnView(solo.getView(R.id.confirm_fab));
+
+        // ensure we are back in the user profile screen
+        solo.waitForFragmentById(R.id.fragment_user_profile, 5000);
+        FrameLayout userProfileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
+        assertNotNull(userProfileLayout);
+        assertTrue(userProfileLayout.isShown());
 
         //click on list view item
         solo.clickInList(0);
@@ -257,7 +267,26 @@ public class MainActivityTest {
         //get the number of items in the list
         int count = adapter.getCount();
 
+        //click on nav drawer button
+        solo.clickOnImageButton(0);
+        // navigate to qr scanner
+        solo.clickOnText("Snap a QR");
+        // give the scanner up to five seconds to capture the QR code and navigate to the capture fragment
+        // wait for capture fragment to become visible
+        solo.waitForFragmentById(R.id.fragment_new_qrmon, 5000);
+        // Verify that LeaderboardFragment is visible
+        RelativeLayout captureLayout = (RelativeLayout) solo.getCurrentActivity().findViewById(R.id.fragment_new_qrmon);
+        assertNotNull(captureLayout);
+        assertTrue(captureLayout.isShown());
 
+        // click the capture button
+        solo.clickOnView(solo.getView(R.id.confirm_fab));
+
+        // ensure we are back in the user profile screen
+        solo.waitForFragmentById(R.id.fragment_user_profile, 5000);
+        FrameLayout userProfileLayout = (FrameLayout) solo.getCurrentActivity().findViewById(R.id.fragment_user_profile);
+        assertNotNull(userProfileLayout);
+        assertTrue(userProfileLayout.isShown());
 
         //click on list view item
         solo.clickInList(0);
@@ -483,6 +512,7 @@ public void checkLeaderboards() throws Exception {
         assertFalse(geolocationText.isShown());
         // click add a geolocation
         solo.clickOnView(solo.getView(R.id.qr_add_geolocation));
+
         // click the capture button
         solo.clickOnView(solo.getView(R.id.confirm_fab));
 
