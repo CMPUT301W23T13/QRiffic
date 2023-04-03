@@ -60,9 +60,14 @@ public class LeaderboardEntry {
         return this.value;
     }
 
+
     /**
      * Returns the name of the entry
      * @return The name, as a String
      */
     public String getName() {return this.name;}
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

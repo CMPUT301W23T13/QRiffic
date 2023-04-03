@@ -9,7 +9,7 @@ public class LeaderboardEntryTest {
 
     @Test
     void testGetters() {
-        LeaderboardEntry mockLeaderboardEntry = new LeaderboardEntry("idString", "valueString");
+        LeaderboardEntry mockLeaderboardEntry = new LeaderboardEntry("idString", "valueString", "nameString");
 
         assertEquals(mockLeaderboardEntry.getId(), "idString");
         assertNotEquals(mockLeaderboardEntry.getId(), "idString2");
@@ -20,7 +20,7 @@ public class LeaderboardEntryTest {
 
     @Test
     void testSetters() {
-        LeaderboardEntry mockLeaderboardEntry = new LeaderboardEntry("idString1", "valueString1");
+        LeaderboardEntry mockLeaderboardEntry = new LeaderboardEntry("idString1", "valueString1", "nameString1");
 
         mockLeaderboardEntry.setId("idString2");
         assertEquals(mockLeaderboardEntry.getId(), "idString2");
@@ -29,5 +29,9 @@ public class LeaderboardEntryTest {
         mockLeaderboardEntry.setValue("valueString2");
         assertEquals(mockLeaderboardEntry.getValue(), "valueString2");
         assertNotEquals(mockLeaderboardEntry.getValue(), "valueString1");
+
+        mockLeaderboardEntry.setName("nameString2");
+        assertEquals(mockLeaderboardEntry.getName(), "nameString2");
+        assertNotEquals(mockLeaderboardEntry.getName(), "nameString1");
     }
 }
