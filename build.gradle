@@ -1,10 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+android {
+    defaultConfig {
+        buildConfigField ("String", "AUTH_CODE", getSecretKey())
+    }
+}
+
 buildscript {
     repositories {
         google()  // Google's Maven repository
         mavenCentral()  // Maven Central repository
-        buildConfigField ("String", "SECRET_KEY", getSecretKey())
     }
     dependencies {
         // Add the dependency for the Google services Gradle plugin
