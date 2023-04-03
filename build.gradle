@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application' version '4.2.0'
 
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
 
     id 'com.google.gms.google-services'
 
@@ -18,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
         
-        buildConfigField ("String", "SECRET_CODE", getSecretCode())
+        buildConfigField ("String", "SECRET_CODE", getSecretKey())
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
