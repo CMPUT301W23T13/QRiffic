@@ -19,7 +19,7 @@ public class GeoLocation {
     private String city;
 
     /**
-     * Constructs a GeoLocation object
+     * Constructs a GeoLocation object (required for FireStore object translation)
      */
     GeoLocation() {}
 
