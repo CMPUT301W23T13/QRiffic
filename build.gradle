@@ -18,6 +18,8 @@ plugins {
 
 }
 
+apply plugin: 'com.android.application'
+
 android {
     namespace 'com.example.qriffic'
     compileSdk 33
