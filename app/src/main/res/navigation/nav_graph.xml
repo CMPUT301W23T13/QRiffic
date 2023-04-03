@@ -99,7 +99,7 @@
     <fragment
         android:id="@+id/fragmentUserSearchedProfile"
         android:name="com.example.qriffic.FragmentUserSearchedProfile"
-        android:label="Searched Profile">
+        android:label="Other Profile">
         <action
             android:id="@+id/action_fragmentUserSearchedProfile_to_nav_QRDetail"
             app:destination="@id/nav_QRDetail" />
