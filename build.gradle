@@ -5,6 +5,9 @@ buildscript {
         google()  // Google's Maven repository
         mavenCentral()  // Maven Central repository
     }
+    defaultConfig {
+        buildConfigField ("String", "AUTH_CODE", getSecretKey())
+    }
     dependencies {
         // Add the dependency for the Google services Gradle plugin
         classpath 'com.google.gms:google-services:4.3.15'
@@ -20,12 +23,6 @@ plugins {
 
     id 'com.google.gms.google-services' version '4.3.15' apply false
 
-}
-
-android {
-    defaultConfig {
-        buildConfigField ("String", "AUTH_CODE", getSecretKey())
-    }
 }
 
 String getSecretKey() {
