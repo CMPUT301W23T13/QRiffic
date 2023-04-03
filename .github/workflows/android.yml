@@ -30,7 +30,7 @@ jobs:
       run: echo SECRET_KEY=\"$SECRET_KEY\" > ./local.properties
       
     - name: Clean project with Gradle
-      run: ./gradlew clean
+      run: ./gradlew clean --refresh-dependencies
       
     - name: Build with Gradle
       run: ./gradlew build
