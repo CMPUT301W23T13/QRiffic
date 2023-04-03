@@ -1,26 +1,24 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
+import android.os.SystemClock;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 
 /**
  * A fragment to allow users to search for other users' profiles.
  */
 public class FragmentSearchUser extends Fragment {
-
+    private long mLastClickTime = 0;
     private NavController navController;
 
     public FragmentSearchUser() {
@@ -30,6 +28,7 @@ public class FragmentSearchUser extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment SearchUser.
      */
 
@@ -43,6 +42,9 @@ public class FragmentSearchUser extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
     }
 
     @Override
@@ -69,6 +71,10 @@ public class FragmentSearchUser extends Fragment {
                     fetchedPlayer.addListener(new fetchListener() {
                         @Override
                         public void onFetchComplete() {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
                             Bundle bundle = new Bundle();
                             bundle.putString("username", etSearch.getText().toString());
                             Navigation.findNavController(v).navigate(R.id.action_nav_searchUser_to_fragmentUserSearchedProfile, bundle);

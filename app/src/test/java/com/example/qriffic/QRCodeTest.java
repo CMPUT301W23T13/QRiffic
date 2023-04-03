@@ -40,8 +40,8 @@ public class QRCodeTest {
         assertEquals("Edmonton", mockQRCode.getGeoLocation().getCity());
         assertNotEquals("Calgary", mockQRCode.getGeoLocation().getCity());
 
-        assertEquals(16088668, mockQRCode.getScore());
-        assertNotEquals(16000000, mockQRCode.getScore());
+        assertEquals(845, mockQRCode.getScore());
+        assertNotEquals(840, mockQRCode.getScore());
 
         assertEquals("Ash", mockQRCode.getUsername());
         assertNotEquals("Ash Ketchum", mockQRCode.getUsername());
@@ -52,7 +52,7 @@ public class QRCodeTest {
         assertNotEquals("c914133b717c126ecafc5b9b8bd529bcad06d064edc073906a6b83b58bf57a5c",
                 mockQRCode.getIdHash());
 
-        assertEquals("Grand Purple Garrett's Miteergur", mockQRCode.getName());
+        assertEquals("Grand Burrowing Garrett's Miteergur", mockQRCode.getName());
         assertNotEquals("NAMED MONSTER", mockQRCode.getName());
 
         assertEquals(mockComment(), mockQRCode.getComment());

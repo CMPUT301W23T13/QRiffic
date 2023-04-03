@@ -17,7 +17,9 @@ import com.example.qriffic.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    private final boolean mLocationPermissionGranted = false;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private UsernamePersistent usernamePersistent;
@@ -46,12 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_searchUser,
                 R.id.nav_leaderboard,
                 R.id.nav_ProfileUpdate,
-                R.id.nav_tempAddQR)
+                R.id.nav_devAddQR)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
 
     }
 
@@ -70,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() {
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    private void changeFragment(Fragment fr){
+
+    private void changeFragment(Fragment fr) {
         FrameLayout fl = (FrameLayout) findViewById(R.id.fragmentContainerView);
         fl.removeAllViews();
 
@@ -96,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("username", username);
         fr.setArguments(bundle);
 
-        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         transaction1.add(R.id.fragmentContainerView, fr);
 
         transaction1.commit();

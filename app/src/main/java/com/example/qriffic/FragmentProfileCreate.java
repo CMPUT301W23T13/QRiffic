@@ -1,8 +1,6 @@
 package com.example.qriffic;
 
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
-import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +33,7 @@ public class FragmentProfileCreate extends Fragment {
         binding = ProfileCreateBinding.inflate(inflater, container, false);
         usernamePersistent = new UsernamePersistent(getActivity().getApplicationContext());
 
-        ((MainActivity)getActivity()).hideToolbar();
+        ((MainActivity) getActivity()).hideToolbar();
 
         return binding.getRoot();
     }
@@ -106,11 +104,10 @@ public class FragmentProfileCreate extends Fragment {
                         }
 
                         PlayerProfile profile = new PlayerProfile(
-                            editTextUsername.getText().toString(),
-                            null,
-                            email,
-                            phone,
-                            new HashMap<String, QRCode>());
+                                editTextUsername.getText().toString(),
+                                email,
+                                phone,
+                                new HashMap<String, QRCode>());
                         DBA.setPlayer(profile);
 
                         usernamePersistent.saveUsername(profile.getUsername());
@@ -123,7 +120,7 @@ public class FragmentProfileCreate extends Fragment {
 
                         requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         NavHostFragment.findNavController(FragmentProfileCreate.this)
-                            .navigate(R.id.action_ProfileCreate_to_userProfile, bundle);
+                                .navigate(R.id.action_ProfileCreate_to_userProfile, bundle);
                     }
                 });
 
@@ -136,7 +133,7 @@ public class FragmentProfileCreate extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        ((MainActivity)getActivity()).showToolbar();
+        ((MainActivity) getActivity()).showToolbar();
     }
 
 

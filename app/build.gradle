@@ -57,6 +57,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'androidx.fragment:fragment:1.4.1'
 
+    /* Jackson Library from: https://github.com/FasterXML/jackson
+    *  Used to map generic "Object" objects to custom objects
+    * */
     implementation 'com.squareup.retrofit2:converter-jackson:2.7.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'

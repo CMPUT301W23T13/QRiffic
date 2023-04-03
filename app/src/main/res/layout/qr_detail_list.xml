@@ -8,7 +8,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +24,8 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="0.1"
-                app:srcCompat="@drawable/person_icon" />
+                app:srcCompat="@drawable/person_icon"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/qr_detail_PID_text"
@@ -34,7 +36,7 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:gravity="center_vertical"
-                android:text="ash_ketchum" />
+                android:text="@string/qr_detail_default_username" />
         </LinearLayout>
 
         <LinearLayout
@@ -42,6 +44,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_bottom_component"
             android:backgroundTint="@color/boxGrey"
+            android:gravity="center"
             android:padding="7dp"
             android:orientation="vertical">
 
@@ -51,13 +54,14 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="@color/black"
-                android:text="omg this is my fave thing ever!  Like look at how cute this thing is omg omg omg!" />
+                android:text="@string/qr_detail_default_comment" />
 
             <ImageView
                 android:id="@+id/qr_detail_location_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:layout_marginTop="7dp"
+                tools:ignore="ContentDescription"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
@@ -73,7 +77,8 @@
                     android:layout_height="20dp"
                     android:layout_marginStart="3dp"
                     android:layout_weight="0.1"
-                    app:srcCompat="@drawable/location_icon" />
+                    app:srcCompat="@drawable/location_icon"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/qr_detail_location_text"
@@ -81,7 +86,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.9"
                     android:gravity="center_vertical"
-                    android:text="Pallet Town, 0x0"
+                    android:text="@string/qr_detail_default_location"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>

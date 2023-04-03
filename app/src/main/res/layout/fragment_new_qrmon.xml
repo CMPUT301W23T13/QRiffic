@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/fragment_new_qrmon">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,68 +14,64 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/qr_add_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/eg_identicon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/purple_200"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.93">
 
-                <ImageView
-                    android:id="@+id/qr_add_image"
-                    android:layout_width="256dp"
-                    android:layout_height="256dp"
-                    android:src="@drawable/eg_identicon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/qr_add_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="@color/purple_200"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.9"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.93">
+                    android:text="@string/new_qrmon_default_name"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/qr_add_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Super Long Name Test"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/qr_add_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Score"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/qr_add_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_qrmon_default_score"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/qr_add_congrats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginVertical="10dp"
                 android:background="@drawable/rounded_corner"
                 android:padding="7dp"
                 android:backgroundTint="@color/purple_200"
                 android:gravity="center"
-                android:text="Congrats! You found a new Pikachu! What would you like to do?"
+                android:text="@string/new_qrmon_default_message"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -96,7 +94,8 @@
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="0.1"
-                        app:srcCompat="@drawable/add_icon" />
+                        app:srcCompat="@drawable/add_icon"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -106,19 +105,19 @@
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:gravity="center_vertical"
-                        android:text="Add comment" />
+                        android:text="@string/new_qrmon_comment_title" />
 
                     <Button
                         android:id="@+id/qr_add_comment_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="#DF5B5B"
+                        android:backgroundTint="@color/mediumRed"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:minWidth="0dp"
                         android:minHeight="0dp"
-                        android:text="clear"
-                        android:textSize="16dp" />
+                        android:text="@string/new_qrmon_clear_button"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <EditText
@@ -129,7 +128,9 @@
                     android:backgroundTint="@color/boxGrey"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:hint="Start typing here..." />
+                    android:hint="@string/new_qrmon_comment_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
             </LinearLayout>
 
             <LinearLayout
@@ -151,7 +152,8 @@
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="0.1"
-                        app:srcCompat="@drawable/add_icon" />
+                        app:srcCompat="@drawable/add_icon"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -161,19 +163,19 @@
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:gravity="center_vertical"
-                        android:text="Add photo" />
+                        android:text="@string/new_qrmon_photo_title" />
 
                     <Button
                         android:id="@+id/qr_add_photo_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="#DF5B5B"
+                        android:backgroundTint="@color/mediumRed"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:minWidth="0dp"
                         android:minHeight="0dp"
-                        android:text="clear"
-                        android:textSize="16dp" />
+                        android:text="@string/new_qrmon_clear_button"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,7 +192,8 @@
                         android:layout_width="256dp"
                         android:layout_height="256dp"
                         android:src="@drawable/eg_identicon"
-                        android:visibility="gone"/>
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:id="@+id/qr_add_image_button"
@@ -198,10 +201,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="10dp"
-                        android:gravity="center">
+                        android:gravity="center"
+                        tools:ignore="UseCompoundDrawables">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            tools:ignore="ContentDescription"
                             app:srcCompat="@drawable/camera_icon" />
 
                         <TextView
@@ -211,10 +216,9 @@
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             android:gravity="center_vertical"
-                            android:text="Take a new photo"/>
+                            android:text="@string/new_qrmon_photo_text"/>
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -234,6 +238,7 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="30dp"
+                        tools:ignore="ContentDescription"
                         android:layout_weight="0.1"
                         app:srcCompat="@drawable/add_icon" />
 
@@ -245,19 +250,19 @@
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:gravity="center_vertical"
-                        android:text="Add geolocation"/>
+                        android:text="@string/new_qrmon_geolocation_title"/>
 
                     <Button
                         android:id="@+id/qr_add_geo_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="#DF5B5B"
+                        android:backgroundTint="@color/mediumRed"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:minWidth="0dp"
                         android:minHeight="0dp"
-                        android:text="clear"
-                        android:textSize="16dp" />
+                        android:text="@string/new_qrmon_clear_button"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -278,7 +283,7 @@
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:visibility="gone"
-                        android:text="Geolocation goes here"/>
+                        android:text="@string/new_qrmon_geolocation_field"/>
 
                     <LinearLayout
                         android:id="@+id/qr_add_geolocation"
@@ -286,10 +291,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="10dp"
-                        android:gravity="center">
+                        android:gravity="center"
+                        tools:ignore="UseCompoundDrawables">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            tools:ignore="ContentDescription"
                             app:srcCompat="@drawable/location_icon" />
 
                         <TextView
@@ -299,23 +306,26 @@
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             android:gravity="center_vertical"
-                            android:text="Add a geolocation"/>
+                            android:text="@string/new_qrmon_geolocation_text"/>
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/confirm_fab"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/check_icon"
         app:tint="@color/white"
-        app:backgroundTint="@color/purple_500" />
+        app:backgroundTint="@color/purple_500"
+        tools:ignore="ContentDescription" />
 </RelativeLayout>

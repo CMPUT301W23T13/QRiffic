@@ -2,12 +2,16 @@ package com.example.qriffic;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -15,28 +19,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentTempAddQr#newInstance} factory method to
+ * Use the {@link FragmentDeveloperAddQr#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentTempAddQr extends Fragment implements LocationListener {
+public class FragmentDeveloperAddQr extends Fragment implements LocationListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,7 +42,7 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
     private double currLatitude;
     private String currCity;
 
-    public FragmentTempAddQr() {
+    public FragmentDeveloperAddQr() {
         // Required empty public constructor
     }
 
@@ -64,8 +55,8 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
      * @return A new instance of fragment FragmentTempAddQr.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentTempAddQr newInstance(String param1, String param2) {
-        FragmentTempAddQr fragment = new FragmentTempAddQr();
+    public static FragmentDeveloperAddQr newInstance(String param1, String param2) {
+        FragmentDeveloperAddQr fragment = new FragmentDeveloperAddQr();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -87,13 +78,12 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_temp_add_qr, container, false);
+        View view = inflater.inflate(R.layout.fragment_developer_add_qr, container, false);
 
         // get username from the bundle
 
         UsernamePersistent usernamePersistent = new UsernamePersistent(getActivity().getApplicationContext());
         String activeUsername = usernamePersistent.fetchUsername();
-
 
 
         // get reference to the button, EditText, and TextView
@@ -124,8 +114,8 @@ public class FragmentTempAddQr extends Fragment implements LocationListener {
                 Bundle bundle = new Bundle();
                 bundle.putString("barcode_data", qrCode.getText().toString());
                 Navigation.findNavController(getView()).navigate(R.id.nav_capture_screen, bundle);
-                }
-            });
+            }
+        });
 
         return view;
     }

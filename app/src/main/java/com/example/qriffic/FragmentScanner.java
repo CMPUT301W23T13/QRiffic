@@ -1,17 +1,20 @@
 package com.example.qriffic;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.Manifest;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.journeyapps.barcodescanner.BarcodeCallback;
@@ -19,6 +22,14 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 public class FragmentScanner extends Fragment {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
+    }
 
     private DecoratedBarcodeView barcodeView;
 
@@ -29,11 +40,15 @@ public class FragmentScanner extends Fragment {
                 if (isGranted) {
                     barcodeView.resume();
                 } else {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 1);
+                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(requireContext(), "Camera permission is required to scan QR codes", Toast.LENGTH_SHORT).show();
+                        NavController controller = Navigation.findNavController(getView());
+                        controller.popBackStack();
+                    }
                 }
             });
 
-    private BarcodeCallback callback = new BarcodeCallback() {
+    private final BarcodeCallback callback = new BarcodeCallback() {
 
         // This method is invoked when a barcode is detected
         @Override
@@ -53,9 +68,8 @@ public class FragmentScanner extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
 
-    // check if the app has permission to access the device's location for QRCode generation
-        if (ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // if not, request permission
+        // check if location permissions are granted, ask once, location is generated after a successful scan (optional)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 

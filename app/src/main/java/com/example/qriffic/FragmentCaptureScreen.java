@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -15,39 +17,42 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.TransitionInflater;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
     private UsernamePersistent usernamePersistent;
-    private double currLongitude;
-    private double currLatitude;
-    private String currCity;
+    private double currLongitude = 0.0;
+    private double currLatitude = 0.0;
+    private String currCity = null;
     private QRCode qrCode;
     private String username;
     private String rawString;
@@ -61,6 +66,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     private TextView geoLocationTextView;
     private TextView congratsTextView;
     private Bitmap locationImage;
+    private Button commentDel;
+    private Button imageDel;
+    private Button locationDel;
     private Boolean locationFlag = false;
 
 
@@ -71,6 +79,10 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Adds slide/fade transitions to the fragment
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
     }
 
     @Override
@@ -88,11 +100,20 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                qrCode.addListener(new fetchListener() {
+                    @Override
+                    public void onFetchComplete() {
+                        // go back to the user profile screen
+                        NavController controller = Navigation.findNavController(v);
+                        controller.popBackStack();
+                        controller.popBackStack();
+                    }
+
+                    @Override
+                    public void onFetchFailure() {
+                    }
+                });
                 uploadToDB();
-                // go back to the user profile screen
-                NavController controller = Navigation.findNavController(v);
-                controller.popBackStack();
-                controller.popBackStack();
             }
         });
 
@@ -102,32 +123,71 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         locationImageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                activityResultLauncher.launch(intent);
+                // if permission is not granted, request permission, if denied, display a toast
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(),
+                            new String[]{Manifest.permission.CAMERA}, 1);
+                    Toast.makeText(requireContext(), "Please grant camera permission to use this feature",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    activityResultLauncher.launch(intent);
+                }
             }
         });
 
         geoLocationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String monsterLat = String.format("%.2f", qrCode.getGeoLocation().getLatitude());
-                String monsterLong = String.format("%.2f", qrCode.getGeoLocation().getLongitude());
-                String monsterCity = qrCode.getGeoLocation().getCity();
-                String geolocationText = "Latitude: " + monsterLat + "\nLongitude: " +
-                        monsterLong + "\nCity: " + monsterCity;
-                geoLocationTextView.setText(geolocationText);
-                geoLocationLayout.setVisibility(View.GONE);
-                geoLocationTextView.setVisibility(View.VISIBLE);
-                locationFlag = true;
+                if (currCity != null) {
+                    String monsterLat = String.format("%.2f", qrCode.getGeoLocation().getLatitude());
+                    String monsterLong = String.format("%.2f", qrCode.getGeoLocation().getLongitude());
+                    String monsterCity = qrCode.getGeoLocation().getCity();
+                    String geolocationText = "Latitude: " + monsterLat + "\nLongitude: " +
+                            monsterLong + "\nCity: " + monsterCity;
+                    geoLocationTextView.setText(geolocationText);
+                    geoLocationLayout.setVisibility(View.GONE);
+                    geoLocationTextView.setVisibility(View.VISIBLE);
+                    locationFlag = true;
+                } else {
+                    Toast.makeText(requireContext(), "Please enable location services and re-scan the QR code to use this feature",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
+        commentDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentEditText.setText("");
+            }
+        });
+
+        imageDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationImageLayout.setVisibility(View.VISIBLE);
+                locationImageView.setVisibility(View.GONE);
+                locationImage = null;
+            }
+        });
+
+        locationDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                geoLocationLayout.setVisibility(View.VISIBLE);
+                geoLocationTextView.setVisibility(View.GONE);
+                locationFlag = false;
+            }
+        });
 
         // comments cannot be longer than 128 characters
         commentEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // check if the comment is longer than 128 characters
@@ -138,6 +198,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     commentEditText.setSelection(truncatedInput.length());
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -145,7 +206,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
 
         return view;
     }
-
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -159,13 +219,6 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
                     locationImage.compress(Bitmap.CompressFormat.JPEG, 90, stream);
                     byte[] byteArray = stream.toByteArray();
                     locationImage = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
-                    // print the size of the locationImage in kilobytes
-                    System.out.println("locationImage size: " + byteArray.length / 1024 + " kb");
-
-                    // print the width and height of the locationImage in pixels
-                    System.out.println("locationImage width: " + locationImage.getWidth());
-                    System.out.println("locationImage height: " + locationImage.getHeight());
 
                     // display the locationImage in locationImageView
                     locationImageView.setImageBitmap(locationImage);
@@ -188,6 +241,9 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         commentEditText = view.findViewById(R.id.qr_add_comment_text);
         geoLocationLayout = view.findViewById(R.id.qr_add_geolocation);
         geoLocationTextView = view.findViewById(R.id.qr_add_geo_text);
+        commentDel = view.findViewById(R.id.qr_add_comment_del);
+        imageDel = view.findViewById(R.id.qr_add_photo_del);
+        locationDel = view.findViewById(R.id.qr_add_geo_del);
     }
 
     private void initLocation() {
@@ -211,7 +267,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             if (location != null) {
                 currLongitude = location.getLongitude();
                 currLatitude = location.getLatitude();
-            }else {
+            } else {
                 currLongitude = 0;
                 currLatitude = 0;
             }
@@ -228,8 +284,7 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
             Address address = addresses.get(0);
             if (address.getLocality() != null) {
                 currCity = address.getLocality();
-            }
-            else {
+            } else {
                 currCity = "N/A";
             }
         }
@@ -241,13 +296,13 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     }
 
     private void generateIdenticon(View view) {
-        String url = "https://www.gravatar.com/avatar/" + qrCode.getScore() +
+        String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() +
                 "?s=55&d=identicon&r=PG%22";
         Glide.with(getContext())
                 .load(url)
                 .centerCrop()
                 .error(R.drawable.ic_launcher_background)
-                .into((ImageView) view.findViewById(R.id.qr_add_location_image));
+                .into((ImageView) view.findViewById(R.id.qr_add_image));
     }
 
     private void uploadToDB() {
@@ -258,7 +313,30 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         qrCode.setLocationImage(locationImageBase64);
         qrCode.setComment(commentEditText.getText().toString());
         // update player's captured list and QRs collection in DB
-        DBA.addQR(username, qrCode);
+        PlayerProfile player = new PlayerProfile();
+        player.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                boolean newFlag = player.addQRCode(qrCode);
+                if (newFlag) {
+                    CharSequence text = "QRMon successfully added!";
+                    Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+                    CharSequence text = "QRMon data has been updated";
+                    Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                DBA.addQR(player, qrCode);
+            }
+
+            @Override
+            public void onFetchFailure() {
+            }
+        });
+        DBA.getPlayer(player, username);
+
+
     }
 
     private void displayUpdatedText() {
@@ -268,9 +346,31 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         String congratsText = "Congrats! You found a new " + monsterName + "! " +
                 "What would you like to do?";
 
+        String warningText = "You have already scanned this QR code before. "
+                + "If you choose to add it again, you will lose your previous comment, photo,"
+                + " and location information.";
+
         nameTextView.setText(monsterName);
-        scoreTextView.setText(monsterScore);
+        scoreTextView.setText(monsterScore + "pts");
         congratsTextView.setText(congratsText);
+        PlayerProfile player = new PlayerProfile();
+        player.addListener(new fetchListener() {
+            @Override
+            public void onFetchComplete() {
+                Collection<QRCode> previousQRCodes = player.getCaptured().values();
+                for (QRCode eachQR : previousQRCodes) {
+                    if (eachQR.getIdHash().equals(qrCode.getIdHash())) {
+                        congratsTextView.setText(warningText);
+                        congratsTextView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#DF5B5B")));
+                    }
+                }
+            }
+
+            @Override
+            public void onFetchFailure() {
+            }
+        });
+        DBA.getPlayer(player, username);
     }
 
     public String bitmapToBase64(Bitmap bitmap) {
@@ -279,14 +379,8 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
         }
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override

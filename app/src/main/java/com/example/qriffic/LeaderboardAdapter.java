@@ -12,10 +12,13 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * This class extends the ArrayAdapter class and adapts a ListView in FragmentLeaderboard for LeaderboardEntry objects
+ */
 public class LeaderboardAdapter extends ArrayAdapter<LeaderboardEntry> {
 
     public LeaderboardAdapter(@NonNull Context context, @NonNull ArrayList<LeaderboardEntry> entires) {
-        super (context, 0, entires);
+        super(context, 0, entires);
     }
 
     @NonNull
@@ -36,8 +39,8 @@ public class LeaderboardAdapter extends ArrayAdapter<LeaderboardEntry> {
             TextView pointsView = view.findViewById(R.id.leaderboard_user_points);
 
             rankNumberView.setText(String.valueOf(position + 1));
-            usernameView.setText(entry.getId());
-            pointsView.setText(entry.getValue() );
+            usernameView.setText(entry.getName());
+            pointsView.setText(entry.getValue());
         }
 
         return view;

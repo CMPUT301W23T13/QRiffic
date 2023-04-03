@@ -1,16 +1,17 @@
 package com.example.qriffic;
 
 import android.content.Context;
-import android.icu.lang.UScript;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * Keeps track of the user's username, which is persistent and saved on the disk
+ */
 public class UsernamePersistent {
-    private Context context;
+    private final Context context;
 
     public UsernamePersistent(Context context) {
         this.context = context;
@@ -38,7 +39,7 @@ public class UsernamePersistent {
                 username += (char) uniqueIDBytes[i];
             }
         } catch (Exception FileNotFoundException) {
-            // No uniqueID file found
+            // No username file found
             return null;
         }
         return username;
@@ -46,6 +47,7 @@ public class UsernamePersistent {
 
     /**
      * Saves username to file for persistence
+     *
      * @param username
      */
     protected void saveUsername(String username) {

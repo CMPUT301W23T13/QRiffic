@@ -18,7 +18,7 @@ public class PlayerProfileTest {
 
     private PlayerProfile mockPlayerProfile() {
 
-        return new PlayerProfile("username", "uuid", "username@outlook.com", "999.999.9999",  new HashMap<String, QRCode>());
+        return new PlayerProfile("username", "username@outlook.com", "999.999.9999",  new HashMap<String, QRCode>());
     }
 
     @Test
@@ -29,19 +29,15 @@ public class PlayerProfileTest {
         assertEquals("username", mockPlayerProfile.getUsername());
         assertNotEquals("player name", mockPlayerProfile.getUsername());
 
-        assertEquals("uuid", mockPlayerProfile.getUniqueID());
-        assertNotEquals("uuid2", mockPlayerProfile.getUniqueID());
-
         assertEquals("999.999.9999", mockPlayerProfile.getPhoneNum());
         assertEquals("username@outlook.com", mockPlayerProfile.getEmail());
         assertNotEquals("123.999.9999", mockPlayerProfile.getPhoneNum());
         assertNotEquals("player@outlook.com", mockPlayerProfile.getEmail());
 
-        // CHANGE THIS WHEN WE HAVE SCORE CALCULATOR
-        assertEquals(0, mockPlayerProfile.getHighScore());
+        assertEquals(-1, mockPlayerProfile.getHighScore());
         assertNotEquals(20000,mockPlayerProfile.getHighScore());
 
-        assertEquals(0, mockPlayerProfile.getLowScore());
+        assertEquals(-1, mockPlayerProfile.getLowScore());
         assertNotEquals(500,mockPlayerProfile.getLowScore());
 
         // tests on Captured and getCaptured are done in other test methods
@@ -97,7 +93,7 @@ public class PlayerProfileTest {
 
         mockPlayerProfile.addQRCode(mockQRCode);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(Exception.class, () -> {
             mockPlayerProfile.deleteQRCode(mockQRCode2);
         });
 

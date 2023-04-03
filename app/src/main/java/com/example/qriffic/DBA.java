@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -22,33 +23,31 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class is used as controller to access the database
  */
 public class DBA {
 
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static CollectionReference playersColRef= db.collection("Players");;
-    private static CollectionReference qrColRef = db.collection("QRs");
-    private static CollectionReference mapColRef = db.collection("Map");
-    private static CollectionReference testColRef = db.collection("TestCol"); // Temporary test collection
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final CollectionReference playersColRef = db.collection("Players");
+    private static final CollectionReference qrColRef = db.collection("QRs");
 
     /**
      * This is the constructor for the DBA class
      */
-    public DBA() {
+    private DBA() {
     }
 
     /**
-     * This method adds/sets a PlayerProfile object to the database
-     * @param player
-     * The PlayerProfile object to be added
+     * This method adds a PlayerProfile object to the database
+     *
+     * @param player The PlayerProfile object to be added
      */
     public static void setPlayer(PlayerProfile player) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("username", player.getUsername());
-        data.put("uniqueID", player.getUniqueID());
         data.put("email", player.getEmail());
         data.put("phoneNum", player.getPhoneNum());
         data.put("highScore", player.getHighScore());
@@ -73,128 +72,94 @@ public class DBA {
     /**
      * This method updates the contact info of an existing Player in the database.
      * Throws an error if the player does not exist in the database.
-     * @param player
-     * The PlayerProfile object with the updated info
+     *
+     * @param player The PlayerProfile object with the updated info
      */
     public static void updateContactInfo(PlayerProfile player) {
         playersColRef.document(player.getUsername()).get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()) {
-                                        playersColRef.document(player.getUsername()).update("phoneNum", player.getPhoneNum());
-                                        playersColRef.document(player.getUsername()).update("email", player.getEmail());
-                                    } else {
-                                        throw new IllegalArgumentException("Player does not exist in database");
-                                    }
-                                }
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                playersColRef.document(player.getUsername()).update("phoneNum", player.getPhoneNum());
+                                playersColRef.document(player.getUsername()).update("email", player.getEmail());
+                            } else {
+                                throw new IllegalArgumentException("Player does not exist in database");
                             }
-                        });
+                        }
+                    }
+                });
     }
 
     /**
      * This method fetches a PlayerProfile object from the database and overwrites its data onto a
      * given PlayerProfile object
-     * @param name
-     * The username of the Player
-     * @param player
-     * The PlayerProfile object to be overwritten to
+     *
+     * @param name   The username of the Player
+     * @param player The PlayerProfile object to be overwritten to
      */
     public static void getPlayer(PlayerProfile player, String name) {
-        /*
-        Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
-                + player.getUniqueID() + " " + player.getEmail() + " "
-                + player.getPhoneNum() + " " + player.getHighScore() + " "
-                + player.getLowScore() + " " + player.getCaptured().size());
-         */
         playersColRef.document(name).get()
-            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Map<String, Object> fetchedPlayer = documentSnapshot.getData();
-                    if (fetchedPlayer == null) {
-                        // the username is not in the database
-                        player.fetchFailed();
-                        return;
-                    }
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Map<String, Object> fetchedPlayer = documentSnapshot.getData();
+                        if (fetchedPlayer == null) {
+                            // the username is not in the database
+                            player.fetchFailed();
+                            return;
+                        }
 
-                    player.setUsername(fetchedPlayer.get("username").toString());
-                    if (fetchedPlayer.get("uniqueID") == null) {
-                        player.setUniqueID(null);
-                    } else {
-                        player.setUniqueID(fetchedPlayer.get("uniqueID").toString());
-                    }
-                    if (fetchedPlayer.get("email") == null) {
-                        player.setEmail(null);
-                    } else {
-                        player.setEmail(fetchedPlayer.get("email").toString());
-                    }
-                    if (fetchedPlayer.get("phoneNum") == null) {
-                        player.setPhoneNum(null);
-                    } else {
-                        player.setPhoneNum(fetchedPlayer.get("phoneNum").toString());
-                    }
-                    player.setHighScore(Math.toIntExact((long) fetchedPlayer.get("highScore")));
-                    player.setLowScore(Math.toIntExact((long) fetchedPlayer.get("lowScore")));
+                        player.setUsername(fetchedPlayer.get("username").toString());
+                        if (fetchedPlayer.get("email") == null) {
+                            player.setEmail(null);
+                        } else {
+                            player.setEmail(fetchedPlayer.get("email").toString());
+                        }
+                        if (fetchedPlayer.get("phoneNum") == null) {
+                            player.setPhoneNum(null);
+                        } else {
+                            player.setPhoneNum(fetchedPlayer.get("phoneNum").toString());
+                        }
+                        player.setHighScore(Math.toIntExact((long) fetchedPlayer.get("highScore")));
+                        player.setLowScore(Math.toIntExact((long) fetchedPlayer.get("lowScore")));
 
-                    Collection<Object> tempCollection = ((HashMap<String, Object>) fetchedPlayer.get("captured")).values();
-                    ArrayList<Object> tempMap = new ArrayList<Object>(tempCollection);
-                    ObjectMapper mapper = new ObjectMapper();
+                        Collection<Object> tempCollection = ((HashMap<String, Object>) fetchedPlayer.get("captured")).values();
+                        ArrayList<Object> tempMap = new ArrayList<Object>(tempCollection);
+                        ObjectMapper mapper = new ObjectMapper();
 
-                    for (int i = 0; i < tempMap.size(); i++) {
-                        QRCode qrCode = mapper.convertValue(tempMap.get(i), QRCode.class);
-                        player.addQRCode(qrCode);
+                        for (int i = 0; i < tempMap.size(); i++) {
+                            QRCode qrCode = mapper.convertValue(tempMap.get(i), QRCode.class);
+                            player.addQRCode(qrCode);
+                        }
+
+                        player.fetchComplete();
                     }
-
-                    player.fetchComplete();
-
-                    /*
-                    // For testing purposes
-                    Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
-                            + player.getUniqueID() + " " + player.getEmail() + " "
-                            + player.getPhoneNum() + " " + player.getHighScore() + " "
-                            + player.getLowScore() + " " + player.getCaptured().size());
-//                     */
-                    return;
-                }
-        });
+                });
     }
 
     /**
      * This method adds a QRCode to a PlayerProfile object's captured list and the QRs collection
-     * @param player
-     * The username of the PlayerProfile object to be added to
-     * @param qr
-     * The QRCode object to be added
+     *
+     * @param player The username of the PlayerProfile object to be added to
+     * @param qr     The QRCode object to be added
      */
-    public static void addQR(String player, QRCode qr) {
-        PlayerProfile dbPlayer = new PlayerProfile();
-        dbPlayer.addListener(new fetchListener() {
-            @Override
-            public void onFetchComplete() {
-                dbPlayer.addQRCode(qr);
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("username", dbPlayer.getUsername());
-                data.put("uniqueID", dbPlayer.getUniqueID());
-                data.put("email", dbPlayer.getEmail());
-                data.put("phoneNum", dbPlayer.getPhoneNum());
-                data.put("highScore", dbPlayer.getHighScore());
-                data.put("lowScore", dbPlayer.getLowScore());
-                data.put("totalScore", dbPlayer.getTotalScore());
-                data.put("totalScanned", dbPlayer.getTotalScanned());
-                data.put("captured", dbPlayer.getCaptured());
-                playersColRef.document(dbPlayer.getUsername()).set(data);
-            }
-            @Override
-            public void onFetchFailure() {
-                throw new IllegalArgumentException("Player does not exist in database");
-            }
-        });
-        getPlayer(dbPlayer, player);
+    public static void addQR(PlayerProfile player, QRCode qr) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", player.getUsername());
+        data.put("email", player.getEmail());
+        data.put("phoneNum", player.getPhoneNum());
+        data.put("highScore", player.getHighScore());
+        data.put("lowScore", player.getLowScore());
+        data.put("totalScore", player.getTotalScore());
+        data.put("totalScanned", player.getTotalScanned());
+        data.put("captured", player.getCaptured());
+        Task updatePlayer = playersColRef.document(player.getUsername()).set(data);
+
         QRData qrData = new QRData(qr);
-        qrColRef.document(qrData.getIdHash()).get()
+        Task updateQRCode = qrColRef.document(qrData.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -210,18 +175,25 @@ public class DBA {
                                 qrColRef.document(qr.getIdHash()).set(qrData);
                             }
                         } else {
-                            Log.d("TESTPRINT", "Failed to get QRData");
+                            Log.d("addQR", "Failed to get QRData");
                         }
                     }
                 });
+
+        Tasks.whenAllComplete(updatePlayer, updateQRCode).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+            @Override
+            public void onSuccess(List<Task<?>> tasks) {
+                qr.fetchComplete();
+            }
+        });
     }
 
     /**
      * This method removes a QRCode from a PlayerProfile object's captured list
      * and removes the user from the that QRCode's users in the QRs collection
      * The input QRCode object is only used to get the username and idHash and attach the listener
-     * @param qr
-     * The QRCode object to be removed (Only the listeners, idHash, and username fields are used)
+     *
+     * @param qr The QRCode object to be removed (Only the listeners, idHash, and username fields are used)
      */
     public static void deleteQR(QRCode qr) {
         qrColRef.document(qr.getIdHash()).get()
@@ -233,8 +205,24 @@ public class DBA {
                                                    if (document.exists()) {
                                                        // qr in db
                                                        QRData dbQRData = document.toObject(QRData.class);
-                                                       dbQRData.removeUser(qr.getUsername());
-                                                       qrColRef.document(qr.getIdHash()).set(dbQRData);
+                                                       boolean removeFlag = dbQRData.removeUser(qr.getUsername());
+                                                       if (removeFlag) {
+                                                           qrColRef.document(qr.getIdHash()).delete()
+                                                                   .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                       @Override
+                                                                       public void onSuccess(Void aVoid) {
+                                                                           Log.d("deleteQR", "QR successfully deleted!");
+                                                                       }
+                                                                   })
+                                                                   .addOnFailureListener(new OnFailureListener() {
+                                                                       @Override
+                                                                       public void onFailure(@NonNull Exception e) {
+                                                                           Log.w("deleteQR", "Error deleting document", e);
+                                                                       }
+                                                                   });
+                                                       } else {
+                                                           qrColRef.document(qr.getIdHash()).set(dbQRData);
+                                                       }
                                                    } else {
                                                        // qr not in db
                                                        throw new IllegalArgumentException("QRCode does not exist in database");
@@ -257,6 +245,7 @@ public class DBA {
                     public void onFetchComplete() {
                         qr.fetchComplete();
                     }
+
                     @Override
                     public void onFetchFailure() {
                         throw new IllegalArgumentException("Player does not exist in database");
@@ -264,6 +253,7 @@ public class DBA {
                 });
                 DBA.setPlayer(dbPlayer);
             }
+
             @Override
             public void onFetchFailure() {
                 throw new IllegalArgumentException("Player does not exist in database");
@@ -271,14 +261,13 @@ public class DBA {
         });
         getPlayer(dbPlayer, qr.getUsername());
     }
-    
+
     /**
      * This method fetches a QRData object from the database and overwrites its data onto a
      * given QRData object
-     * @param qrData
-     * The QRData object to be overwritten to
-     * @param idHash
-     * The idHash of the QRData object to be fetched
+     *
+     * @param qrData The QRData object to be overwritten to
+     * @param idHash The idHash of the QRData object to be fetched
      */
     public static void getQRData(QRData qrData, String idHash) {
         qrColRef.document(idHash).get()
@@ -306,7 +295,15 @@ public class DBA {
                 });
     }
 
-    public static void getLeaderboard(LeaderboardData data, PlayerProfile profile) {
+    /**
+     * This method fetches information from the database to fill the LeaderboardData object which
+     * contains all of the data needed for the leaderboard functions
+     *
+     * @param data The LeaderboardData object being filled
+     * @param city The city that the user is in, used for regional queries
+     */
+    public static void getLeaderboard(LeaderboardData data, String city) {
+        // Gets players by their total score
         Task playerPointQuery = playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -324,6 +321,7 @@ public class DBA {
                     }
                 });
 
+        // Gets players by their total scans
         Task playerScanQuery = playersColRef.whereGreaterThan("totalScanned", 0).orderBy("totalScanned", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -341,29 +339,87 @@ public class DBA {
                     }
                 });
 
+        // Gets QRs by their score
         Task qrPointQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.get("name").toString();
+                                String idHash = document.get("idHash").toString();
                                 String score = document.get("score").toString();
-                                data.addQRPoint(name, score);
+                                String name = document.get("name").toString();
+                                data.addQRPoint(idHash, score, name);
                             }
 
                         } else {
-                            Log.d("topQRrPoints", "Error getting documents");
+                            Log.d("topQRPoints", "Error getting documents");
                             data.fetchFailed();
                         }
                     }
                 });
 
-        Tasks.whenAllComplete(playerPointQuery, playerScanQuery, qrPointQuery).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
-            @Override
-            public void onSuccess(List<Task<?>> tasks) {
-                data.fetchComplete();
-            }
-        });
+        // Gets QRs by score in a certain region
+        if (city != null) {
+            Task qrRegionQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    boolean regionFlag = false;
+
+                                    Object users = document.get("users");
+                                    if (Objects.nonNull(users)) {
+                                        Map userMap = (Map) users;
+                                        // Checks if a QR has a geotag from the current region
+                                        for (Object value : userMap.values()) {
+                                            if (Objects.nonNull(value)) {
+                                                Map valueMap = (Map) value;
+                                                Object geoInfo = valueMap.get("geoLocation");
+                                                if (Objects.nonNull(geoInfo)) {
+                                                    Map geoMap = (Map) geoInfo;
+                                                    Object qrCity = geoMap.get("city");
+                                                    if (Objects.nonNull(qrCity)) {
+                                                        String qrCityString = (String) qrCity;
+                                                        if (qrCityString.equals(city)) {
+                                                            regionFlag = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        // Adds QR to list if it is in the region
+                                        if (regionFlag) {
+                                            String idHash = document.get("idHash").toString();
+                                            String score = document.get("score").toString();
+                                            String name = document.get("name").toString();
+                                            data.addRegionQRPoint(idHash, score, name);
+                                        }
+                                    }
+                                }
+
+                            } else {
+                                Log.d("topRegionQRPoints", "Error getting documents");
+                                data.fetchFailed();
+                            }
+                        }
+                    });
+
+            Tasks.whenAllComplete(playerPointQuery, playerScanQuery, qrPointQuery, qrRegionQuery).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                @Override
+                public void onSuccess(List<Task<?>> tasks) {
+                    data.fetchComplete();
+                }
+            });
+        } else {
+            Tasks.whenAllComplete(playerPointQuery, playerScanQuery, qrPointQuery).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                @Override
+                public void onSuccess(List<Task<?>> tasks) {
+                    data.fetchComplete();
+                }
+            });
+        }
     }
 }

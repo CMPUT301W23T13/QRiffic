@@ -1,50 +1,79 @@
 package com.example.qriffic;
 
 
-import android.graphics.Bitmap;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class defines a QRCode object
  */
 public class QRCode implements Comparable {
-
+    /**
+     * The score of the QRCode, as an int
+     */
     private int score;
+    /**
+     * Represents the geolocation of the QRCode
+     */
     private GeoLocation geoLocation;
+    /**
+     * The hash value of the QRCode
+     */
     private String idHash;
+    /**
+     * The generated name of the QRCode
+     */
     private String name;
+    /**
+     * The username of a player associated with the QRCode
+     */
     private String username;
+    /**
+     * The location image a player took for the QRCode as a Base64 String
+     */
     private String locationImage;
+    /**
+     * The comment a player left on the QRCode
+     */
     private String comment;
-    private ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
+    /**
+     * Contains listeners used when fetching QRCode data from the database
+     */
+    private final ArrayList<fetchListener> listeners = new ArrayList<fetchListener>();
 
     /**
      * This is an empty constructor for a QRCode object
      * (Required for Firestore Custom Object Translation)
      */
-    public QRCode() {}
-
-    public QRCode(String name, long score) {
-        this.name = name;
-        this.score = (int) score;
+    public QRCode() {
     }
 
     /**
-     * This is a constructor for a QRCode object
-     * @param rawString
-     * The string from scanning the QR code
-     * @param geoLocation
-     * The location of the QR code as a Location object
-     * @param username
-     * The username of the player who scanned the QR code
-     * @param locationImage
-     * The image of the location of the QR code as a Base64 String
+     * Constructs a QRCode object
+     *
+     * @param name   The name of the QRCode
+     * @param score  The score of the QRCode
+     * @param idHash The hash value of the QRCode
+     */
+    public QRCode(String name, long score, String idHash) {
+        this.name = name;
+        this.score = (int) score;
+        this.idHash = idHash;
+    }
+
+    /**
+     * This is a constructor for a QRCode object, which generates a name and score from the hash
+     *
+     * @param rawString     The string from scanning the QR code
+     * @param geoLocation   The location of the QR code as a Location object
+     * @param username      The username of the player who scanned the QR code
+     * @param locationImage The image of the location of the QR code as a Base64 String
+     * @param comment       The comment the user left for the QR code
      */
     public QRCode(String rawString, GeoLocation geoLocation, String username, String locationImage,
                   String comment) {
@@ -56,7 +85,7 @@ public class QRCode implements Comparable {
         this.comment = comment;
 
         // last 6 digits of the hash
-        String last6 = this.idHash.substring(this.idHash.length()-6);
+        String last6 = this.idHash.substring(this.idHash.length() - 6);
 
         // name generator
         List<String> names1 = Arrays.asList("Minuscule", "Lesser", "Reticulated", "Spotted",
@@ -64,7 +93,7 @@ public class QRCode implements Comparable {
                 "Long", "Tall", "Short", "Great", "Grand");
         List<String> names2 = Arrays.asList(" Young", " Old", " Ancient", " Leaping", " Flying",
                 " Burrowing", " Inverted", " Joyous", " Juvenile", " Mature", " Larval", " Adult",
-                " Skimming"," Floating", " Fluffy", " Smooth");
+                " Skimming", " Floating", " Fluffy", " Smooth");
         List<String> names3 = Arrays.asList("", " Abram's", " Idlar's", " Ritwik's", " Kunal's",
                 " Carissa's", " Luke's", " Garrett's", " Alden's", " Asian", " North American",
                 " South American", " European", " African", " Australian", " Canadian");
@@ -84,52 +113,81 @@ public class QRCode implements Comparable {
         subNames.add(names6);
 
         this.name = "";
-        for (int i=0; i<6; i++) {
-            this.name += subNames.get(i).get(Integer.parseInt(last6.substring(i, i+1), 16));
+        for (int i = 0; i < 6; i++) {
+            this.name += subNames.get(i).get(Integer.parseInt(last6.substring(i, i + 1), 16));
         }
 
         // score generator
-        this.score = Integer.parseInt(last6, 16);
+        this.score = (int) (Math.pow(3, (Integer.parseInt(last6, 16) + 4800000) / 3355443) + 100);
+
+        // add uniform random [-25, 25] to score
+        Random rand = new Random();
+        rand.setSeed(Integer.parseInt(last6, 16));
+        this.score = this.score + rand.nextInt(51) - 25;
     }
 
     /**
      * This defines how we compare QRCodes (last 6 digits of the hash)
-     * @param o
-     * The object to be compared.
-     * @return
-     * 0 if equal, GT 0 if .this is less than o, LT 0 if .this is greater than o
+     *
+     * @param o The object to be compared.
+     * @return 0 if equal, GT 0 if .this is less than o, LT 0 if .this is greater than o
      */
     @Override
     public int compareTo(Object o) {
         QRCode qrCode = (QRCode) o;
-        return this.idHash.substring(idHash.length()-6)
-                .compareTo(qrCode.idHash.substring(qrCode.idHash.length()-6));
+        return this.idHash.substring(idHash.length() - 6)
+                .compareTo(qrCode.idHash.substring(qrCode.idHash.length() - 6));
     }
 
+    /**
+     * Sets the score of the QRCode
+     *
+     * @param score The score to be set to, as an int
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
+    /**
+     * Sets the geolocation of the QRCode
+     *
+     * @param geoLocation A GeoLocation object representing the QRCode's location
+     */
     public void setGeoLocation(GeoLocation geoLocation) {
         this.geoLocation = geoLocation;
     }
 
+    /**
+     * Sets the idHash of the QRCode
+     *
+     * @param idHash The idHash to be set to, as a String
+     */
     public void setIdHash(String idHash) {
         this.idHash = idHash;
     }
 
+    /**
+     * Sets the name of the QRCode
+     *
+     * @param name The name to be set to, as a String
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Sets the username of a player associated with the QRCode
+     *
+     * @param username The username of the associated player
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
      * This method sets the location image of the QR code
-     * @param locationImage
-     * The location image of the QR code
+     *
+     * @param locationImage The location image of the QR code
      */
     public void setLocationImage(String locationImage) {
         this.locationImage = locationImage;
@@ -137,8 +195,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method sets the comment of the QR code
-     * @param comment
-     * The comment of the QR code
+     *
+     * @param comment The comment of the QR code
      */
     public void setComment(String comment) {
         this.comment = comment;
@@ -146,13 +204,13 @@ public class QRCode implements Comparable {
 
     /**
      * This method adds a fetchListener to the QRCode object
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
      * Date: 24/03/2023
      *
-     * @param toAdd
+     * @param toAdd the fetchListener to be added
      */
     public void addListener(fetchListener toAdd) {
         listeners.add(toAdd);
@@ -160,12 +218,11 @@ public class QRCode implements Comparable {
 
     /**
      * This method calls all onFetchComplete() listeners
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
      * Date: 24/03/2023
-     *
      */
     public void fetchComplete() {
         for (fetchListener fl : listeners)
@@ -174,7 +231,7 @@ public class QRCode implements Comparable {
 
     /**
      * This method calls all onFetchFailure() listeners
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
@@ -187,8 +244,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the score of a QRCode object
-     * @return
-     * The score as an integer
+     *
+     * @return The score as an integer
      */
     public int getScore() {
         return score;
@@ -196,8 +253,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the GeoLocation of a QRCode object
-     * @return
-     * The geolocation as a GeoLocation object
+     *
+     * @return The geolocation as a GeoLocation object
      */
     public GeoLocation getGeoLocation() {
         return geoLocation;
@@ -205,8 +262,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the ID hash of a QRCode object
-     * @return
-     * The ID hash as an string
+     *
+     * @return The ID hash as an string
      */
     public String getIdHash() {
         return idHash;
@@ -214,8 +271,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the name of a QRCode object
-     * @return
-     * The name as a String
+     *
+     * @return The name as a String
      */
     public String getName() {
         return name;
@@ -223,8 +280,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the username of a QRCode object
-     * @return
-     * The username as a String
+     *
+     * @return The username as a String
      */
     public String getUsername() {
         return username;
@@ -232,8 +289,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the location image of a QRCode object
-     * @return
-     * The location image as a Bitmap
+     *
+     * @return The location image as a Bitmap
      */
     public String getLocationImage() {
         return locationImage;
@@ -241,8 +298,8 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the comment of a QRCode object
-     * @return
-     * The comment as a String
+     *
+     * @return The comment as a String
      */
     public String getComment() {
         return comment;
@@ -250,10 +307,9 @@ public class QRCode implements Comparable {
 
     /**
      * This method returns the hash of a string
-     * @param preHash
-     * The input string to be hashed
-     * @return
-     * The hash value as a string
+     *
+     * @param preHash The input string to be hashed
+     * @return The hash value as a string
      */
     private static String getHash(String preHash) {
 

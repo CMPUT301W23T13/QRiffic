@@ -2,6 +2,7 @@
     <string name="app_name">QRiffic</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
+    <string name="nav_header">Welcome to QRiffic!</string>
     <string name="first_fragment_label">My Profile</string>
     <string name="second_fragment_label">Create a Profile</string>
     <string name="leaderboard_label">Leaderboard</string>
@@ -16,8 +17,6 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="user_profile">User Profile</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="search_users">Search Users</string>
@@ -40,11 +39,8 @@
     <string name="search_hint">Enter username</string>
 
     <!-- Leaderboard Screen -->
-    <string name="leaderboard_main_title">Top Players</string>
-    <string name="leaderboard_qrmon_title">Top QRMons</string>
-    <string name="leaderboard_switch">Switch Leaderboard</string>
     <string name="leaderboard_player_title">My Score</string>
-    <string name="leaderboard_type">Top in Canada</string>
+    <string name="leaderboard_location_warning">Location features not enabled</string>
 
     <string-array name="leaderboard_spinner">
         <item>Top Player Scores</item>
@@ -57,6 +53,23 @@
     <string name="leaderboard_rank_text">Rank</string>
     <string name="leaderboard_username_text">Username</string>
 
+    <!-- New QRMon Screen-->
+    <string name="new_qrmon_default_name">Newly Captured QRMon</string>
+    <string name="new_qrmon_default_score">Score</string>
+    <string name="new_qrmon_default_message">Congrats! You found a new QRMon! What would you like to do?</string>
+
+    <string name="new_qrmon_comment_title">Add comment</string>
+    <string name="new_qrmon_comment_hint" tools:ignore="TypographyEllipsis">Start typing here...</string>
+
+    <string name="new_qrmon_photo_title">Add photo</string>
+    <string name="new_qrmon_photo_text">Take a new photo</string>
+
+    <string name="new_qrmon_geolocation_title">Add geolocation</string>
+    <string name="new_qrmon_geolocation_field">Geolocation goes here</string>
+    <string name="new_qrmon_geolocation_text">Add a geolocation</string>
+
+    <string name="new_qrmon_clear_button">Clear</string>
+
     <!-- Profile Screen -->
     <string name="user_score_text">Total Score</string>
     <string name="user_scanned_text">Total Scanned</string>
@@ -66,18 +79,11 @@
     <string name="empty_qrmon_label">You don\'t have any!</string>
     <string name="searched_empty_qrmon_label">They don\'t have any!</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
     <string name="profile_na">N/A</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_update">Update</string>
 
+    <!-- QR Detail Screen -->
+    <string name="qr_detail_default_username">ash_ketchum</string>
+    <string name="qr_detail_default_comment" tools:ignore="Typos">omg this is my fave thing ever!  Like look at how cute this thing is omg omg omg!</string>
+    <string name="qr_detail_default_location">Pallet Town</string>
 </resources>

@@ -33,8 +33,8 @@
             android:id="@+id/nav_ProfileUpdate"
             android:title="Update Profile"
             android:icon="@drawable/update_icon"/>
-        <item
-            android:id="@+id/nav_tempAddQR"
-            android:title="tempAddQr" />
+<!--        <item-->
+<!--            android:id="@+id/nav_devAddQR"-->
+<!--            android:title="devAddQr" />-->
     </group>
 </menu>

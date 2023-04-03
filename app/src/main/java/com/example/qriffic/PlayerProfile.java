@@ -4,23 +4,47 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class defines a player profile
  */
 public class PlayerProfile {
-
+    /**
+     * The player's username
+     */
     private String username;
-    private String uniqueID;
+    /**
+     * The player's email
+     */
     private String email;
+    /**
+     * The player's phone number, as a string
+     */
     private String phoneNum;
+    /**
+     * The score of the user's highest scoring QRMon
+     */
     private int highScore;
+    /**
+     * The score of the user's lowest scoring QRMon
+     */
     private int lowScore;
+    /**
+     * The user's total QRMon score
+     */
     private int totalScore;
+    /**
+     * The total number of QRMons the user has scanned
+     */
     private int totalScanned;
-    private HashMap<String, QRCode> captured;
-    private ArrayList<fetchListener> listeners;
+    /**
+     * A hashmap of all of the QRMons the user has scanned, with their idHash as the key and a QRCode object as the value
+     */
+    private final HashMap<String, QRCode> captured;
+    /**
+     * Holds listeners that the class uses when fetching data from the database
+     */
+    private final ArrayList<fetchListener> listeners;
 
     /**
      * This is an empty constructor for a PlayerProfile object
@@ -39,21 +63,15 @@ public class PlayerProfile {
 
     /**
      * This is a constructor for a PlayerProfile object
-     * @param username
-     * The player's username as a String
-     * @param uniqueID
-     * The player's unique ID as a string
-     * @param email
-     * The player's email address as a string
-     * @param phoneNum
-     * The player's phone number as a string
-     * @param captured
-     * The player's captured QRCodes as a HashMap of QRCode objects
+     *
+     * @param username The player's username as a String
+     * @param email    The player's email address as a string
+     * @param phoneNum The player's phone number as a string
+     * @param captured The player's captured QRCodes as a HashMap of QRCode objects
      */
-    public PlayerProfile(String username, String uniqueID, String email, String phoneNum,
+    public PlayerProfile(String username, String email, String phoneNum,
                          HashMap<String, QRCode> captured) {
         this.username = username;
-        this.uniqueID = uniqueID;
         this.email = email;
         this.phoneNum = phoneNum;
         this.highScore = -1;
@@ -75,21 +93,15 @@ public class PlayerProfile {
 
     /**
      * This is a constructor for a PlayerProfile object
-     * @param username
-     * The player's username as a String
-     * @param uniqueID
-     * The player's unique ID as a string
-     * @param email
-     * The player's email address as a string
-     * @param phoneNum
-     * The player's phone number as a string
-     * @param captured
-     * The player's captured QRCodes as an ArrayList of QRCode objects
+     *
+     * @param username The player's username as a String
+     * @param email    The player's email address as a string
+     * @param phoneNum The player's phone number as a string
+     * @param captured The player's captured QRCodes as an ArrayList of QRCode objects
      */
-    public PlayerProfile(String username, String uniqueID, String email, String phoneNum,
+    public PlayerProfile(String username, String email, String phoneNum,
                          ArrayList<QRCode> captured) {
         this.username = username;
-        this.uniqueID = uniqueID;
         this.email = email;
         this.phoneNum = phoneNum;
         this.highScore = -1;
@@ -113,13 +125,13 @@ public class PlayerProfile {
 
     /**
      * This method adds a fetchListener to the PlayerProfile object
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
      * Date: 10/03/2023
      *
-     * @param toAdd
+     * @param toAdd The fetchListener to be added
      */
     public void addListener(fetchListener toAdd) {
         listeners.add(toAdd);
@@ -127,8 +139,8 @@ public class PlayerProfile {
 
     /**
      * This methods removes a fetchListener from the PlayerProfile object
-     * @param toRemove
-     * The fetchListener to remove
+     *
+     * @param toRemove The fetchListener to remove
      */
     public void removeListener(fetchListener toRemove) {
         listeners.remove(toRemove);
@@ -136,12 +148,11 @@ public class PlayerProfile {
 
     /**
      * This method calls all onFetchComplete() listeners
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
      * Date: 10/03/2023
-     *
      */
     public void fetchComplete() {
         for (fetchListener fl : listeners)
@@ -150,7 +161,7 @@ public class PlayerProfile {
 
     /**
      * This method calls all onFetchFailure() listeners
-     *
+     * <p>
      * This block references the following web page:
      * Link: https://programming.guide/java/create-a-custom-event.html
      * Author: Unavailable
@@ -163,8 +174,8 @@ public class PlayerProfile {
 
     /**
      * This method returns the username of a PlayerProfile object
-     * @return
-     * The player's username as a string
+     *
+     * @return The player's username as a string
      */
     public String getUsername() {
         return username;
@@ -172,35 +183,17 @@ public class PlayerProfile {
 
     /**
      * This method sets the username of a PlayerProfile object
-     * @param username
-     * The player's username as a string
+     *
+     * @param username The player's username as a string
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * This method returns the uniqueID of a PlayerProfile object
-     * @return
-     * The player's uniqueID as a string
-     */
-    public String getUniqueID() {
-        return uniqueID;
-    }
-
-    /**
-     * This method sets the uniqueID of a PlayerProfile object
-     * @param uniqueID
-     * The player's uniqueID as a string
-     */
-    public void setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
-    }
-
-    /**
      * This method returns the email address of a PlayerProfile object
-     * @return
-     * The email address as a string
+     *
+     * @return The email address as a string
      */
     public String getEmail() {
         return email;
@@ -208,8 +201,8 @@ public class PlayerProfile {
 
     /**
      * This method sets the email address of a PlayerProfile object
-     * @param email
-     * The email address as a string
+     *
+     * @param email The email address as a string
      */
     public void setEmail(String email) {
         this.email = email;
@@ -217,8 +210,8 @@ public class PlayerProfile {
 
     /**
      * This method returns the phone number of a PlayerProfile object
-     * @return
-     * The phone number as a string
+     *
+     * @return The phone number as a string
      */
     public String getPhoneNum() {
         return phoneNum;
@@ -226,8 +219,8 @@ public class PlayerProfile {
 
     /**
      * This method sets the phone number of a PlayerProfile object
-     * @param phoneNum
-     * The phone number as a string
+     *
+     * @param phoneNum The phone number as a string
      */
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
@@ -235,8 +228,8 @@ public class PlayerProfile {
 
     /**
      * This method returns the high score of a PlayerProfile object
-     * @return
-     * The high score as an integer
+     *
+     * @return The high score as an integer
      */
     public int getHighScore() {
         return highScore;
@@ -244,8 +237,8 @@ public class PlayerProfile {
 
     /**
      * This method sets the high score of a PlayerProfile object
-     * @param highScore
-     * The high score as an integer
+     *
+     * @param highScore The high score as an integer
      */
     public void setHighScore(int highScore) {
         this.highScore = highScore;
@@ -253,8 +246,8 @@ public class PlayerProfile {
 
     /**
      * This method returns the high score of a PlayerProfile object
-     * @return
-     * The high score as an integer
+     *
+     * @return The high score as an integer
      */
     public int getLowScore() {
         return lowScore;
@@ -262,8 +255,8 @@ public class PlayerProfile {
 
     /**
      * This method sets the high score of a PlayerProfile object
-     * @param lowScore
-     * The high score as an integer
+     *
+     * @param lowScore The high score as an integer
      */
     public void setLowScore(int lowScore) {
         this.lowScore = lowScore;
@@ -271,43 +264,56 @@ public class PlayerProfile {
 
     /**
      * This method returns the list of captured QRCodes of a PlayerProfile object as a HashMap
-     * @return
-     * The captured QRCodes as a HashMap of QRCode objects
+     *
+     * @return The captured QRCodes as a HashMap of QRCode objects
      */
     public HashMap<String, QRCode> getCaptured() {
         return captured;
     }
 
-    public int getTotalScore() {return totalScore;}
-
-    public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
+    /**
+     * This method returns the total score of a PlayerProfile object
+     *
+     * @return The total score as an integer
+     */
+    public int getTotalScore() {
+        return totalScore;
     }
 
-    public int getTotalScanned() {return totalScanned;}
-
-    public void setTotalScanned(int totalScanned) {
-        this.totalScanned = totalScanned;
+    /**
+     * This method returns the total scanned number of a PlayerProfile object
+     *
+     * @return The total scanned number as an integer
+     */
+    public int getTotalScanned() {
+        return totalScanned;
     }
 
     /**
      * This method adds a QRCode object to the list of captured QRCodes of a PlayerProfile object
-     * @param qrCode
-     * The QRCode object to be added to the ArrayList of QRCode objects
+     *
+     * @param qrCode The QRCode object to be added to the ArrayList of QRCode objects
+     * @return true if the player does not have the QRCode already in captured, false if otherwise
      */
-    public void addQRCode(QRCode qrCode) {
-        this.captured.put(qrCode.getIdHash(), qrCode);
-        this.updateHighScore(qrCode.getScore());
-        this.updateLowScore(qrCode.getScore());
-        this.totalScore += qrCode.getScore();
-        this.totalScanned += 1;
+    public boolean addQRCode(QRCode qrCode) {
+        if (this.captured.containsKey(qrCode.getIdHash())) {
+            this.captured.put(qrCode.getIdHash(), qrCode);
+            return false;
+        } else {
+            this.captured.put(qrCode.getIdHash(), qrCode);
+            this.updateHighScore(qrCode.getScore());
+            this.updateLowScore(qrCode.getScore());
+            this.totalScore += qrCode.getScore();
+            this.totalScanned += 1;
+            return true;
+        }
     }
 
     /**
      * This method deletes a QRCode object from the list of captured QRCodes of a
-     * PlayerProfile object
-     * @param delQrCode
-     * The QRCode object to be deleted from the captured
+     * PlayerProfile object and updates other values accordingly
+     *
+     * @param delQrCode The QRCode object to be deleted from the captured
      */
     public void deleteQRCode(QRCode delQrCode) {
         QRCode qrCode = this.captured.get(delQrCode.getIdHash());
@@ -349,13 +355,12 @@ public class PlayerProfile {
 
     /**
      * This method deletes a QRCode object from the list of captured QRCodes of a
-     * PlayerProfile object
-     * @param idHash
-     * The idHash of the QRCode object to be deleted from captured
+     * PlayerProfile object and updates other values accordingly
+     *
+     * @param idHash The idHash of the QRCode object to be deleted from captured
      */
     public void deleteQRCode(String idHash) {
         QRCode qrCode = this.captured.get(idHash);
-        Log.d("TESTPRINT", "idHash: " + idHash + " qrCode: " + qrCode + " captured: " + this.captured);
 
         // If QR code does not exist in captured
         if (qrCode == null) {
@@ -394,8 +399,8 @@ public class PlayerProfile {
 
     /**
      * This method updates the high score of a PlayerProfile object
-     * @param score
-     * The score to be compared to the current high score
+     *
+     * @param score The score to be compared to the current high score
      */
     public void updateHighScore(int score) {
         this.highScore = Math.max(highScore, score);
@@ -403,8 +408,8 @@ public class PlayerProfile {
 
     /**
      * This method updates the low score of a PlayerProfile object
-     * @param score
-     * The score to be compared to the current low score
+     *
+     * @param score The score to be compared to the current low score
      */
     public void updateLowScore(int score) {
         if (this.lowScore == -1) {
@@ -413,9 +418,28 @@ public class PlayerProfile {
         this.lowScore = Math.min(lowScore, score);
     }
 
+    /**
+     * This method gets the highest scoring QRCode that the player has captured, and returns it
+     *
+     * @return The highest scoring QRCode that the player has, as a QRCode object
+     */
     public QRCode getBestQR() {
         for (QRCode qr : captured.values()) {
             if (qr.getScore() == this.highScore) {
+                return qr;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This method gets the lowest scoring QRCode that the player has captured, and returns it
+     *
+     * @return The lowest scoring QRCode that the player has, as a QRCode object
+     */
+    public QRCode getWorstQR() {
+        for (QRCode qr : captured.values()) {
+            if (qr.getScore() == this.lowScore) {
                 return qr;
             }
         }

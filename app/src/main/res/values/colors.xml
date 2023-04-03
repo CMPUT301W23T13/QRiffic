@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
+    <color name="purple_200">#4dbef3</color>
+    <color name="purple_500">#0494df</color>
+    <color name="purple_700">#0471b7</color>
+    <color name="profileBlue">#02a2ee</color>
+    <color name="profilePurple">#9D5AFD</color>
+    <color name="bestQRMon">#d4c0fb</color>
+    <color name="worstQRMon">#f3b8e1</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="light_baby_blue">#D0DBFB</color>
+    <color name="boxGrey">#E1E3E5</color>
+    <color name="boxDarkGrey">#C5C7C9</color>
+    <color name="mediumBlue">#7fd0f7</color>
+    <color name="lightBlue">#b2e3fb</color>
+    <color name="mediumRed">#DF5B5B</color>
+    <color name="lightRed">#FDBBBB</color>
 </resources>

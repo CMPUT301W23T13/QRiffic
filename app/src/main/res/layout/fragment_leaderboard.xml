@@ -8,10 +8,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/leaderboard_type"
             android:background="@drawable/rounded_corner"
@@ -20,11 +19,11 @@
             android:padding="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Leaderboard"
+            android:text="@string/leaderboard"
 
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
 
         <LinearLayout
@@ -49,15 +48,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="3dp"
                 android:weightSum="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="DisableBaselineAlignment">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_weight="0.2"
                     android:background="@drawable/rounded_left_component"
-                    android:backgroundTint="#7CD0DC"
+                    android:backgroundTint="@color/mediumBlue"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="10dp">
@@ -72,9 +72,9 @@
 
                     <TextView
                         android:id="@+id/my_rank_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="N/A"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/profile_na"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -86,7 +86,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="0.8"
                     android:background="@drawable/rounded_right_component"
-                    android:backgroundTint="#A5ECE4"
+                    android:backgroundTint="@color/lightBlue"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="10dp">
@@ -104,7 +104,7 @@
                         android:id="@+id/my_points"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="N/A"
+                        android:text="@string/profile_na"
                         android:textAlignment="center"
                         android:textColor="@color/purple_500"
                         android:textSize="20sp" />
@@ -125,6 +125,19 @@
                 android:drawSelectorOnTop="true"
                 android:entries="@array/leaderboard_spinner"
                 android:layout_marginHorizontal="10dp"
+                />
+
+            <TextView
+                android:id="@+id/no_region_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+
+                android:text="@string/leaderboard_location_warning"
+                android:textAlignment="center"
+                android:textColor="@color/boxDarkGrey"
+                android:textSize="20sp"
+                android:visibility="gone"
                 />
 
             <ListView
