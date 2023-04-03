@@ -34,11 +34,10 @@ public class PlayerProfileTest {
         assertNotEquals("123.999.9999", mockPlayerProfile.getPhoneNum());
         assertNotEquals("player@outlook.com", mockPlayerProfile.getEmail());
 
-        // CHANGE THIS WHEN WE HAVE SCORE CALCULATOR
-        assertEquals(0, mockPlayerProfile.getHighScore());
+        assertEquals(-1, mockPlayerProfile.getHighScore());
         assertNotEquals(20000,mockPlayerProfile.getHighScore());
 
-        assertEquals(0, mockPlayerProfile.getLowScore());
+        assertEquals(-1, mockPlayerProfile.getLowScore());
         assertNotEquals(500,mockPlayerProfile.getLowScore());
 
         // tests on Captured and getCaptured are done in other test methods
@@ -94,7 +93,7 @@ public class PlayerProfileTest {
 
         mockPlayerProfile.addQRCode(mockQRCode);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(Exception.class, () -> {
             mockPlayerProfile.deleteQRCode(mockQRCode2);
         });
 

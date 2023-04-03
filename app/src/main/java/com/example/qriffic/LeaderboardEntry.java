@@ -64,5 +64,7 @@ public class LeaderboardEntry {
      * Returns the name of the entry
      * @return The name, as a String
      */
-    public String getName() {return this.name;}
+    public String getName() {
+        return this.name;
+    }
 }
