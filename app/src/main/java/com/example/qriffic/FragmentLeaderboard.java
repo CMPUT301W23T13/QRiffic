@@ -14,6 +14,7 @@ import androidx.core.view.ViewGroupCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Adds transitions
         TransitionInflater inflater = TransitionInflater.from(requireContext());
         setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
         setExitTransition(inflater.inflateTransition(R.transition.fade));
@@ -81,6 +83,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
         ListView leaderboardList = view.findViewById(R.id.leaderboard_list);
         TextView noRegionText = view.findViewById(R.id.no_region_text);
 
+        // Setting the dropdown menu
         Spinner spinner = (Spinner)view.findViewById(R.id.leaderboard_spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.leaderboard_spinner, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -97,6 +100,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
 
         DBA.getPlayer(profile, username);
 
+        // Waits for player info to be fetched before getting leaderboard data
         profile.addListener(new fetchListener() {
             @Override
             public void onFetchComplete() {
@@ -121,6 +125,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                     int myRank = 0;
                     myName.setText(profile.getUsername());
 
+                    // Checks which rank you are at
                     while (myRank < dataList.size()) {
                         if (Objects.equals(dataList.get(myRank).getId(), profile.getUsername())) {
                             break;
@@ -148,17 +153,46 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
             }
         });
 
+        // Allows players to be clicked on to visit their profile
+        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                bundle.putString("username", entry.getId());
+                bundle.putBoolean("isUser", false);
+                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_fragmentUserSearchedProfile,bundle);
+            }
+        });
+
+        // Listener for the dropdown menu, changes the leaderboard type
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String choice = (String)parent.getItemAtPosition(position);
                 if (Objects.nonNull(dataList)) {
                     if (Objects.equals(choice, "Top Player Scores")) {
+                        // Changes leaderboard list listener type
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("username", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_fragmentUserSearchedProfile,bundle);
+                            }
+                        });
+
+                        // Fills leaderboard data with correct type
                         dataList = data.getTopPlayerPoints();
                         leaderboardPlayerTitle.setText("My Score");
 
                         myName.setText(profile.getUsername());
                         myPoints.setText(Integer.toString(profile.getTotalScore()));
+
+                        // Checks rank of user
                         int myRank = 0;
                         while (myRank < dataList.size()) {
                             if (Objects.equals(dataList.get(myRank).getId(), profile.getUsername())) {
@@ -179,12 +213,27 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardAdapter.addAll(data.getTopPlayerPoints());
                         leaderboardAdapter.notifyDataSetChanged();
                     } else if (Objects.equals(choice, "Most QRMons Scanned")) {
+                        // Changes leaderboard list listener type
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("username", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_fragmentUserSearchedProfile,bundle);
+                            }
+                        });
+
+                        // Fills leaderboard data with correct type
                         dataList = data.getTopPlayerScans();
                         leaderboardPlayerTitle.setText("My Scans");
-                        int myRank = 0;
                         myName.setText(profile.getUsername());
                         myPoints.setText(Integer.toString(profile.getTotalScanned()));
 
+                        // Checks rank of user
+                        int myRank = 0;
                         while (myRank < dataList.size()) {
                             if (Objects.equals(dataList.get(myRank).getId(), profile.getUsername())) {
                                 break;
@@ -204,6 +253,20 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardAdapter.addAll(data.getTopPlayerScans());
                         leaderboardAdapter.notifyDataSetChanged();
                     } else if (Objects.equals(choice, "Top QRMons Globally")) {
+                        // Changes leaderboard list listener type
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("QRID", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_nav_QRDetail,bundle);
+                            }
+                        });
+
+                        // Fills leaderboard data with correct type
                         dataList = data.getTopQRPoints();
                         leaderboardPlayerTitle.setText("My Best QRMon");
 
@@ -213,11 +276,12 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                             myPoints.setText("N/A");
                             myRankNumber.setText("N/A");
                         } else {
+                            // Checks rank of best QR
                             myName.setText(qr.getName());
                             myPoints.setText(Integer.toString(qr.getScore()));
                             int myRank = 0;
                             while (myRank < dataList.size()) {
-                                if (Objects.equals(dataList.get(myRank).getId(), qr.getName())) {
+                                if (Objects.equals(dataList.get(myRank).getId(), qr.getIdHash())) {
                                     break;
                                 }
                                 myRank += 1;
@@ -231,6 +295,20 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                         leaderboardAdapter.addAll(data.getTopQRPoints());
                         leaderboardAdapter.notifyDataSetChanged();
                     } else if (Objects.equals(choice, "Top QRMons Regionally")) {
+                        // Changes leaderboard list listener type
+                        leaderboardList.setOnItemClickListener(null);
+                        leaderboardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Bundle bundle = new Bundle();
+                                LeaderboardEntry entry = leaderboardAdapter.getItem(position);
+                                bundle.putString("QRID", entry.getId());
+                                bundle.putBoolean("isUser", false);
+                                Navigation.findNavController(view).navigate(R.id.action_nav_leaderboard_to_nav_QRDetail,bundle);
+                            }
+                        });
+
+                        // Changes leaderboard if location data is not enabled
                         dataList = data.getTopRegionQRPoints();
                         if (city == null) {
                             leaderboardPlayerTitle.setText("My Best QRMon");
@@ -251,6 +329,7 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                             leaderboardAdapter.notifyDataSetChanged();
                             leaderboardType.setText("Top QRMons in Region");
                         } else {
+                            // Fills leaderboard data with correct type
                             leaderboardPlayerTitle.setText("My Best QRMon from " + city);
 
                             QRCode qr = profile.getBestQR();
@@ -259,11 +338,12 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
                                 myPoints.setText("N/A");
                                 myRankNumber.setText("N/A");
                             } else {
+                                // Checks rank of best QR in the region, if any
                                 int myRank = 0;
                                 boolean hasFlag = false;
                                 while (myRank < dataList.size()) {
                                     for (QRCode checkQR : profile.getCaptured().values()) {
-                                        if (checkQR.getName().equals(dataList.get(myRank).getId())) {
+                                        if (checkQR.getIdHash().equals(dataList.get(myRank).getId())) {
                                             hasFlag = true;
                                             myName.setText(checkQR.getName());
                                             myPoints.setText(Integer.toString(checkQR.getScore()));
@@ -350,7 +430,6 @@ public class FragmentLeaderboard extends Fragment implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-
     }
 
     @Override

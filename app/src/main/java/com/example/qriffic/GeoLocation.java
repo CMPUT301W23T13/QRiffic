@@ -5,11 +5,23 @@ package com.example.qriffic;
  */
 public class GeoLocation {
 
+    /**
+     * The longitude of the geolocation, as a double
+     */
     private double longitude;
+    /**
+     * The latitude of the geolocation, as a double
+     */
     private double latitude;
+    /**
+     * The city that the geolocation is in as a String
+     */
     private String city;
 
-    public GeoLocation() {}
+    /**
+     * Constructs a GeoLocation object (required for FireStore object translation)
+     */
+    GeoLocation() {}
 
     /**
      * This is the constructor for a Location object

@@ -33,8 +33,6 @@ public class DBA {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static CollectionReference playersColRef= db.collection("Players");;
     private static CollectionReference qrColRef = db.collection("QRs");
-    private static CollectionReference mapColRef = db.collection("Map");
-    private static CollectionReference testColRef = db.collection("TestCol"); // Temporary test collection
 
     /**
      * This is the constructor for the DBA class
@@ -43,7 +41,7 @@ public class DBA {
     }
 
     /**
-     * This method adds/sets a PlayerProfile object to the database
+     * This method adds a PlayerProfile object to the database
      * @param player
      * The PlayerProfile object to be added
      */
@@ -104,12 +102,6 @@ public class DBA {
      * The PlayerProfile object to be overwritten to
      */
     public static void getPlayer(PlayerProfile player, String name) {
-        /*
-        Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
-                + player.getUniqueID() + " " + player.getEmail() + " "
-                + player.getPhoneNum() + " " + player.getHighScore() + " "
-                + player.getLowScore() + " " + player.getCaptured().size());
-         */
         playersColRef.document(name).get()
             .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -145,15 +137,6 @@ public class DBA {
                     }
 
                     player.fetchComplete();
-
-                    /*
-                    // For testing purposes
-                    Log.d("TESTPRINT", "Player: " + player.getUsername() + " "
-                            + player.getUniqueID() + " " + player.getEmail() + " "
-                            + player.getPhoneNum() + " " + player.getHighScore() + " "
-                            + player.getLowScore() + " " + player.getCaptured().size());
-//                     */
-                    return;
                 }
         });
     }
@@ -165,31 +148,20 @@ public class DBA {
      * @param qr
      * The QRCode object to be added
      */
-    public static void addQR(String player, QRCode qr) {
-        PlayerProfile dbPlayer = new PlayerProfile();
-        dbPlayer.addListener(new fetchListener() {
-            @Override
-            public void onFetchComplete() {
-                dbPlayer.addQRCode(qr);
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("username", dbPlayer.getUsername());
-                data.put("email", dbPlayer.getEmail());
-                data.put("phoneNum", dbPlayer.getPhoneNum());
-                data.put("highScore", dbPlayer.getHighScore());
-                data.put("lowScore", dbPlayer.getLowScore());
-                data.put("totalScore", dbPlayer.getTotalScore());
-                data.put("totalScanned", dbPlayer.getTotalScanned());
-                data.put("captured", dbPlayer.getCaptured());
-                playersColRef.document(dbPlayer.getUsername()).set(data);
-            }
-            @Override
-            public void onFetchFailure() {
-                throw new IllegalArgumentException("Player does not exist in database");
-            }
-        });
-        getPlayer(dbPlayer, player);
+    public static void addQR(PlayerProfile player, QRCode qr) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", player.getUsername());
+        data.put("email", player.getEmail());
+        data.put("phoneNum", player.getPhoneNum());
+        data.put("highScore", player.getHighScore());
+        data.put("lowScore", player.getLowScore());
+        data.put("totalScore", player.getTotalScore());
+        data.put("totalScanned", player.getTotalScanned());
+        data.put("captured", player.getCaptured());
+        Task updatePlayer = playersColRef.document(player.getUsername()).set(data);
+
         QRData qrData = new QRData(qr);
-        qrColRef.document(qrData.getIdHash()).get()
+        Task updateQRCode = qrColRef.document(qrData.getIdHash()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -205,10 +177,17 @@ public class DBA {
                                 qrColRef.document(qr.getIdHash()).set(qrData);
                             }
                         } else {
-                            Log.d("TESTPRINT", "Failed to get QRData");
+                            Log.d("addQR", "Failed to get QRData");
                         }
                     }
                 });
+
+        Tasks.whenAllComplete(updatePlayer,updateQRCode).addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+            @Override
+            public void onSuccess(List<Task<?>> tasks) {
+                qr.fetchComplete();
+            }
+        });
     }
 
     /**
@@ -317,7 +296,16 @@ public class DBA {
                 });
     }
 
+    /**
+     * This method fetches information from the database to fill the LeaderboardData object which
+     * contains all of the data needed for the leaderboard functions
+     * @param data
+     * The LeaderboardData object being filled
+     * @param city
+     * The city that the user is in, used for regional queries
+     */
     public static void getLeaderboard(LeaderboardData data, String city) {
+        // Gets players by their total score
         Task playerPointQuery = playersColRef.whereGreaterThan("totalScore", 0).orderBy("totalScore", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -335,6 +323,7 @@ public class DBA {
                     }
                 });
 
+        // Gets players by their total scans
         Task playerScanQuery = playersColRef.whereGreaterThan("totalScanned", 0).orderBy("totalScanned", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -352,15 +341,17 @@ public class DBA {
                     }
                 });
 
+        // Gets QRs by their score
         Task qrPointQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.get("name").toString();
+                                String idHash = document.get("idHash").toString();
                                 String score = document.get("score").toString();
-                                data.addQRPoint(name, score);
+                                String name = document.get("name").toString();
+                                data.addQRPoint(idHash, score, name);
                             }
 
                         } else {
@@ -370,8 +361,8 @@ public class DBA {
                     }
                 });
 
+        // Gets QRs by score in a certain region
         if (city != null) {
-            Log.d("city", city);
             Task qrRegionQuery = qrColRef.whereGreaterThan("score", 0).orderBy("score", Query.Direction.DESCENDING).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -383,7 +374,7 @@ public class DBA {
                                     Object users = document.get("users");
                                     if (Objects.nonNull(users)) {
                                         Map userMap = (Map) users;
-
+                                        // Checks if a QR has a geotag from the current region
                                         for (Object value : userMap.values()) {
                                             if (Objects.nonNull(value)) {
                                                 Map valueMap = (Map) value;
@@ -401,10 +392,12 @@ public class DBA {
                                             }
                                         }
 
+                                        // Adds QR to list if it is in the region
                                         if (regionFlag) {
-                                            String name = document.get("name").toString();
+                                            String idHash = document.get("idHash").toString();
                                             String score = document.get("score").toString();
-                                            data.addRegionQRPoint(name, score);
+                                            String name = document.get("name").toString();
+                                            data.addRegionQRPoint(idHash, score, name);
                                         }
                                     }
                                 }

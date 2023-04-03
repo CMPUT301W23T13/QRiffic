@@ -17,6 +17,9 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class extends the ArrayAdapter class and adapts a ListView in FragmentQRDetail for QRmons represented by a map of their idHash and QRCode data
+ */
 public class QRDetailAdapter extends ArrayAdapter<HashMap<String, Object>> {
     private ArrayList<HashMap<String,Object>> instanceList;
     private Context context;
