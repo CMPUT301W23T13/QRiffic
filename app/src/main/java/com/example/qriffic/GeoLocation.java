@@ -19,6 +19,11 @@ public class GeoLocation {
     private String city;
 
     /**
+     * Constructs a GeoLocation object
+     */
+    GeoLocation() {}
+
+    /**
      * This is the constructor for a Location object
      * @param longitude
      * The longitude as a string
