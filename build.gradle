@@ -1,54 +1,85 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-
-buildscript {
-    repositories {
-        google()  // Google's Maven repository
-        mavenCentral()  // Maven Central repository
-    }
-    dependencies {
-        // Add the dependency for the Google services Gradle plugin
-        classpath 'com.google.gms:google-services:4.3.15'
-    }
-}
-
-
 plugins {
-    id 'com.android.application' version '7.3.1' apply false
-    id 'com.android.library' version '7.3.1' apply false
+    id 'com.android.application'
 
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
-    id 'com.google.gms.google-services' version '4.3.15' apply false
+    id 'com.google.gms.google-services'
 
 }
-apply plugin: 'com.android.application'
 
 android {
     namespace 'com.example.qriffic'
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
-    
-    sourceSets {
-        main {
-            manifest.srcFile 'app/src/main/AndroidManifest.xml'
-            java.srcDirs = ['app/src/main/java']
-            res.srcDirs = ['app/src/main/res']
-        }
-    }
-    
+    compileSdk 33
+
     defaultConfig {
         applicationId "com.example.qriffic"
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdk 24
+        targetSdk 33
         versionCode 1
         versionName "1.0"
-        buildConfigField ("String", "AUTH_CODE", getSecretKey())
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    
-    dependencies {
-        implementation 'com.google.android.material:material:1.5.0'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation platform('com.google.firebase:firebase-bom:31.2.2')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-firestore'
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.firebase:firebase-database:20.1.0'
+    implementation 'androidx.fragment:fragment:1.4.1'
+
+    implementation 'com.squareup.retrofit2:converter-jackson:2.7.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Open Source ZXing Android Embedded Library (for QR code scanning)
+    // SOURCE: https://github.com/journeyapps/zxing-android-embedded
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+
+    // intent testing
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.3.1'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 }
 
 String getSecretKey() {
