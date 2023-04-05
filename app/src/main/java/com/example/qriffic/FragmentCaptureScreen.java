@@ -2,12 +2,14 @@ package com.example.qriffic;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -46,6 +48,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class FragmentCaptureScreen extends Fragment implements LocationListener {
 
@@ -296,13 +299,19 @@ public class FragmentCaptureScreen extends Fragment implements LocationListener 
     }
 
     private void generateIdenticon(View view) {
-        String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() +
-                "?s=55&d=identicon&r=PG%22";
-        Glide.with(getContext())
-                .load(url)
-                .centerCrop()
-                .error(R.drawable.ic_launcher_background)
-                .into((ImageView) view.findViewById(R.id.qr_add_image));
+        if (Objects.equals(qrCode.getIdHash(), "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b")) {
+            // draw iq.jpg as the identicon
+            Drawable iq = ContextCompat.getDrawable(requireActivity(), R.drawable.iq);
+            ((ImageView) view.findViewById(R.id.qr_add_image)).setImageDrawable(iq);
+        } else {
+            String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() +
+                    "?s=55&d=identicon&r=PG%22";
+            Glide.with(getContext())
+                    .load(url)
+                    .centerCrop()
+                    .error(R.drawable.ic_launcher_background)
+                    .into((ImageView) view.findViewById(R.id.qr_add_image));
+        }
     }
 
     private void uploadToDB() {

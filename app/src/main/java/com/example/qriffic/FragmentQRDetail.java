@@ -1,5 +1,6 @@
 package com.example.qriffic;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewGroupCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -20,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * This fragment is used to display the details of a QR code and a feed from all users
@@ -136,12 +139,17 @@ public class FragmentQRDetail extends Fragment {
      * @param instance the QR code data
      */
     private void setMainImage(View view, QRData instance) {
-        String highurl = "https://www.gravatar.com/avatar/" + instance.getIdHash() + "?s=55&d=identicon&r=PG%22";
-        Glide.with(getContext())
-                .load(highurl)
-                .centerCrop()
-                .error(R.drawable.ic_launcher_background)
-                .into((ImageView) view.findViewById(R.id.qr_detail_image));
+        if (Objects.equals(instance.getName(), "400 IQ-RMon")) {
+            Drawable iq = ContextCompat.getDrawable(requireContext(), R.drawable.iq);
+            ((ImageView) view.findViewById(R.id.qr_detail_image)).setImageDrawable(iq);
+        } else {
+            String highurl = "https://www.gravatar.com/avatar/" + instance.getIdHash() + "?s=55&d=identicon&r=PG%22";
+            Glide.with(getContext())
+                    .load(highurl)
+                    .centerCrop()
+                    .error(R.drawable.ic_launcher_background)
+                    .into((ImageView) view.findViewById(R.id.qr_detail_image));
+        }
     }
 
 

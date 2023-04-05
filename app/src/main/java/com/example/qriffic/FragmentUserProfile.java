@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.transition.TransitionInflater;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -186,24 +188,36 @@ public class FragmentUserProfile extends Fragment {
                     topQRName.setText(topQR.getName());
 
                     //set image for highest score
-                    String highurl = "https://www.gravatar.com/avatar/" + topQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
-                    Glide.with(getContext())
-                            .load(highurl)
-                            .centerCrop()
-                            .error(R.drawable.ic_launcher_background)
-                            .into((ImageView) view.findViewById(R.id.imageTop));
+                    if (Objects.equals(topQR.getName(), "400 IQ-RMon")) {
+                        Drawable iq = ContextCompat.getDrawable(getContext(), R.drawable.iq);
+                        topQRImage.setImageDrawable(iq);
+                    } else {
+
+                        String highurl = "https://www.gravatar.com/avatar/" + topQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                        Glide.with(getContext())
+                                .load(highurl)
+                                .centerCrop()
+                                .error(R.drawable.ic_launcher_background)
+                                .into((ImageView) view.findViewById(R.id.imageTop));
+                    }
 
                     QRCode worstQR = playerProfile.getWorstQR();
                     botQRName.setText(worstQR.getName());
 
 
-                    //set image for lowest score
-                    String lowurl = "https://www.gravatar.com/avatar/" + worstQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
-                    Glide.with(getContext())
-                            .load(lowurl)
-                            .centerCrop()
-                            .error(R.drawable.ic_launcher_background)
-                            .into((ImageView) view.findViewById(R.id.imageBot));
+
+                    if (Objects.equals(worstQR.getName(), "400 IQ-RMon")) {
+                        Drawable iq = ContextCompat.getDrawable(getContext(), R.drawable.iq);
+                        botQRImage.setImageDrawable(iq);
+                    } else {
+                        //set image for lowest score
+                        String lowurl = "https://www.gravatar.com/avatar/" + worstQR.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                        Glide.with(getContext())
+                                .load(lowurl)
+                                .centerCrop()
+                                .error(R.drawable.ic_launcher_background)
+                                .into((ImageView) view.findViewById(R.id.imageBot));
+                    }
                 } else {
                     tvEmptyQRMon.setVisibility(View.VISIBLE);
                     lowScore.setText("N/A");

@@ -1,6 +1,7 @@
 package com.example.qriffic;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This class extends the ArrayAdapter class and adapts for QRCode objects
@@ -48,12 +51,17 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
             // generate QR code image and load
             String hash = qrCode.getIdHash();
             System.out.println("QRCodeAdapter hash: " + hash);
-            String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
-            Glide.with(getContext())
-                    .load(url)
-                    .centerCrop()
-                    .error(R.drawable.ic_launcher_background)
-                    .into((ImageView) view.findViewById(R.id.pListImage));
+            if (Objects.equals(qrCode.getName(), "400 IQ-RMon")) {
+                Drawable iq = ContextCompat.getDrawable(getContext(), R.drawable.iq);
+                ((ImageView) view.findViewById(R.id.pListImage)).setImageDrawable(iq);
+            } else {
+                String url = "https://www.gravatar.com/avatar/" + qrCode.getIdHash() + "?s=55&d=identicon&r=PG%22";
+                Glide.with(getContext())
+                        .load(url)
+                        .centerCrop()
+                        .error(R.drawable.ic_launcher_background)
+                        .into((ImageView) view.findViewById(R.id.pListImage));
+            }
 
         } else {
             System.out.println("QRCodeAdapter QRCode is null at position " + position);
